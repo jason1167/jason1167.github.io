@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Food on My New Hugo Site</title>
-    <link>http://localhost:1313/tags/food/</link>
+    <link>https://jason1167.github.io/tags/food/</link>
     <description>Recent content in Food on My New Hugo Site</description>
     <generator>Hugo -- 0.153.0</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 20 Dec 2025 02:07:37 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/food/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://jason1167.github.io/tags/food/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hello</title>
-      <link>http://localhost:1313/posts/hello/</link>
+      <link>https://jason1167.github.io/posts/hello/</link>
       <pubDate>Sat, 20 Dec 2025 02:07:37 +0800</pubDate>
-      <guid>http://localhost:1313/posts/hello/</guid>
+      <guid>https://jason1167.github.io/posts/hello/</guid>
       <description>&lt;h3 id=&#34;hello&#34;&gt;Hello&lt;/h3&gt;
 &lt;p&gt;asdfasdf
 asdfasdfsdfa
@@ -20,9 +20,9 @@ sdfasdfadsf&lt;/p&gt;</description>
     </item>
     <item>
       <title>Test</title>
-      <link>http://localhost:1313/posts/test/</link>
+      <link>https://jason1167.github.io/posts/test/</link>
       <pubDate>Sat, 20 Dec 2025 00:19:21 +0800</pubDate>
-      <guid>http://localhost:1313/posts/test/</guid>
+      <guid>https://jason1167.github.io/posts/test/</guid>
       <description>&lt;h3 id=&#34;test&#34;&gt;Test&lt;/h3&gt;
 &lt;p&gt;asdfasdf
 123413&lt;/p&gt;</description>
