@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Categories on Jason</title>
-    <link>https://jason1167.github.io/categories/</link>
+    <link>http://localhost:1313/categories/</link>
     <description>Recent content in Categories on Jason</description>
     <generator>Hugo -- 0.153.0</generator>
     <language>zh-tw</language>
     <lastBuildDate>Sat, 20 Dec 2025 02:07:37 +0800</lastBuildDate>
-    <atom:link href="https://jason1167.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Food</title>
-      <link>https://jason1167.github.io/categories/food/</link>
+      <link>http://localhost:1313/categories/food/</link>
       <pubDate>Sat, 20 Dec 2025 02:07:37 +0800</pubDate>
-      <guid>https://jason1167.github.io/categories/food/</guid>
+      <guid>http://localhost:1313/categories/food/</guid>
       <description></description>
     </item>
     <item>
       <title>It</title>
-      <link>https://jason1167.github.io/categories/it/</link>
+      <link>http://localhost:1313/categories/it/</link>
       <pubDate>Sat, 20 Dec 2025 02:07:37 +0800</pubDate>
-      <guid>https://jason1167.github.io/categories/it/</guid>
+      <guid>http://localhost:1313/categories/it/</guid>
       <description></description>
     </item>
   </channel>
