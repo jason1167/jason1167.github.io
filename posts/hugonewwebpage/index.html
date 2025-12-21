@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto" data-theme="auto">
+<html lang="en" dir="auto" data-theme="light">
 
 <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +19,7 @@ hugo new posts/hello.md
 
 網頁的設定 (Front Matter Variables)
 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/
-介紹幾個筆者常用的參數：
+介紹幾個常用的參數：
 
 
 定義文章標題、描述、作者
@@ -94,47 +94,10 @@ metaAlignment 設置文章 title 的對齊位置">
         }
 
     </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --code-block-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-                color-scheme: dark;
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .toc {
-                background: var(--entry);
-            }
-        }
-
-        @media (prefers-color-scheme: light) {
-            .list::-webkit-scrollbar-thumb {
-                border-color: var(--code-bg);
-            }
-        }
-
-    </style>
 </noscript>
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else {
-        document.querySelector("html").dataset.theme = 'light';
     }
 
 </script>
@@ -155,7 +118,7 @@ metaAlignment 設置文章 title 的對齊位置">
   <meta property="og:site_name" content="Jason">
   <meta property="og:title" content="Hugo 新增網頁">
   <meta property="og:description" content="新增網頁 1 hugo new posts/hello.md 網頁的設定 (Front Matter Variables) 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/
-介紹幾個筆者常用的參數：
+介紹幾個常用的參數：
 定義文章標題、描述、作者
 title 文章標題
 description 文章概要
@@ -192,7 +155,7 @@ hugo new posts/hello.md
 
 網頁的設定 (Front Matter Variables)
 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/
-介紹幾個筆者常用的參數：
+介紹幾個常用的參數：
 
 
 定義文章標題、描述、作者
@@ -276,11 +239,11 @@ metaAlignment 設置文章 title 的對齊位置">
   "@type": "BlogPosting",
   "headline": "Hugo 新增網頁",
   "name": "Hugo 新增網頁",
-  "description": "新增網頁 1 hugo new posts/hello.md 網頁的設定 (Front Matter Variables) 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/\n介紹幾個筆者常用的參數：\n定義文章標題、描述、作者\ntitle 文章標題\ndescription 文章概要\nauthor 文章作者\n定義文章分類、標籤、關鍵字\ncategories 文章分類\ntags 文章標籤\nkeywords 關鍵字\n定義文章類型、日期、狀態\ntype 文章類型，通常為 top level 資料夾名稱\ndate 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00+08:00)\ndraft 草稿狀態\npublishDate 預定發布日期，若是未來時間，須下 hugo server -F 才看得到文章\nexpiryDate 到期日期 (2025-12-20T15:00:00+08:00)\nFront Matter 自定義參數\n我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：\nmetaAlignment 設置文章 title 的對齊位置\n",
+  "description": "新增網頁 1 hugo new posts/hello.md 網頁的設定 (Front Matter Variables) 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/\n介紹幾個常用的參數：\n定義文章標題、描述、作者\ntitle 文章標題\ndescription 文章概要\nauthor 文章作者\n定義文章分類、標籤、關鍵字\ncategories 文章分類\ntags 文章標籤\nkeywords 關鍵字\n定義文章類型、日期、狀態\ntype 文章類型，通常為 top level 資料夾名稱\ndate 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00+08:00)\ndraft 草稿狀態\npublishDate 預定發布日期，若是未來時間，須下 hugo server -F 才看得到文章\nexpiryDate 到期日期 (2025-12-20T15:00:00+08:00)\nFront Matter 自定義參數\n我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：\nmetaAlignment 設置文章 title 的對齊位置\n",
   "keywords": [
     
   ],
-  "articleBody": "新增網頁 1 hugo new posts/hello.md 網頁的設定 (Front Matter Variables) 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/\n介紹幾個筆者常用的參數：\n定義文章標題、描述、作者\ntitle 文章標題\ndescription 文章概要\nauthor 文章作者\n定義文章分類、標籤、關鍵字\ncategories 文章分類\ntags 文章標籤\nkeywords 關鍵字\n定義文章類型、日期、狀態\ntype 文章類型，通常為 top level 資料夾名稱\ndate 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00+08:00)\ndraft 草稿狀態\npublishDate 預定發布日期，若是未來時間，須下 hugo server -F 才看得到文章\nexpiryDate 到期日期 (2025-12-20T15:00:00+08:00)\nFront Matter 自定義參數\n我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：\nmetaAlignment 設置文章 title 的對齊位置\ncoverImage 設置文章 cover image 的地方\ncoverMeta 設置文章 title 要放在 cover image 中央，還是外面\ncoverSize 設置文章 cover image 要大張還是小張\nHugo Taxonomies categories：使用者可於 Front Matter 中，指定文章類別\nhttp://xxx/categories\nhttp://xxx/categories/it\ntags：使用者可於 Front Matter 中，指定文章標籤\nhttp://xxx/tags\nhttp://xxx/tags/travel\n1 2 3 4 5 6 7 +++ title = \"Sample\" categories = [\"it\", \"food\"] tags = [\"travel\", \"job\"] +++ 文章內容 ",
+  "articleBody": "新增網頁 1 hugo new posts/hello.md 網頁的設定 (Front Matter Variables) 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/\n介紹幾個常用的參數：\n定義文章標題、描述、作者\ntitle 文章標題\ndescription 文章概要\nauthor 文章作者\n定義文章分類、標籤、關鍵字\ncategories 文章分類\ntags 文章標籤\nkeywords 關鍵字\n定義文章類型、日期、狀態\ntype 文章類型，通常為 top level 資料夾名稱\ndate 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00+08:00)\ndraft 草稿狀態\npublishDate 預定發布日期，若是未來時間，須下 hugo server -F 才看得到文章\nexpiryDate 到期日期 (2025-12-20T15:00:00+08:00)\nFront Matter 自定義參數\n我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：\nmetaAlignment 設置文章 title 的對齊位置\ncoverImage 設置文章 cover image 的地方\ncoverMeta 設置文章 title 要放在 cover image 中央，還是外面\ncoverSize 設置文章 cover image 要大張還是小張\nHugo Taxonomies categories：使用者可於 Front Matter 中，指定文章類別\nhttp://xxx/categories\nhttp://xxx/categories/it\ntags：使用者可於 Front Matter 中，指定文章標籤\nhttp://xxx/tags\nhttp://xxx/tags/travel\n1 2 3 4 5 6 7 +++ title = \"Sample\" categories = [\"it\", \"food\"] tags = [\"travel\", \"job\"] +++ 文章內容 ",
   "wordCount" : "119",
   "inLanguage": "en",
   "datePublished": "2025-12-21T08:47:00+08:00",
@@ -402,7 +365,7 @@ metaAlignment 設置文章 title 的對齊位置">
 </div><hr>
 <h2 id="網頁的設定-front-matter-variables">網頁的設定 (<strong>Front Matter Variables)</strong><a hidden class="anchor" aria-hidden="true" href="#網頁的設定-front-matter-variables">#</a></h2>
 <p>在 Front Matter 中有許多可設置變數，可參考 <a href="https://gohugo.io/content-management/front-matter/">https://gohugo.io/content-management/front-matter/</a></p>
-<p><strong>介紹幾個筆者常用的參數：</strong></p>
+<p><strong>介紹幾個常用的參數：</strong></p>
 <ul>
 <li>
 <p><strong>定義文章標題、描述、作者</strong></p>

@@ -25,7 +25,7 @@
 &lt;/div&gt;&lt;hr&gt;
 &lt;h2 id=&#34;網頁的設定-front-matter-variables&#34;&gt;網頁的設定 (&lt;strong&gt;Front Matter Variables)&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;在 Front Matter 中有許多可設置變數，可參考 &lt;a href=&#34;https://gohugo.io/content-management/front-matter/&#34;&gt;https://gohugo.io/content-management/front-matter/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;介紹幾個筆者常用的參數：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;介紹幾個常用的參數：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;定義文章標題、描述、作者&lt;/strong&gt;&lt;/p&gt;
@@ -93,7 +93,7 @@
 </div><hr>
 <h2 id="網頁的設定-front-matter-variables">網頁的設定 (<strong>Front Matter Variables)</strong></h2>
 <p>在 Front Matter 中有許多可設置變數，可參考 <a href="https://gohugo.io/content-management/front-matter/">https://gohugo.io/content-management/front-matter/</a></p>
-<p><strong>介紹幾個筆者常用的參數：</strong></p>
+<p><strong>介紹幾個常用的參數：</strong></p>
 <ul>
 <li>
 <p><strong>定義文章標題、描述、作者</strong></p>
