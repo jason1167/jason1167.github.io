@@ -2,17 +2,444 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Jason</title>
-    <link>http://localhost:1313/</link>
+    <link>https://jason1167.github.io/</link>
     <description>Recent content on Jason</description>
     <generator>Hugo -- 0.153.0</generator>
     <language>zh-tw</language>
-    <lastBuildDate>Sat, 20 Dec 2025 22:45:01 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Dec 2025 08:47:00 +0800</lastBuildDate>
+    <atom:link href="https://jason1167.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hugo 新增網頁</title>
+      <link>https://jason1167.github.io/posts/hugonewwebpage/</link>
+      <pubDate>Sun, 21 Dec 2025 08:47:00 +0800</pubDate>
+      <guid>https://jason1167.github.io/posts/hugonewwebpage/</guid>
+      <description>&lt;h2 id=&#34;新增網頁&#34;&gt;新增網頁&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;
+&lt;table style=&#34;border-spacing:0;padding:0;margin:0;border:0;&#34;&gt;&lt;tr&gt;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;;width:100%&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hugo new posts/hello.md
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;網頁的設定-front-matter-variables&#34;&gt;網頁的設定 (&lt;strong&gt;Front Matter Variables)&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;在 Front Matter 中有許多可設置變數，可參考 &lt;a href=&#34;https://gohugo.io/content-management/front-matter/&#34;&gt;https://gohugo.io/content-management/front-matter/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;介紹幾個筆者常用的參數：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;定義文章標題、描述、作者&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;title 文章標題&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;description 文章概要&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;author 文章作者&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;定義文章分類、標籤、關鍵字&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;categories 文章分類&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;tags 文章標籤&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;keywords 關鍵字&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;定義文章類型、日期、狀態&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;type 文章類型，通常為 top level 資料夾名稱&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;date 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00+08:00)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;draft 草稿狀態&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;publishDate 預定發布日期，若是未來時間，須下 &lt;code&gt;hugo server -F&lt;/code&gt; 才看得到文章&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;expiryDate  到期日期 (2025-12-20T15:00:00+08:00)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Front Matter 自定義參數&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;metaAlignment 設置文章 title 的對齊位置&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="新增網頁">新增網頁</h2>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>hugo new posts/hello.md
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="網頁的設定-front-matter-variables">網頁的設定 (<strong>Front Matter Variables)</strong></h2>
+<p>在 Front Matter 中有許多可設置變數，可參考 <a href="https://gohugo.io/content-management/front-matter/">https://gohugo.io/content-management/front-matter/</a></p>
+<p><strong>介紹幾個筆者常用的參數：</strong></p>
+<ul>
+<li>
+<p><strong>定義文章標題、描述、作者</strong></p>
+<ul>
+<li>
+<p>title 文章標題</p>
+</li>
+<li>
+<p>description 文章概要</p>
+</li>
+<li>
+<p>author 文章作者</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>定義文章分類、標籤、關鍵字</strong></p>
+<ul>
+<li>
+<p>categories 文章分類</p>
+</li>
+<li>
+<p>tags 文章標籤</p>
+</li>
+<li>
+<p>keywords 關鍵字</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>定義文章類型、日期、狀態</strong></p>
+<ul>
+<li>
+<p>type 文章類型，通常為 top level 資料夾名稱</p>
+</li>
+<li>
+<p>date 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00+08:00)</p>
+</li>
+<li>
+<p>draft 草稿狀態</p>
+</li>
+<li>
+<p>publishDate 預定發布日期，若是未來時間，須下 <code>hugo server -F</code> 才看得到文章</p>
+</li>
+<li>
+<p>expiryDate  到期日期 (2025-12-20T15:00:00+08:00)</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Front Matter 自定義參數</strong></p>
+<p>我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：</p>
+<ul>
+<li>
+<p>metaAlignment 設置文章 title 的對齊位置</p>
+</li>
+<li>
+<p>coverImage 設置文章 cover image 的地方</p>
+</li>
+<li>
+<p>coverMeta 設置文章 title 要放在 cover image 中央，還是外面</p>
+</li>
+<li>
+<p>coverSize 設置文章 cover image 要大張還是小張</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="hugo-taxonomies"><strong>Hugo Taxonomies</strong></h3>
+<ul>
+<li>
+<p>categories：使用者可於 Front Matter 中，指定文章類別</p>
+<ul>
+<li>
+<p><a href="http://xxx/">http://xxx/</a>categories</p>
+</li>
+<li>
+<p><a href="http://xxx/">http://xxx/</a>categories/it</p>
+</li>
+</ul>
+</li>
+<li>
+<p>tags：使用者可於 Front Matter 中，指定文章標籤</p>
+<ul>
+<li>
+<p><a href="http://xxx/">http://xxx/</a>tags</p>
+</li>
+<li>
+<p><a href="http://xxx/">http://xxx/</a>tags/travel</p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">+++</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">title</span> = <span style="color:#e6db74">&#34;Sample&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">categories</span> = [<span style="color:#e6db74">&#34;it&#34;</span>, <span style="color:#e6db74">&#34;food&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tags</span> = [<span style="color:#e6db74">&#34;travel&#34;</span>, <span style="color:#e6db74">&#34;job&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">+++</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">文章內容</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>]]></content:encoded>
+    </item>
+    <item>
+      <title>Hugo 建置/執行/編譯網站</title>
+      <link>https://jason1167.github.io/posts/hugobuild/</link>
+      <pubDate>Sun, 21 Dec 2025 08:39:00 +0800</pubDate>
+      <guid>https://jason1167.github.io/posts/hugobuild/</guid>
+      <description>&lt;h2 id=&#34;建新網站&#34;&gt;建新網站&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;
+&lt;table style=&#34;border-spacing:0;padding:0;margin:0;border:0;&#34;&gt;&lt;tr&gt;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;;width:100%&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 設定檔使用 toml 格式 (預設)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hugo new site &amp;lt;新目錄名字&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 設定檔使用 yaml 格式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hugo new site &amp;lt;新目錄名字&amp;gt; --format yaml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h6&gt;&lt;a href=&#34;https://gohugo.io/getting-started/quick-start/&#34;&gt;https://gohugo.io/getting-started/quick-start/&lt;/a&gt;&lt;/h6&gt;
+&lt;p&gt;&lt;strong&gt;參考：專案結構說明&lt;/strong&gt;&lt;/p&gt;
+&lt;h6&gt;&lt;a href=&#34;https://gohugo.io/getting-started/directory-structure/&#34;&gt;https://gohugo.io/getting-started/directory-structure/&lt;/a&gt;&lt;/h6&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;
+&lt;table style=&#34;border-spacing:0;padding:0;margin:0;border:0;&#34;&gt;&lt;tr&gt;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;13
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;14
+&lt;/span&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;;width:100%&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;專案結構
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;myblog/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├─ archetypes/ 新內容的模板
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├─ assets/     靜態檔案 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;如：圖片、js、css&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├─ content/    內容
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;│  └─ posts/   文章存放處
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├─ data/       資料檔 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;如：JSON, YAML, TOML&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├─ i18n/       多語言網站的翻譯表
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├─ layouts/    將內容、資料和資源轉換為完整網站的範本
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├─ public/     已發佈的網站
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├─ resources/  Hugo資源resources管道的快取輸出 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;包含 CSS 和圖片&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├─ static/     包含網站建置時將被複製到public目標目錄的檔案 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;如 favicon.ico、圖片&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├─ themes/     網站樣式主題
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;│  └─ LoveIt/
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;└─ hugo.toml   site configuration
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;加入-hugo-theme使用-git-submodule-方式&#34;&gt;&lt;strong&gt;加入 Hugo theme&lt;/strong&gt;（使用 git submodule 方式）&lt;/h2&gt;
+&lt;p&gt;Hugo 主題網站：&lt;a href=&#34;https://themes.gohugo.io/&#34;&gt;https://themes.gohugo.io/&lt;/a&gt;&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="建新網站">建新網站</h2>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># 設定檔使用 toml 格式 (預設)</span>
+</span></span><span style="display:flex;"><span>hugo new site &lt;新目錄名字&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 設定檔使用 yaml 格式</span>
+</span></span><span style="display:flex;"><span>hugo new site &lt;新目錄名字&gt; --format yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h6><a href="https://gohugo.io/getting-started/quick-start/">https://gohugo.io/getting-started/quick-start/</a></h6>
+<p><strong>參考：專案結構說明</strong></p>
+<h6><a href="https://gohugo.io/getting-started/directory-structure/">https://gohugo.io/getting-started/directory-structure/</a></h6>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>專案結構
+</span></span><span style="display:flex;"><span>myblog/
+</span></span><span style="display:flex;"><span>├─ archetypes/ 新內容的模板
+</span></span><span style="display:flex;"><span>├─ assets/     靜態檔案 <span style="color:#f92672">(</span>如：圖片、js、css<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>├─ content/    內容
+</span></span><span style="display:flex;"><span>│  └─ posts/   文章存放處
+</span></span><span style="display:flex;"><span>├─ data/       資料檔 <span style="color:#f92672">(</span>如：JSON, YAML, TOML<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>├─ i18n/       多語言網站的翻譯表
+</span></span><span style="display:flex;"><span>├─ layouts/    將內容、資料和資源轉換為完整網站的範本
+</span></span><span style="display:flex;"><span>├─ public/     已發佈的網站
+</span></span><span style="display:flex;"><span>├─ resources/  Hugo資源resources管道的快取輸出 <span style="color:#f92672">(</span>包含 CSS 和圖片<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>├─ static/     包含網站建置時將被複製到public目標目錄的檔案 <span style="color:#f92672">(</span>如 favicon.ico、圖片<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>├─ themes/     網站樣式主題
+</span></span><span style="display:flex;"><span>│  └─ LoveIt/
+</span></span><span style="display:flex;"><span>└─ hugo.toml   site configuration
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="加入-hugo-theme使用-git-submodule-方式"><strong>加入 Hugo theme</strong>（使用 git submodule 方式）</h2>
+<p>Hugo 主題網站：<a href="https://themes.gohugo.io/">https://themes.gohugo.io/</a></p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git init
+</span></span><span style="display:flex;"><span>git submodule add --depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 更新 theme</span>
+</span></span><span style="display:flex;"><span>git submodule update --init --recursive
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>參考：三種 theme 安裝方式</strong></p>
+<ol>
+<li>
+<p>使用 Git <strong><a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">submodules</a></strong> 建置 —&gt; 推薦</p>
+<ul>
+<li>能追蹤 theme 的升級，也算是能自己改動</li>
+</ul>
+</li>
+<li>
+<p>手動 copy theme 檔案</p>
+<ul>
+<li>未來得自己手動升級</li>
+</ul>
+</li>
+<li>
+<p>當作 Hugo Module (當成 Go Module) 安裝</p>
+<ul>
+<li>升級 theme 較容易，但無法更動內部程式</li>
+</ul>
+</li>
+</ol>
+<h3 id="修改-hugotoml指定-theme">修改 Hugo.toml，指定 theme</h3>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span># 增加這行，指定 theme
+</span></span><span style="display:flex;"><span>theme = &#39;PaperMod&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="執行網站">執行網站</h2>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#75715e"># 編譯時，連同草稿文件一起顯示 (文章檔案最上方參數 draft=true)</span>
+</span></span><span style="display:flex;"><span>hugo server -D
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 編譯時，不含草稿 (文章檔案最上方參數 draft=false)</span>
+</span></span><span style="display:flex;"><span>hugo server
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>執行指令後，會啟動 <a href="http://localhost:1313/">http://localhost:1313/</a>，可用 Browser 看網站</p>
+</li>
+<li>
+<p>此時若修改 ./posts 目錄的文章，網頁會立即改變 (即時預覽)</p>
+</li>
+</ul>
+<hr>
+<h2 id="編譯網站">編譯網站</h2>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 編譯網站，並輸出至 .\public 目錄</span>
+</span></span><span style="display:flex;"><span>hugo
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 編譯網站，並指定 baseurl</span>
+</span></span><span style="display:flex;"><span>hugo server -b https://jason1167.github.io
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="踩雷區">踩雷區</h3>
+<ul>
+<li>
+<p><strong>問題</strong>：編譯輸出後 (public 目錄)，html 檔內的網址路徑都是 http://localhost，造成上線後異常 (找不到檔案)。</p>
+<ul>
+<li><strong>解決</strong>：只要編譯時，加入指定 baseurl 即可 <code>hugo server -b ``&lt;https://jason1167.github.io&gt;</code></li>
+</ul>
+</li>
+</ul>
+]]></content:encoded>
+    </item>
     <item>
       <title>Hugo 軟體安裝</title>
-      <link>http://localhost:1313/posts/hugoinstall/</link>
+      <link>https://jason1167.github.io/posts/hugoinstall/</link>
       <pubDate>Sat, 20 Dec 2025 22:45:01 +0800</pubDate>
-      <guid>http://localhost:1313/posts/hugoinstall/</guid>
+      <guid>https://jason1167.github.io/posts/hugoinstall/</guid>
       <description>&lt;h2 id=&#34;什麼是-hugo&#34;&gt;什麼是 Hugo&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -125,9 +552,9 @@
     </item>
     <item>
       <title>Hugo &#43; GitHub = Blog 網站</title>
-      <link>http://localhost:1313/posts/hugogithubblog/</link>
+      <link>https://jason1167.github.io/posts/hugogithubblog/</link>
       <pubDate>Sat, 20 Dec 2025 22:40:52 +0800</pubDate>
-      <guid>http://localhost:1313/posts/hugogithubblog/</guid>
+      <guid>https://jason1167.github.io/posts/hugogithubblog/</guid>
       <description>&lt;p&gt;雖然自己也會寫程式，不過這次的重點是要寫Blog，所以不想花太多時間寫程式，而是專注在文章撰寫上，所以想找個不錯的工具來用。&lt;/p&gt;
 &lt;h3 id=&#34;對-blog-的工具要求&#34;&gt;&lt;strong&gt;對 Blog 的工具要求&lt;/strong&gt;&lt;/h3&gt;
 &lt;ol&gt;
@@ -238,9 +665,9 @@
     </item>
     <item>
       <title>為什麼要再繼續寫文章</title>
-      <link>http://localhost:1313/posts/continuewriting/</link>
+      <link>https://jason1167.github.io/posts/continuewriting/</link>
       <pubDate>Sat, 20 Dec 2025 22:39:35 +0800</pubDate>
-      <guid>http://localhost:1313/posts/continuewriting/</guid>
+      <guid>https://jason1167.github.io/posts/continuewriting/</guid>
       <description>&lt;p&gt;中斷文章撰寫許久，現在要重新啟動 (不知這次會撐多久)。
 中斷文章撰寫許久，現在要重新啟動 (不知這次會撐多久)。&lt;/p&gt;
 &lt;p&gt;寫不寫文章，其實很糾結，因為寫文章很耗時間，而人生要做的事很多，就這樣寫寫停停 (已停很久)。&lt;/p&gt;
