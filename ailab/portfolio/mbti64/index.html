@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 64型全維度人格進階評測系統</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #eef2ff;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --border: #e2e8f0;
+        }
+        body { font-family: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans Devanagari', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; padding: 20px; line-height: 1.6; }
+        #app { max-width: 900px; width: 100%; background: var(--card); padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); position: relative; }
+        .hidden { display: none !important; }
+        
+        /* 語系切換器 */
+        #lang-switcher {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+        }
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--primary-light);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            transition: all 0.2s ease;
+        }
+        .lang-toggle:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.15);
+        }
+        .lang-toggle.open {
+            border-color: var(--primary);
+            background: white;
+        }
+        .lang-arrow {
+            transition: transform 0.2s ease;
+        }
+        .lang-toggle.open .lang-arrow {
+            transform: rotate(180deg);
+        }
+        .lang-flag {
+            font-size: 1.15rem;
+        }
+        .lang-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.2s ease;
+            min-width: 160px;
+        }
+        .lang-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .lang-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text);
+            transition: background 0.15s;
+            text-align: left;
+        }
+        .lang-option:hover {
+            background: var(--primary-light);
+        }
+        .lang-option.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* 開始頁面 */
+        .intro-header { text-align: center; margin-bottom: 2rem; padding-top: 1rem; }
+        .gender-selector { display: flex; justify-content: center; gap: 30px; margin: 25px 0; padding: 15px; background: var(--primary-light); border-radius: 12px; }
+        .gender-selector label { cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+
+        /* 測驗過程 */
+        .progress-container { width: 100%; height: 10px; background: #e2e8f0; border-radius: 5px; margin-bottom: 2.5rem; }
+        #progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.3s ease; border-radius: 5px; }
+        .question-box { min-height: 180px; text-align: center; }
+        .question-text { font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; color: #1e293b; }
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .opt-btn { padding: 16px; border: 2px solid var(--border); border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s; font-size: 1.1rem; font-weight: 500; }
+        .opt-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
+
+        /* 結果報告細節 */
+        .result-header { text-align: center; border-bottom: 2px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem; }
+        .type-badge { background: var(--accent); color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; margin-bottom: 10px; display: inline-block; }
+        .type-code { font-size: 4.5rem; font-weight: 900; color: var(--primary); letter-spacing: 4px; margin: 10px 0; line-height: 1; }
+        .chart-box { height: 400px; margin: 2rem 0; }
+        
+        .report-section { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 2rem; }
+        .info-card { background: #fdfdfd; padding: 25px; border-radius: 15px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .info-card h4 { color: var(--primary); margin-top: 0; border-left: 4px solid var(--primary); padding-left: 10px; font-size: 1.2rem; }
+        
+        .detailed-list { padding-left: 1.2rem; margin: 0; }
+        .detailed-list li { margin-bottom: 10px; }
+
+        .action-btns { margin-top: 40px; display: flex; gap: 15px; }
+        .btn { flex: 1; padding: 18px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold; font-size: 1.1rem; transition: opacity 0.2s; }
+        .btn-print { background: #64748b; color: white; }
+        .btn-retry { background: var(--primary); color: white; }
+
+        @media (max-width: 768px) { 
+            .report-section { grid-template-columns: 1fr; } 
+            .type-code { font-size: 3.5rem; } 
+            #lang-switcher { top: 1rem; right: 1rem; }
+            .lang-name { display: none; }
+            .lang-toggle { padding: 8px 10px; }
+        }
+        @media print { .action-btns, .progress-container, #intro, #lang-switcher { display: none !important; } body { padding: 0; background: white; } #app { box-shadow: none; border: none; width: 100%; max-width: 100%; } }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div id="lang-switcher"></div>
+
+    <div id="intro">
+        <div class="intro-header">
+            <h1>64型全維度人格分析</h1>
+            <p>本系統將分析您的能量來源、感知路徑、決策邏輯、生活態度、壓力韌性及認知模型。</p>
+        </div>
+        
+        <div class="gender-selector">
+            <label><input type="radio" name="gender" value="male" checked> 👨 男性常模</label>
+            <label><input type="radio" name="gender" value="female"> 👩 女性常模</label>
+        </div>
+
+        <button class="btn btn-retry" onclick="startQuiz()">開始深度評測</button>
+        <div id="history-tip" style="text-align:center; margin-top:20px; color:#94a3b8; font-size:0.9rem;"></div>
+    </div>
+
+    <div id="quiz" class="hidden">
+        <div class="progress-container"><div id="progress-bar"></div></div>
+        <div class="question-box">
+            <p id="q-text" class="question-text"></p>
+            <div class="options-grid">
+                <button class="opt-btn" onclick="handleAns(3)">非常符合</button>
+                <button class="opt-btn" onclick="handleAns(1)">符合</button>
+                <button class="opt-btn" onclick="handleAns(0)">普通 / 不確定</button>
+                <button class="opt-btn" onclick="handleAns(-1)">不符合</button>
+                <button class="opt-btn" onclick="handleAns(-3)">非常不符合</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="result" class="hidden">
+        <div class="result-header">
+            <div id="rarity-tag" class="type-badge hidden">稀有人格組合</div>
+            <div id="res-code" class="type-code"></div>
+            <h2 id="res-title" style="color:#475569"></h2>
+        </div>
+
+        <div class="chart-box"><canvas id="radarChart"></canvas></div>
+
+        <div class="report-section">
+            <div class="info-card">
+                <h4>🎯 核心特質優勢</h4>
+                <ul id="res-adv" class="detailed-list"></ul>
+            </div>
+            <div class="info-card">
+                <h4>💼 職涯與環境建議</h4>
+                <p id="res-work"></p>
+            </div>
+            <div class="info-card">
+                <h4>🌱 壓力應對與成長</h4>
+                <p id="res-stress"></p>
+            </div>
+            <div class="info-card">
+                <h4>💡 給您的發展指南</h4>
+                <ul id="res-tips" class="detailed-list"></ul>
+            </div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn btn-print" onclick="window.print()">匯出詳細報告 (PDF)</button>
+            <button class="btn btn-retry" onclick="restart()">重新測驗</button>
+        </div>
+    </div>
+</div>
+
+<!-- 載入語系檔 -->
+<script src="i18n-zh-TW.js"></script>
+<script src="i18n-zh-CN.js"></script>
+<script src="i18n-en.js"></script>
+<script src="i18n-ja.js"></script>
+<script src="i18n-hi.js"></script>
+<script src="i18n-ko.js"></script>
+<script src="i18n.js"></script>
+
+<script>
+    // ------------------ 邏輯運作 ------------------
+    // 使用 window 層級變數，供 i18n 控制器存取
+    window.curQuestionIndex = 0;
+    let scores = { E: 0, S: 0, T: 0, J: 0, A: 0, Y: 0 };
+    let gender = 'male';
+    let chartInstance = null;
+
+    window.onload = () => {
+        // 初始化 i18n
+        I18N.init();
+
+        const saved = localStorage.getItem('mbti_pro_res');
+        if (saved) {
+            const data = JSON.parse(saved);
+            const tip = I18N.t('historyTip').replace('{date}', data.date);
+            document.getElementById('history-tip').innerText = tip;
+            scores = data.scores;
+            gender = data.gender;
+            showResult(false);
+        }
+    };
+
+    function startQuiz() {
+        gender = document.querySelector('input[name="gender"]:checked').value;
+        document.getElementById('intro').classList.add('hidden');
+        document.getElementById('quiz').classList.remove('hidden');
+        renderQ();
+    }
+
+    function renderQ() {
+        const questions = I18N.getQuestions();
+        document.getElementById('q-text').innerText = `${window.curQuestionIndex + 1}. ${questions[window.curQuestionIndex].t}`;
+        document.getElementById('progress-bar').style.width = `${(window.curQuestionIndex / questions.length) * 100}%`;
+    }
+
+    function handleAns(val) {
+        const questions = I18N.getQuestions();
+        scores[questions[window.curQuestionIndex].d] += (val * questions[window.curQuestionIndex].v);
+        window.curQuestionIndex++;
+        if (window.curQuestionIndex < questions.length) renderQ(); else showResult(true);
+    }
+
+    function showResult(save = true) {
+        document.getElementById('quiz').classList.add('hidden');
+        document.getElementById('intro').classList.add('hidden');
+        document.getElementById('result').classList.remove('hidden');
+
+        const code = (scores.E>=0?'E':'I')+(scores.S>=0?'S':'N')+(scores.T>=0?'T':'F')+(scores.J>=0?'J':'P')+'-'+(scores.A>=0?'A':'T')+(scores.Y>=0?'Y':'Z');
+        document.getElementById('res-code').innerText = code;
+
+        // 1. 稀有度判定
+        if ((gender==='female' && scores.T>=0) || (gender==='male' && scores.T<0)) {
+            document.getElementById('rarity-tag').classList.remove('hidden');
+        }
+
+        // 2. 使用 i18n 字典
+        const dict = I18N.t('dict');
+
+        // 3. 填充內容
+        const dictKey0 = code[0]; // E or I
+        const dictKey5 = code[5]; // A or T -> for A use 'A', for T use 'Tb'
+        const titleLeft = dict[dictKey0] || '';
+        const titleRight = code[5] === 'T' ? (dict['Tb'] || '') : (dict[code[5]] || '');
+        document.getElementById('res-title').innerText = `${titleLeft} | ${titleRight}`;
+        
+        const advList = document.getElementById('res-adv');
+        const dictKey2 = code[2]; // T or F
+        const dictKey6 = code[6]; // Y or Z
+        const dict2 = dict[dictKey2] || '';
+        const dict6 = dict[dictKey6] || '';
+        const isAssertive = code.includes('A');
+        const stabilityType = isAssertive ? I18N.t('advStableHigh') : I18N.t('advAlertHigh');
+        const stabilityStyle = isAssertive ? I18N.t('advStableEnv') : I18N.t('advAlertEnv');
+        
+        advList.innerHTML = `<li><strong>${dict[code[0]]}</strong>：${I18N.t('advEnergy')}</li>
+                            <li><strong>${dict2} x ${dict6}</strong>：${I18N.t('advDecision')}</li>
+                            <li><strong>${I18N.t('advStabilityPrefix').replace('{type}', stabilityType)}</strong>：${I18N.t('advStabilitySuffix').replace('{style}', stabilityStyle)}</li>`;
+
+        document.getElementById('res-work').innerText = code.includes('Y') ? I18N.t('workY') : I18N.t('workZ');
+        document.getElementById('res-stress').innerText = code.includes('-A') ? I18N.t('stressA') : I18N.t('stressT');
+
+        const tips = document.getElementById('res-tips');
+        tips.innerHTML = `<li>${code.includes('I') ? I18N.t('tipI') : I18N.t('tipE')}</li>
+                          <li>${code.includes('Y') ? I18N.t('tipY') : I18N.t('tipZ')}</li>`;
+
+        if (save) {
+            localStorage.setItem('mbti_pro_res', JSON.stringify({
+                scores, gender, date: new Date().toLocaleDateString()
+            }));
+        }
+        drawChart();
+    }
+
+    function drawChart() {
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        const norm = (v) => ((v + 30) / 60) * 100;
+        
+        // 銷毀舊圖表（語系切換時避免重複）
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        chartInstance = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: I18N.t('chartLabels'),
+                datasets: [{
+                    label: I18N.t('chartDatasetLabel'),
+                    data: [norm(scores.E), norm(scores.S), norm(scores.T), norm(scores.J), norm(scores.A), norm(scores.Y)],
+                    backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                    borderColor: '#4f46e5',
+                    pointBackgroundColor: '#4f46e5',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                scales: { r: { min: 0, max: 100, ticks: { display: false } } },
+                plugins: { legend: { display: false } }
+            }
+        });
+    }
+
+    function restart() {
+        localStorage.removeItem('mbti_pro_res');
+        location.reload();
+    }
+</script>
+</body>
+</html>

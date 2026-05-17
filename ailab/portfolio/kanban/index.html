@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlowBoard — 團隊看板</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --surface: #ffffff;
+      --surface2: #f8f9fa;
+      --surface3: #eceef1;
+      --border: rgba(0, 0, 0, 0.09);
+      --border-hover: rgba(0, 0, 0, 0.18);
+      --text: #1a1d23;
+      --text-muted: #5e6478;
+      --text-faint: #aab0be;
+      --accent: #5b4fcf;
+      --accent-dim: rgba(91, 79, 207, 0.10);
+      --accent-glow: rgba(91, 79, 207, 0.25);
+      --red: #e0394a;
+      --red-dim: rgba(224, 57, 74, 0.10);
+      --amber: #d97706;
+      --amber-dim: rgba(217, 119, 6, 0.10);
+      --green: #0d9488;
+      --green-dim: rgba(13, 148, 136, 0.10);
+      --blue: #2563eb;
+      --blue-dim: rgba(37, 99, 235, 0.10);
+      --pink: #db2777;
+      --pink-dim: rgba(219, 39, 119, 0.10);
+      --radius: 10px;
+      --radius-sm: 6px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 56px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 20px;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .board-title-area {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 12px;
+    }
+
+    .board-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      transition: color .2s, background .2s;
+    }
+
+    .board-name:hover {
+      color: var(--text);
+      background: var(--surface3);
+    }
+
+    .sep {
+      color: var(--text-faint);
+      font-size: 14px;
+    }
+
+    #current-board-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      background: none;
+      border: none;
+      outline: none;
+      cursor: text;
+      min-width: 80px;
+    }
+
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      height: 32px;
+      padding: 0 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+    }
+
+    .btn:hover {
+      border-color: var(--border-hover);
+      background: var(--surface3);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #6a5cf0;
+      border-color: transparent;
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 1.5px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      cursor: pointer;
+    }
+
+    /* SIDEBAR */
+    .layout {
+      display: flex;
+      height: 100vh;
+      padding-top: 56px;
+    }
+
+    aside {
+      width: 220px;
+      min-width: 220px;
+      background: #ffffff;
+      border-right: 1px solid var(--border);
+      padding: 20px 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      padding: 0 8px;
+      margin: 10px 0 4px;
+    }
+
+    .sidebar-item {
+      padding: 7px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-item:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    .sidebar-item.active {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .sidebar-item .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .sidebar-item .count {
+      margin-left: auto;
+      font-size: 11px;
+      background: var(--surface3);
+      padding: 1px 6px;
+      border-radius: 10px;
+      color: var(--text-faint);
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .board-topbar {
+      height: 48px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+    }
+
+    .filter-btn {
+      height: 28px;
+      padding: 0 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .15s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--border-hover);
+      color: var(--text);
+    }
+
+    .filter-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .view-switcher {
+      margin-left: auto;
+      display: flex;
+      gap: 2px;
+      background: var(--surface2);
+      padding: 2px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .view-btn {
+      width: 28px;
+      height: 24px;
+      border-radius: 4px;
+      border: none;
+      background: none;
+      color: var(--text-faint);
+      cursor: pointer;
+      transition: all .15s;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .view-btn.active {
+      background: var(--surface3);
+      color: var(--text);
+    }
+
+    /* BOARD AREA */
+    .board-scroll {
+      flex: 1;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 20px 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    /* COLUMNS */
+    .col {
+      width: 272px;
+      min-width: 272px;
+      background: #eceef2;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 56px - 48px - 40px);
+      transition: border-color .15s;
+    }
+
+    .col:hover {
+      border-color: var(--border-hover);
+    }
+
+    .col-header {
+      padding: 14px 14px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .col-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .col-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      cursor: text;
+      font-family: inherit;
+    }
+
+    .col-count {
+      font-size: 11px;
+      color: var(--text-faint);
+      background: var(--surface2);
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+
+    .col-menu-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      border: none;
+      background: none;
+      color: var(--text-faint);
+      cursor: pointer;
+      transition: all .15s;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .col-menu-btn:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    .col-cards {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 10px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .col-cards::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .col-cards::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .col-cards::-webkit-scrollbar-thumb {
+      background: var(--surface3);
+      border-radius: 2px;
+    }
+
+    /* CARDS */
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      cursor: pointer;
+      transition: all .15s;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      opacity: 0;
+      transition: opacity .15s;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card.priority-high::before {
+      background: var(--red);
+    }
+
+    .card.priority-medium::before {
+      background: var(--amber);
+    }
+
+    .card.priority-low::before {
+      background: var(--green);
+    }
+
+    .card-labels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .label {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 10px;
+      letter-spacing: .03em;
+    }
+
+    .label-bug {
+      background: var(--red-dim);
+      color: var(--red);
+    }
+
+    .label-feature {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .label-design {
+      background: var(--pink-dim);
+      color: var(--pink);
+    }
+
+    .label-backend {
+      background: var(--blue-dim);
+      color: var(--blue);
+    }
+
+    .label-infra {
+      background: var(--amber-dim);
+      color: var(--amber);
+    }
+
+    .label-docs {
+      background: var(--green-dim);
+      color: var(--green);
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+
+    .card-meta-sep {
+      flex: 1;
+    }
+
+    .card-avatars {
+      display: flex;
+    }
+
+    .card-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 600;
+      margin-left: -6px;
+    }
+
+    .card-avatar:first-child {
+      margin-left: 0;
+    }
+
+    .due-date {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .due-ok {
+      background: var(--green-dim);
+      color: var(--green);
+    }
+
+    .due-warn {
+      background: var(--amber-dim);
+      color: var(--amber);
+    }
+
+    .due-late {
+      background: var(--red-dim);
+      color: var(--red);
+    }
+
+    .checklist-bar {
+      width: 100%;
+      height: 3px;
+      background: var(--surface3);
+      border-radius: 2px;
+      margin: 6px 0;
+      overflow: hidden;
+    }
+
+    .checklist-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: var(--green);
+    }
+
+    /* ADD CARD */
+    .add-card-btn {
+      margin: 4px 10px 10px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px dashed var(--border);
+      background: none;
+      color: var(--text-faint);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .15s;
+      font-family: inherit;
+      text-align: left;
+      width: calc(100% - 20px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .add-card-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* ADD COLUMN */
+    .add-col-btn {
+      width: 240px;
+      min-width: 240px;
+      height: 48px;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      color: var(--text-faint);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+
+    .add-col-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* DRAG */
+    .card.dragging {
+      opacity: .4;
+    }
+
+    .col-cards.drag-over {
+      background: var(--accent-dim);
+      border-radius: var(--radius-sm);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      width: 600px;
+      max-width: 95vw;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 28px;
+      transform: translateY(10px);
+      transition: transform .2s;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-overlay.open .modal {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      background: none;
+      border: none;
+      outline: none;
+      flex: 1;
+      font-family: 'Syne', sans-serif;
+      cursor: text;
+      border-bottom: 1px solid transparent;
+      transition: border-color .15s;
+      padding-bottom: 2px;
+    }
+
+    .modal-title:focus {
+      border-color: var(--accent);
+    }
+
+    .modal-close {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .modal-close:hover {
+      background: var(--surface3);
+      color: var(--text);
+    }
+
+    .modal-section {
+      margin-bottom: 20px;
+    }
+
+    .modal-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 8px;
+    }
+
+    .modal-desc {
+      width: 100%;
+      min-height: 80px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      padding: 10px 12px;
+      resize: vertical;
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    .modal-desc:focus {
+      border-color: var(--accent);
+    }
+
+    .priority-pills {
+      display: flex;
+      gap: 6px;
+    }
+
+    .priority-pill {
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .15s;
+      background: none;
+      color: var(--text-muted);
+      font-family: inherit;
+    }
+
+    .priority-pill.high.active {
+      background: var(--red-dim);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .priority-pill.medium.active {
+      background: var(--amber-dim);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .priority-pill.low.active {
+      background: var(--green-dim);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .priority-pill:not(.active):hover {
+      border-color: var(--border-hover);
+      color: var(--text);
+    }
+
+    .checklist-items {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+    }
+
+    .checklist-item input[type=checkbox] {
+      accent-color: var(--accent);
+      width: 14px;
+      height: 14px;
+    }
+
+    .checklist-item span {
+      font-size: 13px;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .checklist-item span.done {
+      text-decoration: line-through;
+      color: var(--text-faint);
+    }
+
+    .add-checklist-input {
+      width: 100%;
+      padding: 7px 10px;
+      background: var(--surface2);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 13px;
+      font-family: 'DM Sans';
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    .add-checklist-input:focus {
+      border-color: var(--accent);
+      border-style: solid;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ADD CARD INLINE */
+    .add-card-form {
+      margin: 0 10px 10px;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .add-card-form.visible {
+      display: flex;
+    }
+
+    .add-card-input {
+      width: 100%;
+      padding: 8px 10px;
+      background: var(--surface3);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 13px;
+      font-family: 'DM Sans';
+      outline: none;
+    }
+
+    .add-card-form-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    /* NOTIFICATION TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1a1d23;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #f0f0f5;
+      z-index: 300;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all .3s;
+      max-width: 300px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+
+    /* SCROLLBAR GLOBAL */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--surface3);
+      border-radius: 3px;
+    }
+
+    /* BOARD SELECTOR */
+    .boards-panel {
+      position: fixed;
+      top: 56px;
+      left: 220px;
+      z-index: 150;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      width: 220px;
+      display: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .boards-panel.open {
+      display: block;
+    }
+
+    .boards-panel-item {
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .boards-panel-item:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    .boards-panel-item.active {
+      color: var(--accent);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      animation: fadeIn .2s ease both;
+    }
+  </style>
+
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-N6V2FN89');</script>
+  <!-- End Google Tag Manager -->
+
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6V2FN89" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">⊞</div>
+      FlowBoard
+    </div>
+    <div class="board-title-area">
+      <span class="board-name" onclick="document.getElementById('boards-panel').classList.toggle('open')">所有看板 ▾</span>
+      <span class="sep">/</span>
+      <input id="current-board-name" value="產品開發 Q2" />
+    </div>
+    <div class="header-right">
+      <button class="btn" onclick="openAddCardModal()">+ 新增卡片</button>
+      <button class="btn btn-primary" onclick="inviteTeam()">邀請成員</button>
+      <div class="avatar" title="我的帳號">我</div>
+    </div>
+  </header>
+
+  <div id="boards-panel" class="boards-panel">
+    <div class="modal-label" style="margin-bottom:8px">我的看板</div>
+    <div class="boards-panel-item active">⊞ 產品開發 Q2</div>
+    <div class="boards-panel-item">⊟ 設計系統</div>
+    <div class="boards-panel-item">⊡ 行銷活動</div>
+    <div class="boards-panel-item">⊠ 技術債清理</div>
+    <div style="border-top:1px solid var(--border); margin:8px 0;"></div>
+    <div class="boards-panel-item" onclick="createNewBoard()">＋ 建立新看板</div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <div class="sidebar-label">導覽</div>
+      <div class="sidebar-item active">⊞ 看板</div>
+      <div class="sidebar-item">≡ 清單</div>
+      <div class="sidebar-item">◫ 時間軸</div>
+      <div class="sidebar-item">▤ 行事曆</div>
+
+      <div class="sidebar-label">標籤篩選</div>
+      <div class="sidebar-item" onclick="filterByLabel('bug')">
+        <span class="dot" style="background:#ff5f6e"></span> Bug
+        <span class="count" id="cnt-bug">0</span>
+      </div>
+      <div class="sidebar-item" onclick="filterByLabel('feature')">
+        <span class="dot" style="background:#7c6eff"></span> 功能開發
+        <span class="count" id="cnt-feature">0</span>
+      </div>
+      <div class="sidebar-item" onclick="filterByLabel('design')">
+        <span class="dot" style="background:#f472b6"></span> 設計
+        <span class="count" id="cnt-design">0</span>
+      </div>
+      <div class="sidebar-item" onclick="filterByLabel('backend')">
+        <span class="dot" style="background:#60a5fa"></span> 後端
+        <span class="count" id="cnt-backend">0</span>
+      </div>
+      <div class="sidebar-item" onclick="filterByLabel('infra')">
+        <span class="dot" style="background:#ffb74d"></span> 基礎建設
+        <span class="count" id="cnt-infra">0</span>
+      </div>
+      <div class="sidebar-item" onclick="filterByLabel('docs')">
+        <span class="dot" style="background:#5eead4"></span> 文件
+        <span class="count" id="cnt-docs">0</span>
+      </div>
+      <div style="height:1px; background:var(--border); margin:6px 0;"></div>
+      <div class="sidebar-item" onclick="clearAllFilters()">↺ 顯示全部</div>
+
+      <div class="sidebar-label" style="margin-top:auto">成員</div>
+      <div id="sidebar-members">
+        <div class="sidebar-item">
+          <div class="card-avatar"
+            style="background:var(--accent-dim);color:var(--accent);width:20px;height:20px;font-size:9px">志</div> 王志明
+        </div>
+        <div class="sidebar-item">
+          <div class="card-avatar"
+            style="background:var(--pink-dim);color:var(--pink);width:20px;height:20px;font-size:9px">雅</div> 陳雅婷
+        </div>
+        <div class="sidebar-item">
+          <div class="card-avatar"
+            style="background:var(--green-dim);color:var(--green);width:20px;height:20px;font-size:9px">建</div> 李建宏
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="board-topbar">
+        <button class="filter-btn active" id="filter-all" onclick="setFilter('all',this)">全部</button>
+        <button class="filter-btn" id="filter-high" onclick="setFilter('high',this)">🔴 高優先</button>
+        <button class="filter-btn" id="filter-medium" onclick="setFilter('medium',this)">🟡 中優先</button>
+        <button class="filter-btn" id="filter-low" onclick="setFilter('low',this)">🟢 低優先</button>
+        <button class="filter-btn" id="filter-clear" onclick="clearAllFilters()"
+          style="display:none;border-color:var(--accent);color:var(--accent);background:var(--accent-dim)">↺
+          不篩選</button>
+        <div class="view-switcher" style="margin-left:auto">
+          <button class="view-btn active" title="看板">⊞</button>
+          <button class="view-btn" title="清單">≡</button>
+        </div>
+      </div>
+
+      <div class="board-scroll" id="board">
+        <!-- columns rendered by JS -->
+      </div>
+    </main>
+  </div>
+
+  <!-- CARD MODAL -->
+  <div class="modal-overlay" id="card-modal" onclick="modalOverlayClick(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <input class="modal-title" id="modal-card-title" value="" />
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-label">描述</div>
+        <textarea class="modal-desc" id="modal-card-desc" placeholder="加入卡片描述…"></textarea>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-label">優先級</div>
+        <div class="priority-pills" id="modal-priority">
+          <button class="priority-pill high" onclick="selectPriority('high')">🔴 高</button>
+          <button class="priority-pill medium" onclick="selectPriority('medium')">🟡 中</button>
+          <button class="priority-pill low" onclick="selectPriority('low')">🟢 低</button>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-label">截止日期</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="date" id="modal-due-date"
+            style="flex:1;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans';font-size:13px;outline:none;transition:border-color .15s"
+            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+            onchange="updateDueBadge(this.value)" />
+          <button class="btn" style="height:32px;padding:0 10px;font-size:12px;color:var(--text-faint)"
+            onclick="document.getElementById('modal-due-date').value=''">清除</button>
+          <span id="modal-due-badge" style="font-size:11px;padding:3px 8px;border-radius:10px;display:none"></span>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-label">標籤</div>
+        <div id="modal-labels" style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="label label-bug" style="cursor:pointer;padding:4px 10px" onclick="toggleLabel('bug')">Bug</span>
+          <span class="label label-feature" style="cursor:pointer;padding:4px 10px"
+            onclick="toggleLabel('feature')">功能</span>
+          <span class="label label-design" style="cursor:pointer;padding:4px 10px"
+            onclick="toggleLabel('design')">設計</span>
+          <span class="label label-backend" style="cursor:pointer;padding:4px 10px"
+            onclick="toggleLabel('backend')">後端</span>
+          <span class="label label-infra" style="cursor:pointer;padding:4px 10px"
+            onclick="toggleLabel('infra')">基礎建設</span>
+          <span class="label label-docs" style="cursor:pointer;padding:4px 10px" onclick="toggleLabel('docs')">文件</span>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-label">成員</div>
+        <div id="modal-assignees" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px">
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <select id="member-select"
+            style="flex:1;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans';font-size:13px;outline:none"></select>
+          <button class="btn" style="height:32px;padding:0 12px;font-size:12px" onclick="addMemberToCard()">＋
+            加入</button>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:8px">
+          <input id="new-member-name" placeholder="新增成員姓名…"
+            style="flex:1;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans';font-size:13px;outline:none"
+            onkeydown="if(event.key==='Enter')addNewMember()" />
+          <button class="btn" style="height:32px;padding:0 12px;font-size:12px" onclick="addNewMember()">建立成員</button>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-label">核取清單 (<span id="modal-check-progress">0/0</span>)</div>
+        <div class="checklist-bar">
+          <div class="checklist-fill" id="modal-check-bar" style="width:0%"></div>
+        </div>
+        <div class="checklist-items" id="modal-checklist"></div>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:8px">
+          <input class="add-checklist-input" id="new-checklist-item" placeholder="加入項目…"
+            onkeydown="addChecklistItem(event)" style="flex:1" />
+          <input type="date" id="new-checklist-due"
+            style="padding:7px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans';font-size:12px;outline:none"
+            title="設定此項目截止日期" />
+          <button class="btn" style="height:32px;padding:0 10px;font-size:12px;white-space:nowrap"
+            onclick="addChecklistItemBtn()">＋ 加入</button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn" onclick="deleteCurrentCard()">刪除</button>
+        <button class="btn btn-primary" onclick="saveCard()">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD CARD MODAL (quick) -->
+  <div class="modal-overlay" id="add-modal" onclick="if(event.target===this)closeAddModal()">
+    <div class="modal" style="max-width:420px;padding:20px">
+      <div class="modal-header" style="margin-bottom:16px">
+        <span style="font-family:'Syne';font-size:16px;font-weight:600;color:var(--text)">新增卡片</span>
+        <button class="modal-close" onclick="closeAddModal()">✕</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <input id="quick-title" class="add-card-input" placeholder="卡片標題…"
+          style="width:100%;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans';font-size:13px;outline:none" />
+        <select id="quick-col"
+          style="padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans';font-size:13px;outline:none"></select>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;height:36px"
+          onclick="confirmAddCard()">建立卡片</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <span class="toast-dot"></span>
+    <span id="toast-msg">已儲存</span>
+  </div>
+
+  <script>
+    const COLORS = ['#7c6eff', '#ff5f6e', '#5eead4', '#ffb74d', '#60a5fa', '#f472b6'];
+    const AVATAR_COLORS = [
+      { bg: 'var(--accent-dim)', text: 'var(--accent)' },
+      { bg: 'var(--pink-dim)', text: 'var(--pink)' },
+      { bg: 'var(--green-dim)', text: 'var(--green)' },
+      { bg: 'var(--amber-dim)', text: 'var(--amber)' },
+      { bg: 'var(--blue-dim)', text: 'var(--blue)' },
+    ];
+    let AVATARS = [
+      { initials: '志', color: 'var(--accent-dim)', text: 'var(--accent)', name: '王志明' },
+      { initials: '雅', color: 'var(--pink-dim)', text: 'var(--pink)', name: '陳雅婷' },
+      { initials: '建', color: 'var(--green-dim)', text: 'var(--green)', name: '李建宏' },
+    ];
+
+    let data = {
+      columns: [
+        { id: 'col-1', title: '待辦事項', color: '#7c6eff' },
+        { id: 'col-2', title: '進行中', color: '#ffb74d' },
+        { id: 'col-3', title: '審查中', color: '#60a5fa' },
+        { id: 'col-4', title: '已完成', color: '#5eead4' },
+      ],
+      cards: [
+        { id: 'c1', colId: 'col-1', title: '重新設計登入頁面', desc: '改善行動裝置的 UX，增加 Google OAuth 支援', priority: 'high', labels: ['design', 'feature'], checklist: [{ text: '線框圖', done: true }, { text: '視覺稿', done: false }, { text: 'RWD 測試', done: false }], assignees: [0, 1], due: '2024-03-28' },
+        { id: 'c2', colId: 'col-1', title: '修復購物車結帳 Bug', desc: 'iOS Safari 下按鈕無法觸發付款流程', priority: 'high', labels: ['bug'], checklist: [{ text: '重現問題', done: true }, { text: '修補 Safari 相容性', done: false }], assignees: [2], due: '2024-03-22' },
+        { id: 'c3', colId: 'col-1', title: '撰寫 API 文件', desc: '補齊所有 REST 端點的 Swagger 說明', priority: 'low', labels: ['docs', 'backend'], checklist: [], assignees: [1], due: '2024-04-05' },
+        { id: 'c4', colId: 'col-2', title: '建立通知系統', desc: 'Email + Push 通知，支援使用者自訂偏好設定', priority: 'medium', labels: ['feature', 'backend'], checklist: [{ text: '後端 API', done: true }, { text: 'Email 模板', done: true }, { text: '前端設定頁', done: false }, { text: '測試', done: false }], assignees: [0, 2], due: '2024-03-30' },
+        { id: 'c5', colId: 'col-2', title: 'CI/CD 流程優化', desc: '縮短部署時間，加入自動化測試覆蓋率報告', priority: 'medium', labels: ['infra'], checklist: [{ text: '分析現有瓶頸', done: true }, { text: '平行化測試', done: false }], assignees: [2], due: '2024-04-10' },
+        { id: 'c6', colId: 'col-3', title: 'Dark Mode 支援', desc: '全站深色模式，CSS 變數架構重構', priority: 'medium', labels: ['design', 'feature'], checklist: [{ text: '設計稿', done: true }, { text: 'CSS 變數', done: true }, { text: 'QA', done: true }], assignees: [1], due: '2024-03-25' },
+        { id: 'c7', colId: 'col-4', title: '效能監控儀表板', desc: '整合 Datadog，建立 P95 延遲警報', priority: 'low', labels: ['infra', 'backend'], checklist: [{ text: '指標定義', done: true }, { text: 'Dashboard 建立', done: true }], assignees: [0], due: '2024-03-18' },
+      ]
+    };
+
+    let activeCard = null;
+    let editingLabels = [];
+    let editingPriority = 'medium';
+    let editingAssignees = [];
+    let activeFilter = 'all';
+    let activeLabelFilter = null;
+    let dragCard = null, dragCol = null;
+
+    function render() {
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      updateCounts();
+
+      data.columns.forEach(col => {
+        const cards = getFilteredCards(col.id);
+        const el = document.createElement('div');
+        el.className = 'col';
+        el.dataset.colId = col.id;
+        el.innerHTML = `
+      <div class="col-header">
+        <div class="col-color" style="background:${col.color}"></div>
+        <input class="col-title" value="${col.title}" onchange="renameCol('${col.id}',this.value)" />
+        <span class="col-count">${cards.length}</span>
+        <button class="col-menu-btn" onclick="deleteCol('${col.id}')">⋯</button>
+      </div>
+      <div class="col-cards" id="cards-${col.id}" ondragover="dragOver(event)" ondrop="drop(event,'${col.id}')">
+        ${cards.map(c => renderCard(c)).join('')}
+      </div>
+      <button class="add-card-btn" onclick="showInlineAdd('${col.id}')">＋ 加入卡片</button>
+      <div class="add-card-form" id="add-form-${col.id}">
+        <input class="add-card-input" id="inline-input-${col.id}" placeholder="輸入卡片標題…" onkeydown="inlineAddKey(event,'${col.id}')" />
+        <div class="add-card-form-btns">
+          <button class="btn btn-primary" style="height:28px;padding:0 10px;font-size:12px" onclick="confirmInlineAdd('${col.id}')">加入</button>
+          <button class="btn" style="height:28px;padding:0 10px;font-size:12px" onclick="cancelInlineAdd('${col.id}')">取消</button>
+        </div>
+      </div>
+    `;
+        board.appendChild(el);
+      });
+
+      const addColBtn = document.createElement('button');
+      addColBtn.className = 'add-col-btn';
+      addColBtn.innerHTML = '＋ 新增欄位';
+      addColBtn.onclick = addColumn;
+      board.appendChild(addColBtn);
+      bindDrag();
+    }
+
+    function renderCard(c) {
+      const prog = c.checklist.length ? c.checklist.filter(x => x.done).length : 0;
+      const total = c.checklist.length;
+      const pct = total ? Math.round(prog / total * 100) : 0;
+      const dueClass = c.due ? getDueClass(c.due) : '';
+      const dueLabel = c.due ? formatDue(c.due) : '';
+      const labels = c.labels.map(l => `<span class="label label-${l}">${labelName(l)}</span>`).join('');
+      const avatars = c.assignees.map(i => {
+        const a = AVATARS[i];
+        return `<div class="card-avatar" style="background:${a.color};color:${a.text}">${a.initials}</div>`;
+      }).join('');
+
+      return `<div class="card priority-${c.priority}" id="${c.id}" draggable="true" onclick="openCard('${c.id}')">
+    ${labels ? `<div class="card-labels">${labels}</div>` : ''}
+    <div class="card-title">${c.title}</div>
+    ${c.desc ? `<div class="card-desc">${c.desc}</div>` : ''}
+    ${total ? `<div class="checklist-bar"><div class="checklist-fill" style="width:${pct}%"></div></div>` : ''}
+    <div class="card-footer">
+      ${dueLabel ? `<span class="due-date ${dueClass}">${dueLabel}</span>` : ''}
+      <span class="card-meta-sep"></span>
+      ${total ? `<span class="card-meta">☑ ${prog}/${total}</span>` : ''}
+      ${avatars ? `<div class="card-avatars">${avatars}</div>` : ''}
+    </div>
+  </div>`;
+    }
+
+    function labelName(l) {
+      return { bug: 'Bug', feature: '功能', design: '設計', backend: '後端', infra: '基礎建設', docs: '文件' }[l] || l;
+    }
+
+    function getDueClass(due) {
+      const d = new Date(due), now = new Date();
+      const diff = (d - now) / (1000 * 60 * 60 * 24);
+      if (diff < 0) return 'due-late';
+      if (diff < 3) return 'due-warn';
+      return 'due-ok';
+    }
+
+    function formatDue(due) {
+      const d = new Date(due);
+      return `${d.getMonth() + 1}/${d.getDate()}`;
+    }
+
+    function getFilteredCards(colId) {
+      return data.cards.filter(c => {
+        if (c.colId !== colId) return false;
+        if (activeFilter !== 'all' && c.priority !== activeFilter) return false;
+        if (activeLabelFilter && !c.labels.includes(activeLabelFilter)) return false;
+        return true;
+      });
+    }
+
+    function updateCounts() {
+      ['bug', 'feature', 'design', 'backend', 'infra', 'docs'].forEach(l => {
+        const cnt = data.cards.filter(c => c.labels.includes(l)).length;
+        const el = document.getElementById('cnt-' + l);
+        if (el) el.textContent = cnt;
+      });
+    }
+
+    /* DRAG & DROP */
+    function bindDrag() {
+      document.querySelectorAll('.card').forEach(el => {
+        el.addEventListener('dragstart', e => {
+          dragCard = e.currentTarget.id;
+          setTimeout(() => {
+            const el = document.getElementById(dragCard);
+            if (el) el.classList.add('dragging');
+          }, 0);
+        });
+        el.addEventListener('dragend', e => {
+          if (e.currentTarget) e.currentTarget.classList.remove('dragging');
+          document.querySelectorAll('.col-cards').forEach(c => { if (c) c.classList.remove('drag-over'); });
+        });
+      });
+    }
+
+    function dragOver(e) {
+      e.preventDefault();
+      if (e.currentTarget) e.currentTarget.classList.add('drag-over');
+    }
+
+    function drop(e, colId) {
+      e.preventDefault();
+      document.querySelectorAll('.col-cards').forEach(c => { if (c) c.classList.remove('drag-over'); });
+      if (!dragCard) return;
+      const card = data.cards.find(c => c.id === dragCard);
+      dragCard = null;
+      if (card) { card.colId = colId; saveToStorage(); render(); showToast('卡片已移動'); }
+    }
+
+    /* OPEN/EDIT CARD */
+    function openCard(id) {
+      activeCard = data.cards.find(c => c.id === id);
+      if (!activeCard) return;
+      editingLabels = [...activeCard.labels];
+      editingPriority = activeCard.priority;
+      editingAssignees = [...(activeCard.assignees || [])];
+
+      document.getElementById('modal-card-title').value = activeCard.title;
+      document.getElementById('modal-card-desc').value = activeCard.desc || '';
+      document.getElementById('modal-due-date').value = activeCard.due || '';
+      updateDueBadge(activeCard.due || '');
+      updatePriorityUI();
+      updateLabelUI();
+      renderAssignees();
+      renderChecklist();
+      document.getElementById('card-modal').classList.add('open');
+    }
+
+    function updateDueBadge(due) {
+      const badge = document.getElementById('modal-due-badge');
+      if (!badge) return;
+      if (!due) { badge.style.display = 'none'; return; }
+      const d = new Date(due), now = new Date();
+      const diff = (d - now) / (1000 * 60 * 60 * 24);
+      if (diff < 0) {
+        badge.textContent = '已逾期'; badge.style.cssText = 'display:inline-block;font-size:11px;padding:3px 8px;border-radius:10px;background:var(--red-dim);color:var(--red)';
+      } else if (diff < 3) {
+        badge.textContent = '即將到期'; badge.style.cssText = 'display:inline-block;font-size:11px;padding:3px 8px;border-radius:10px;background:var(--amber-dim);color:var(--amber)';
+      } else {
+        badge.textContent = '正常'; badge.style.cssText = 'display:inline-block;font-size:11px;padding:3px 8px;border-radius:10px;background:var(--green-dim);color:var(--green)';
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('card-modal').classList.remove('open');
+      activeCard = null;
+    }
+
+    function modalOverlayClick(e) {
+      if (e.target === document.getElementById('card-modal')) closeModal();
+    }
+
+    function saveCard() {
+      if (!activeCard) return;
+      activeCard.title = document.getElementById('modal-card-title').value;
+      activeCard.desc = document.getElementById('modal-card-desc').value;
+      activeCard.priority = editingPriority;
+      activeCard.labels = [...editingLabels];
+      activeCard.assignees = [...editingAssignees];
+      activeCard.due = document.getElementById('modal-due-date').value;
+      saveToStorage();
+      closeModal();
+      render();
+      showToast('卡片已儲存');
+    }
+
+    function deleteCurrentCard() {
+      if (!activeCard) return;
+      data.cards = data.cards.filter(c => c.id !== activeCard.id);
+      saveToStorage();
+      closeModal();
+      render();
+      showToast('卡片已刪除');
+    }
+
+    function selectPriority(p) {
+      editingPriority = p;
+      updatePriorityUI();
+    }
+
+    function updatePriorityUI() {
+      document.querySelectorAll('.priority-pill').forEach(el => {
+        el.classList.toggle('active', el.classList.contains(editingPriority));
+      });
+    }
+
+    function toggleLabel(l) {
+      const idx = editingLabels.indexOf(l);
+      if (idx >= 0) editingLabels.splice(idx, 1);
+      else editingLabels.push(l);
+      updateLabelUI();
+    }
+
+    function updateLabelUI() {
+      document.querySelectorAll('#modal-labels .label').forEach(el => {
+        const l = el.onclick?.toString().match(/'(\w+)'/)?.[1];
+        if (l) el.style.opacity = editingLabels.includes(l) ? '1' : '0.35';
+      });
+    }
+
+    /* ASSIGNEES */
+    function renderAssignees() {
+      const container = document.getElementById('modal-assignees');
+      const sel = document.getElementById('member-select');
+      if (!container || !sel) return;
+
+      // Render current assignee pills
+      container.innerHTML = editingAssignees.length
+        ? editingAssignees.map(i => {
+          const a = AVATARS[i];
+          return `<div style="display:flex;align-items:center;gap:6px;padding:4px 10px 4px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:${a.color};color:${a.text};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;">${a.initials}</div>
+          <span style="font-size:12px;color:var(--text)">${a.name}</span>
+          <span onclick="removeMemberFromCard(${i})" style="font-size:12px;color:var(--text-faint);cursor:pointer;margin-left:2px;line-height:1" title="移除">✕</span>
+        </div>`;
+        }).join('')
+        : `<span style="font-size:12px;color:var(--text-faint)">尚未指派成員</span>`;
+
+      // Populate select with non-assigned members
+      const unassigned = AVATARS.map((a, i) => ({ a, i })).filter(({ i }) => !editingAssignees.includes(i));
+      sel.innerHTML = unassigned.length
+        ? unassigned.map(({ a, i }) => `<option value="${i}">${a.initials} ${a.name}</option>`).join('')
+        : `<option value="">（已全部加入）</option>`;
+      sel.disabled = unassigned.length === 0;
+    }
+
+    function addMemberToCard() {
+      const sel = document.getElementById('member-select');
+      if (!sel || sel.disabled) return;
+      const idx = parseInt(sel.value);
+      if (isNaN(idx) || editingAssignees.includes(idx)) return;
+      editingAssignees.push(idx);
+      renderAssignees();
+    }
+
+    function removeMemberFromCard(idx) {
+      editingAssignees = editingAssignees.filter(i => i !== idx);
+      renderAssignees();
+    }
+
+    function addNewMember() {
+      const input = document.getElementById('new-member-name');
+      if (!input) return;
+      const name = input.value.trim();
+      if (!name) return;
+      const initials = name.slice(0, 1);
+      const colorSet = AVATAR_COLORS[AVATARS.length % AVATAR_COLORS.length];
+      const newIdx = AVATARS.length;
+      AVATARS.push({ initials, color: colorSet.bg, text: colorSet.text, name });
+      saveToStorage();
+      renderSidebarMembers();
+      editingAssignees.push(newIdx);
+      input.value = '';
+      renderAssignees();
+      showToast(`已新增成員：${name}`);
+    }
+
+    function renderSidebarMembers() {
+      const el = document.getElementById('sidebar-members');
+      if (!el) return;
+      el.innerHTML = AVATARS.map((a, i) =>
+        `<div class="sidebar-item">
+      <div class="card-avatar" style="background:${a.color};color:${a.text};width:20px;height:20px;font-size:9px">${a.initials}</div> ${a.name}
+    </div>`
+      ).join('');
+    }
+
+
+    function renderChecklist() {
+      const list = document.getElementById('modal-checklist');
+      const items = activeCard.checklist;
+      const done = items.filter(x => x.done).length;
+      document.getElementById('modal-check-progress').textContent = `${done}/${items.length}`;
+      document.getElementById('modal-check-bar').style.width = items.length ? `${Math.round(done / items.length * 100)}%` : '0%';
+      list.innerHTML = items.map((item, i) => {
+        const dueBadge = item.due ? checklistDueBadge(item.due) : '';
+        return `<div class="checklist-item" style="flex-wrap:wrap;gap:6px">
+      <input type="checkbox" ${item.done ? 'checked' : ''} onchange="toggleCheck(${i})" style="flex-shrink:0" />
+      <span class="${item.done ? 'done' : ''}" style="flex:1;min-width:120px">${item.text}</span>
+      <div style="display:flex;align-items:center;gap:6px;margin-left:auto">
+        ${dueBadge}
+        <input type="date" value="${item.due || ''}" onchange="setChecklistItemDue(${i},this.value)"
+          style="padding:2px 6px;background:var(--surface3);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:11px;font-family:'DM Sans';outline:none;width:130px" title="設定截止日期" />
+        <span onclick="removeChecklistItem(${i})" style="font-size:11px;color:var(--text-faint);cursor:pointer;padding:2px 4px;border-radius:3px" title="刪除">✕</span>
+      </div>
+    </div>`;
+      }).join('');
+    }
+
+    function checklistDueBadge(due) {
+      if (!due) return '';
+      const d = new Date(due), now = new Date();
+      const diff = (d - now) / (1000 * 60 * 60 * 24);
+      if (diff < 0) return `<span style="font-size:10px;padding:2px 6px;border-radius:8px;background:var(--red-dim);color:var(--red);white-space:nowrap">逾期</span>`;
+      if (diff < 3) return `<span style="font-size:10px;padding:2px 6px;border-radius:8px;background:var(--amber-dim);color:var(--amber);white-space:nowrap">即將到期</span>`;
+      return `<span style="font-size:10px;padding:2px 6px;border-radius:8px;background:var(--green-dim);color:var(--green);white-space:nowrap">${formatDue(due)}</span>`;
+    }
+
+    function setChecklistItemDue(i, val) {
+      activeCard.checklist[i].due = val;
+      renderChecklist();
+    }
+
+    function removeChecklistItem(i) {
+      activeCard.checklist.splice(i, 1);
+      renderChecklist();
+    }
+
+    function toggleCheck(i) {
+      activeCard.checklist[i].done = !activeCard.checklist[i].done;
+      renderChecklist();
+    }
+
+    function addChecklistItem(e) {
+      if (e.key !== 'Enter') return;
+      addChecklistItemBtn();
+    }
+
+    function addChecklistItemBtn() {
+      const input = document.getElementById('new-checklist-item');
+      const dueInput = document.getElementById('new-checklist-due');
+      const text = input.value.trim();
+      if (!text) return;
+      activeCard.checklist.push({ text, done: false, due: dueInput ? dueInput.value : '' });
+      input.value = '';
+      if (dueInput) dueInput.value = '';
+      renderChecklist();
+    }
+
+    /* FILTERS */
+    function setFilter(f, btn) {
+      activeFilter = f;
+      document.querySelectorAll('.filter-btn').forEach(b => { if (b) b.classList.remove('active'); });
+      if (btn) btn.classList.add('active');
+      updateClearBtn();
+      render();
+    }
+
+    function filterByLabel(l) {
+      activeLabelFilter = l;
+      updateClearBtn();
+      render();
+      if (l) showToast(`篩選：${labelName(l)}`);
+    }
+
+    function clearAllFilters() {
+      activeFilter = 'all';
+      activeLabelFilter = null;
+      document.querySelectorAll('.filter-btn').forEach(b => { if (b) b.classList.remove('active'); });
+      const allBtn = document.getElementById('filter-all');
+      if (allBtn) allBtn.classList.add('active');
+      updateClearBtn();
+      render();
+      showToast('已顯示全部卡片');
+    }
+
+    function updateClearBtn() {
+      const btn = document.getElementById('filter-clear');
+      if (!btn) return;
+      const hasFilter = activeFilter !== 'all' || activeLabelFilter !== null;
+      btn.style.display = hasFilter ? 'inline-flex' : 'none';
+    }
+
+    /* COLUMNS */
+    function renameCol(id, title) {
+      const col = data.columns.find(c => c.id === id);
+      if (col) { col.title = title; saveToStorage(); }
+    }
+
+    function deleteCol(id) {
+      if (!confirm('確認刪除此欄位及其所有卡片？')) return;
+      data.columns = data.columns.filter(c => c.id !== id);
+      data.cards = data.cards.filter(c => c.colId !== id);
+      saveToStorage();
+      render();
+    }
+
+    function addColumn() {
+      const id = 'col-' + Date.now();
+      data.columns.push({ id, title: '新欄位', color: COLORS[Math.floor(Math.random() * COLORS.length)] });
+      saveToStorage();
+      render();
+      const input = document.querySelector(`[data-col-id="${id}"] .col-title`);
+      if (input) { input.focus(); input.select(); }
+    }
+
+    /* INLINE ADD */
+    function showInlineAdd(colId) {
+      document.querySelectorAll('.add-card-form').forEach(f => f.classList.remove('visible'));
+      const form = document.getElementById('add-form-' + colId);
+      if (form) { form.classList.add('visible'); document.getElementById('inline-input-' + colId).focus(); }
+    }
+
+    function inlineAddKey(e, colId) {
+      if (e.key === 'Enter') confirmInlineAdd(colId);
+      if (e.key === 'Escape') cancelInlineAdd(colId);
+    }
+
+    function confirmInlineAdd(colId) {
+      const input = document.getElementById('inline-input-' + colId);
+      const title = input.value.trim();
+      if (!title) { cancelInlineAdd(colId); return; }
+      const id = 'c' + Date.now();
+      data.cards.push({ id, colId, title, desc: '', priority: 'medium', labels: [], checklist: [], assignees: [], due: '' });
+      saveToStorage();
+      render();
+      showToast('卡片已建立');
+    }
+
+    function cancelInlineAdd(colId) {
+      const form = document.getElementById('add-form-' + colId);
+      if (form) form.classList.remove('visible');
+    }
+
+    /* QUICK ADD MODAL */
+    function openAddCardModal() {
+      const sel = document.getElementById('quick-col');
+      sel.innerHTML = data.columns.map(c => `<option value="${c.id}">${c.title}</option>`).join('');
+      document.getElementById('add-modal').classList.add('open');
+      document.getElementById('quick-title').focus();
+    }
+
+    function closeAddModal() {
+      document.getElementById('add-modal').classList.remove('open');
+    }
+
+    function confirmAddCard() {
+      const title = document.getElementById('quick-title').value.trim();
+      const colId = document.getElementById('quick-col').value;
+      if (!title) return;
+      const id = 'c' + Date.now();
+      data.cards.push({ id, colId, title, desc: '', priority: 'medium', labels: [], checklist: [], assignees: [], due: '' });
+      document.getElementById('quick-title').value = '';
+      saveToStorage();
+      closeAddModal();
+      render();
+      showToast('卡片已建立');
+    }
+
+    /* ── LocalStorage ── */
+    const STORAGE_KEY = 'flowboard_data';
+    const MEMBERS_KEY = 'flowboard_members';
+
+    function saveToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        localStorage.setItem(MEMBERS_KEY, JSON.stringify(AVATARS));
+      } catch (e) { console.warn('儲存失敗', e); }
+    }
+
+    function loadFromStorage() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) data = JSON.parse(saved);
+        const savedMembers = localStorage.getItem(MEMBERS_KEY);
+        if (savedMembers) {
+          const m = JSON.parse(savedMembers);
+          if (Array.isArray(m) && m.length) AVATARS = m;
+        }
+      } catch (e) { console.warn('讀取失敗', e); }
+    }
+
+    function inviteTeam() { showToast('邀請連結已複製到剪貼簿！'); }
+    function createNewBoard() {
+      document.getElementById('boards-panel').classList.remove('open');
+      showToast('新看板已建立');
+    }
+
+    /* TOAST */
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
+    /* CLOSE PANELS ON OUTSIDE CLICK */
+    document.addEventListener('click', e => {
+      const panel = document.getElementById('boards-panel');
+      if (!panel.contains(e.target) && !e.target.closest('.board-title-area')) {
+        panel.classList.remove('open');
+      }
+    });
+
+    loadFromStorage();
+    renderSidebarMembers();
+    render();
+  </script>
+</body>
+
+</html>

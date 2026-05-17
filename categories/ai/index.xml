@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>AI on Jason</title>
+    <link>http://localhost:1313/categories/ai/</link>
+    <description>Recent content in AI on Jason</description>
+    <generator>Hugo -- 0.160.1</generator>
+    <language>zh-tw</language>
+    <lastBuildDate>Sun, 22 Mar 2026 09:50:41 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/ai/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AILab</title>
+      <link>http://localhost:1313/posts/ailab/</link>
+      <pubDate>Sun, 22 Mar 2026 09:50:41 +0800</pubDate>
+      <guid>http://localhost:1313/posts/ailab/</guid>
+      <description>&lt;p&gt;AI First&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;「有想法 + 很會設計 + 很會寫程式」&lt;/strong&gt;，是做產品的完美組合。&lt;/p&gt;
+&lt;p&gt;當 AI 日趨成熟，就會讓「&lt;strong&gt;有一點想法 + 會一點設計 + 會一點點程式&lt;/strong&gt;」的人，也能做出很不錯的產品。&lt;/p&gt;
+&lt;p&gt;尤其是網頁類型，即便是剛接觸 AI 的人，也能很快做出滿意的產品。&lt;/p&gt;
+&lt;p&gt;玩了一陣子的 AI，不管是好玩或是工作上的專案，
+只要不是太極端專業領域的產品或功能，AI 幾乎都能做到，且不輸資深工程師。&lt;/p&gt;
+&lt;p&gt;AI 實在太好玩了，所以就忘了寫文章這件事了&amp;gt;&amp;lt;&lt;/p&gt;
+&lt;p&gt;為了記錄自己做的 AI 產品，所以就建了子網站：&lt;a href=&#34;http://localhost:1313/AILab&#34;&gt;AI Lab&lt;/a&gt;&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>AI First</p>
+<p><strong>「有想法 + 很會設計 + 很會寫程式」</strong>，是做產品的完美組合。</p>
+<p>當 AI 日趨成熟，就會讓「<strong>有一點想法 + 會一點設計 + 會一點點程式</strong>」的人，也能做出很不錯的產品。</p>
+<p>尤其是網頁類型，即便是剛接觸 AI 的人，也能很快做出滿意的產品。</p>
+<p>玩了一陣子的 AI，不管是好玩或是工作上的專案，
+只要不是太極端專業領域的產品或功能，AI 幾乎都能做到，且不輸資深工程師。</p>
+<p>AI 實在太好玩了，所以就忘了寫文章這件事了&gt;&lt;</p>
+<p>為了記錄自己做的 AI 產品，所以就建了子網站：<a href="/AILab">AI Lab</a></p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

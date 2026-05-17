@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 專業性格測驗 - 60題完整版</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #ec4899;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1e293b;
+        }
+
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #app {
+            max-width: 700px;
+            width: 100%;
+            background: var(--card);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* 進度條 */
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* 題目樣式 */
+        .question-box {
+            min-height: 250px;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+            color: #334155;
+        }
+
+        /* 按鈕樣式 */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .opt-btn {
+            padding: 15px;
+            border: 2px solid #f1f5f9;
+            border-radius: 12px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .opt-btn:hover {
+            border-color: var(--primary);
+            background: #eef2ff;
+            transform: translateY(-2px);
+        }
+
+        /* 結果頁面 */
+        .result-header {
+            text-align: center;
+        }
+
+        .type-code {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
+
+        .chart-container {
+            margin: 30px 0;
+            height: 300px;
+        }
+
+        .desc-box {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .action-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-main {
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: opacity 0.3s;
+        }
+
+        .btn-print {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-retry {
+            background: var(--primary);
+            color: white;
+        }
+
+        @media print {
+
+            .btn-main,
+            .progress-container {
+                display: none;
+            }
+
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            #app {
+                box-shadow: none;
+                border: none;
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-N6V2FN89');</script>
+    <!-- End Google Tag Manager -->
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6V2FN89" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div id="app" class="animate__animated animate__fadeIn">
+        <div id="intro-screen">
+            <h1 style="text-align: center;">MBTI 職業性格測驗</h1>
+            <p style="text-align: center; color: #64748b;">這是一個專業的 60 題完整評測，將幫助你深入了解自己的能量來源、感知方式、決策傾向與生活態度。</p>
+            <button class="btn-main btn-retry" style="width: 100%; margin-top: 20px;"
+                onclick="startQuiz()">開始測試</button>
+        </div>
+
+        <div id="quiz-screen" class="hidden">
+            <div class="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+            <div id="q-container" class="question-box">
+                <p id="q-text" class="question-text"></p>
+                <div class="options">
+                    <button class="opt-btn" onclick="next(3)">非常同意</button>
+                    <button class="opt-btn" onclick="next(1)">同意</button>
+                    <button class="opt-btn" onclick="next(0)">普通 / 中立</button>
+                    <button class="opt-btn" onclick="next(-1)">不同意</button>
+                    <button class="opt-btn" onclick="next(-3)">非常不同意</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <div class="result-header">
+                <h2>測驗結果</h2>
+                <div id="type-code" class="type-code"></div>
+                <h3 id="type-name"></h3>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="resultChart"></canvas>
+            </div>
+
+            <div class="desc-box" id="type-desc"></div>
+
+            <div class="action-btns">
+                <button class="btn-main btn-print" onclick="window.print()">儲存為 PDF / 列印</button>
+                <button class="btn-main btn-retry" onclick="location.reload()">重新測驗</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ------------------- 資料定義 -------------------
+        const questions = [
+            // E vs I
+            { text: "在社交聚會後，你通常感到充滿活力而非疲憊。", dim: "EI", dir: 1 },
+            { text: "你傾向於在說話的過程中思考，而不是想好了再說。", dim: "EI", dir: 1 },
+            { text: "你喜歡成為眾人注意的焦點。", dim: "EI", dir: 1 },
+            { text: "在人群中待太久會讓你覺得精疲力竭，需要獨處。", dim: "EI", dir: -1 },
+            { text: "你主動與陌生人交談並介紹自己。", dim: "EI", dir: 1 },
+            { text: "你更喜歡深度的一對一對談，勝過大型群體聊天。", dim: "EI", dir: -1 },
+            { text: "當你有事情想慶祝時，你的第一反應是找朋友聚會。", dim: "EI", dir: 1 },
+            { text: "你通常是那個在朋友圈中發起活動的人。", dim: "EI", dir: 1 },
+            { text: "你覺得獨處一整天是很放鬆且充實的。", dim: "EI", dir: -1 },
+            { text: "你在團隊合作中比獨自工作時更有動力。", dim: "EI", dir: 1 },
+            { text: "即使是去認識新朋友，你也會感到有點焦慮。", dim: "EI", dir: -1 },
+            { text: "你喜歡熱鬧多變的環境。", dim: "EI", dir: 1 },
+            { text: "你傾向於保留自己的想法，直到它們完全成型。", dim: "EI", dir: -1 },
+            { text: "你很容易融入新的社交圈。", dim: "EI", dir: 1 },
+            { text: "你在電話交談中比面對面交談更容易感到疲倦。", dim: "EI", dir: -1 },
+
+            // S vs N
+            { text: "你更關注當下的現實，而不是未來的可能性。", dim: "SN", dir: 1 },
+            { text: "你常被抽象的概念或哲學問題吸引。", dim: "SN", dir: -1 },
+            { text: "你喜歡按部就班的操作手冊，而不是靠直覺摸索。", dim: "SN", dir: 1 },
+            { text: "你常會天馬行空地幻想，甚至忽略了周遭的環境。", dim: "SN", dir: -1 },
+            { text: "你更喜歡實用的技能，勝過理論知識。", dim: "SN", dir: 1 },
+            { text: "閱讀小說時，你更在意故事的象徵意義而非情節細節。", dim: "SN", dir: -1 },
+            { text: "你是一個現實主義者，而不是一個夢想家。", dim: "SN", dir: 1 },
+            { text: "你擅長觀察周遭環境的細微變化。", dim: "SN", dir: 1 },
+            { text: "你經常思考人類存在的意義與未來的演變。", dim: "SN", dir: -1 },
+            { text: "你傾向於相信自己的經驗，而不是直覺。", dim: "SN", dir: 1 },
+            { text: "對你來說，把想法付諸實踐比單純構思更有趣。", dim: "SN", dir: 1 },
+            { text: "你經常會看到事物之間的潛在聯繫，即使它們看起來無關。", dim: "SN", dir: -1 },
+            { text: "你喜歡細節明確的指示，而不是模糊的大綱。", dim: "SN", dir: 1 },
+            { text: "你容易對重複、枯燥的常規工作感到厭煩。", dim: "SN", dir: -1 },
+            { text: "你通常會注意到別人的穿著細節或環境佈置。", dim: "SN", dir: 1 },
+
+            // T vs F
+            { text: "在做決定時，邏輯通常比情感更重要。", dim: "TF", dir: 1 },
+            { text: "你很難共情那些情緒化的人。", dim: "TF", dir: 1 },
+            { text: "你寧願實話實說而傷害別人的感情，也不願說謊安撫。", dim: "TF", dir: 1 },
+            { text: "你經常會為了維持群體和諧而做出讓步。", dim: "TF", dir: -1 },
+            { text: "你傾向於客觀地分析問題，不帶個人偏見。", dim: "TF", dir: 1 },
+            { text: "當朋友遇到困難，你第一時間會提供情感支持而非解決建議。", dim: "TF", dir: -1 },
+            { text: "你認為效率比合作中的愉悅感更重要。", dim: "TF", dir: 1 },
+            { text: "你容易被電影或書中的情感橋段感動。", dim: "TF", dir: -1 },
+            { text: "在爭論中，真理比贏得對方的認同更重要。", dim: "TF", dir: 1 },
+            { text: "你是一個非常感性的人。", dim: "TF", dir: -1 },
+            { text: "你認為在職場上，公事公辦是最高原則。", dim: "TF", dir: 1 },
+            { text: "你經常考慮自己的行為對他人情緒的影響。", dim: "TF", dir: -1 },
+            { text: "你會被那些邏輯嚴密、無懈可擊的論點說服。", dim: "TF", dir: 1 },
+            { text: "你喜歡照顧別人的需求。", dim: "TF", dir: -1 },
+            { text: "當你需要辭退某人時，你會感到極大的心理負擔。", dim: "TF", dir: -1 },
+
+            // J vs P
+            { text: "出發旅行前，你會制定詳細的行程表。", dim: "JP", dir: 1 },
+            { text: "你更喜歡隨遇而安，而不是預先計畫。", dim: "JP", dir: -1 },
+            { text: "你的桌面和房間通常保持得很整潔。", dim: "JP", dir: 1 },
+            { text: "你習慣在最後一刻才完成任務（Deadline 是你的動力）。", dim: "JP", dir: -1 },
+            { text: "你喜歡把事情定下來，而不是保持選擇的靈活性。", dim: "JP", dir: 1 },
+            { text: "你覺得嚴格的時間表會讓你感到窒息。", dim: "JP", dir: -1 },
+            { text: "完成清單上的待辦事項會讓你感到很有成就感。", dim: "JP", dir: 1 },
+            { text: "你經常在工作時分心去做其他有趣的事。", dim: "JP", dir: -1 },
+            { text: "你傾向於提前規劃好一整週的計畫。", dim: "JP", dir: 1 },
+            { text: "你適應環境變化的能力很強。", dim: "JP", dir: -1 },
+            { text: "你不喜歡突如其來的改變或驚喜。", dim: "JP", dir: 1 },
+            { text: "你覺得混亂的環境不會影響你的工作效率。", dim: "JP", dir: -1 },
+            { text: "你通常會準時，甚至早到。", dim: "JP", dir: 1 },
+            { text: "你喜歡探索不同的路徑，而不是走最快的那條。", dim: "JP", dir: -1 },
+            { text: "在開始新項目之前，你會先設定明確的目標。", dim: "JP", dir: 1 }
+        ];
+
+        const descriptions = {
+            "INTJ": { name: "建築師", desc: "想像力豐富且具戰略能力的思想家，凡事皆有計畫。" },
+            "INTP": { name: "邏輯學家", desc: "具有創造力的發明家，對知識有著止不住的渴望。" },
+            "ENTJ": { name: "指揮官", desc: "大膽、富有想像力且意志強大的領導者，總能找到解決路徑。" },
+            "ENTP": { name: "辯論家", desc: "聰明好奇的思想家，無法抗拒智力上的挑戰。" },
+            "INFJ": { name: "提倡者", desc: "安靜而神秘，同時也是鼓舞人心且不知疲倦的理想主義者。" },
+            "INFP": { name: "調解者", desc: "詩意、善良且利他的主義者，總是熱衷於為善事出力。" },
+            "ENFJ": { name: "主人公", desc: "富有魅力、鼓舞人心的領導者，聽眾聽得如痴如醉。" },
+            "ENFP": { name: "競選者", desc: "熱情、創造力強且愛社交的自由靈魂，總能找到理由微笑。" },
+            "ISTJ": { name: "物流師", desc: "務實且注重事實的人，可靠性不容置疑。" },
+            "ISFJ": { name: "守衛者", desc: "非常專注且溫暖的守護者，時刻準備保護所愛之人。" },
+            "ESTJ": { name: "總經理", desc: "優秀的管理者，在管理事物或人方面無與倫比。" },
+            "ESFJ": { name: "執政官", desc: "極度熱心、受歡迎且有良知的人，總是熱衷於幫助他人。" },
+            "ISTP": { name: "鑑賞家", desc: "大膽且實際的實驗家，擅長使用各類工具。" },
+            "ISFP": { name: "探險家", desc: "靈活迷人的藝術家，時刻準備探索體驗新鮮事物。" },
+            "ESTP": { name: "企業家", desc: "聰明、精力充沛且感知力極強的人，真正享受冒險的生活。" },
+            "ESFP": { name: "表演者", desc: "自發的、精力充沛且熱情的表演者——生活在他們身邊永不無聊。" }
+        };
+
+        // ------------------- 核心邏輯 -------------------
+        let currentIdx = 0;
+        let scores = { EI: 0, SN: 0, TF: 0, JP: 0 };
+
+        function startQuiz() {
+            document.getElementById('intro-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const qContainer = document.getElementById('q-container');
+            // 加入動畫效果
+            qContainer.className = "question-box animate__animated animate__fadeInRight";
+
+            const q = questions[currentIdx];
+            document.getElementById('q-text').innerText = `${currentIdx + 1}. ${q.text}`;
+            document.getElementById('progress-bar').style.width = `${(currentIdx / questions.length) * 100}%`;
+
+            // 動畫結束後移除 class 以便下次觸發
+            setTimeout(() => { qContainer.className = "question-box"; }, 500);
+        }
+
+        function next(value) {
+            const q = questions[currentIdx];
+            scores[q.dim] += (value * q.dir);
+
+            currentIdx++;
+            if (currentIdx < questions.length) {
+                showQuestion();
+            } else {
+                renderResult();
+            }
+        }
+
+        function renderResult() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            const type =
+                (scores.EI >= 0 ? "E" : "I") +
+                (scores.SN >= 0 ? "S" : "N") +
+                (scores.TF >= 0 ? "T" : "F") +
+                (scores.JP >= 0 ? "J" : "P");
+
+            document.getElementById('type-code').innerText = type;
+            document.getElementById('type-name').innerText = descriptions[type].name;
+            document.getElementById('type-desc').innerText = descriptions[type].desc;
+
+            // 繪製圖表
+            drawChart();
+        }
+
+        function drawChart() {
+            const ctx = document.getElementById('resultChart').getContext('2d');
+
+            // 計算百分比 (簡化邏輯：將總分映射到 0-100)
+            // 每個維度最高分為 15題 * 3分 = 45
+            const getPercent = (val) => {
+                const p = ((val + 45) / 90) * 100;
+                return Math.min(Math.max(p, 0), 100).toFixed(1);
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['能量 (E vs I)', '感知 (S vs N)', '判斷 (T vs F)', '生活 (J vs P)'],
+                    datasets: [{
+                        label: '傾向評分 (偏向右側為前者)',
+                        data: [getPercent(scores.EI), getPercent(scores.SN), getPercent(scores.TF), getPercent(scores.JP)],
+                        backgroundColor: ['#6366f1', '#ec4899', '#8b5cf6', '#10b981'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    scales: {
+                        x: { min: 0, max: 100, ticks: { callback: v => v + '%' } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

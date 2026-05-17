@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en" dir=" auto" data-theme="light">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Hugo 新增網頁 | Jason</title>
+<meta name="keywords" content="">
+<meta name="description" content="新增網頁
+
+
+1
+
+
+hugo new posts/hello.md
+
+
+
+網頁的設定 (Front Matter Variables)
+在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/
+介紹幾個常用的參數：
+
+
+定義文章標題、描述、作者
+
+
+title 文章標題
+
+
+description 文章概要
+
+
+author 文章作者
+
+
+
+
+定義文章分類、標籤、關鍵字
+
+
+categories 文章分類
+
+
+tags 文章標籤
+
+
+keywords 關鍵字
+
+
+
+
+定義文章類型、日期、狀態
+
+
+type 文章類型，通常為 top level 資料夾名稱
+
+
+date 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00&#43;08:00)
+
+
+draft 草稿狀態
+
+
+publishDate 預定發布日期，若是未來時間，須下 hugo server -F 才看得到文章
+
+
+expiryDate  到期日期 (2025-12-20T15:00:00&#43;08:00)
+
+
+
+
+Front Matter 自定義參數
+我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：
+
+
+metaAlignment 設置文章 title 的對齊位置">
+<meta name="author" content="Jason">
+<link rel="canonical" href="http://localhost:1313/posts/hugonewwebpage/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/hugonewwebpage/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    }
+
+</script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-N6V2FN89"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'GTM-N6V2FN89');
+        }
+      </script><meta property="og:url" content="http://localhost:1313/posts/hugonewwebpage/">
+  <meta property="og:site_name" content="Jason">
+  <meta property="og:title" content="Hugo 新增網頁">
+  <meta property="og:description" content="新增網頁 1 hugo new posts/hello.md 網頁的設定 (Front Matter Variables) 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/
+介紹幾個常用的參數：
+定義文章標題、描述、作者
+title 文章標題
+description 文章概要
+author 文章作者
+定義文章分類、標籤、關鍵字
+categories 文章分類
+tags 文章標籤
+keywords 關鍵字
+定義文章類型、日期、狀態
+type 文章類型，通常為 top level 資料夾名稱
+date 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00&#43;08:00)
+draft 草稿狀態
+publishDate 預定發布日期，若是未來時間，須下 hugo server -F 才看得到文章
+expiryDate 到期日期 (2025-12-20T15:00:00&#43;08:00)
+Front Matter 自定義參數
+我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：
+metaAlignment 設置文章 title 的對齊位置">
+  <meta property="og:locale" content="zh-tw">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-12-21T08:47:00+08:00">
+    <meta property="article:modified_time" content="2025-12-21T08:47:00+08:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hugo 新增網頁">
+<meta name="twitter:description" content="新增網頁
+
+
+1
+
+
+hugo new posts/hello.md
+
+
+
+網頁的設定 (Front Matter Variables)
+在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/
+介紹幾個常用的參數：
+
+
+定義文章標題、描述、作者
+
+
+title 文章標題
+
+
+description 文章概要
+
+
+author 文章作者
+
+
+
+
+定義文章分類、標籤、關鍵字
+
+
+categories 文章分類
+
+
+tags 文章標籤
+
+
+keywords 關鍵字
+
+
+
+
+定義文章類型、日期、狀態
+
+
+type 文章類型，通常為 top level 資料夾名稱
+
+
+date 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00&#43;08:00)
+
+
+draft 草稿狀態
+
+
+publishDate 預定發布日期，若是未來時間，須下 hugo server -F 才看得到文章
+
+
+expiryDate  到期日期 (2025-12-20T15:00:00&#43;08:00)
+
+
+
+
+Front Matter 自定義參數
+我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：
+
+
+metaAlignment 設置文章 title 的對齊位置">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Hugo 新增網頁",
+      "item": "http://localhost:1313/posts/hugonewwebpage/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Hugo 新增網頁",
+  "name": "Hugo 新增網頁",
+  "description": "新增網頁 1 hugo new posts/hello.md 網頁的設定 (Front Matter Variables) 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/\n介紹幾個常用的參數：\n定義文章標題、描述、作者\ntitle 文章標題\ndescription 文章概要\nauthor 文章作者\n定義文章分類、標籤、關鍵字\ncategories 文章分類\ntags 文章標籤\nkeywords 關鍵字\n定義文章類型、日期、狀態\ntype 文章類型，通常為 top level 資料夾名稱\ndate 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00+08:00)\ndraft 草稿狀態\npublishDate 預定發布日期，若是未來時間，須下 hugo server -F 才看得到文章\nexpiryDate 到期日期 (2025-12-20T15:00:00+08:00)\nFront Matter 自定義參數\n我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：\nmetaAlignment 設置文章 title 的對齊位置\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "新增網頁 1 hugo new posts/hello.md 網頁的設定 (Front Matter Variables) 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/\n介紹幾個常用的參數：\n定義文章標題、描述、作者\ntitle 文章標題\ndescription 文章概要\nauthor 文章作者\n定義文章分類、標籤、關鍵字\ncategories 文章分類\ntags 文章標籤\nkeywords 關鍵字\n定義文章類型、日期、狀態\ntype 文章類型，通常為 top level 資料夾名稱\ndate 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00+08:00)\ndraft 草稿狀態\npublishDate 預定發布日期，若是未來時間，須下 hugo server -F 才看得到文章\nexpiryDate 到期日期 (2025-12-20T15:00:00+08:00)\nFront Matter 自定義參數\n我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：\nmetaAlignment 設置文章 title 的對齊位置\ncoverImage 設置文章 cover image 的地方\ncoverMeta 設置文章 title 要放在 cover image 中央，還是外面\ncoverSize 設置文章 cover image 要大張還是小張\nHugo Taxonomies categories：使用者可於 Front Matter 中，指定文章類別\nhttp://xxx/categories\nhttp://xxx/categories/it\ntags：使用者可於 Front Matter 中，指定文章標籤\nhttp://xxx/tags\nhttp://xxx/tags/travel\n1 2 3 4 5 6 7 +++ title = \"Sample\" categories = [\"it\", \"food\"] tags = [\"travel\", \"job\"] +++ 文章內容 ",
+  "wordCount" : "119",
+  "inLanguage": "en",
+  "datePublished": "2025-12-21T08:47:00+08:00",
+  "dateModified": "2025-12-21T08:47:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Jason"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/hugonewwebpage/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Jason",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+    
+<script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-N6V2FN89');</script>
+
+</head>
+
+    <body id="top">
+        
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6V2FN89" height="0" width="0"
+                style="display:none;visibility:hidden"></iframe></noscript>
+
+        <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Jason (Alt + H)">Jason</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="🏠 首頁">
+                    <span>🏠 首頁</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/ailab/" title="AI Lab">
+                    <span>AI Lab</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">首頁</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Hugo 新增網頁
+    </h1>
+
+	
+	<div class="post-categories">
+	  <span>分類：</span>
+	  
+		<a href="/categories/%e7%b3%bb%e7%b5%b1/">系統</a>
+	  
+	</div>
+	
+    <div class="post-meta"><span title='2025-12-21 08:47:00 +0800 CST'>December 21, 2025</span>&nbsp;·&nbsp;<span>Jason</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">目錄</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#%e6%96%b0%e5%a2%9e%e7%b6%b2%e9%a0%81" aria-label="新增網頁">新增網頁</a></li>
+                <li>
+                    <a href="#%e7%b6%b2%e9%a0%81%e7%9a%84%e8%a8%ad%e5%ae%9a-front-matter-variables" aria-label="網頁的設定 (Front Matter Variables)">網頁的設定 (Front Matter Variables)</a><ul>
+                        
+                <li>
+                    <a href="#hugo-taxonomies" aria-label="Hugo Taxonomies">Hugo Taxonomies</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="新增網頁">新增網頁<a hidden class="anchor" aria-hidden="true" href="#新增網頁">#</a></h2>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>hugo new posts/hello.md
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="網頁的設定-front-matter-variables">網頁的設定 (<strong>Front Matter Variables)</strong><a hidden class="anchor" aria-hidden="true" href="#網頁的設定-front-matter-variables">#</a></h2>
+<p>在 Front Matter 中有許多可設置變數，可參考 <a href="https://gohugo.io/content-management/front-matter/">https://gohugo.io/content-management/front-matter/</a></p>
+<p><strong>介紹幾個常用的參數：</strong></p>
+<ul>
+<li>
+<p><strong>定義文章標題、描述、作者</strong></p>
+<ul>
+<li>
+<p>title 文章標題</p>
+</li>
+<li>
+<p>description 文章概要</p>
+</li>
+<li>
+<p>author 文章作者</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>定義文章分類、標籤、關鍵字</strong></p>
+<ul>
+<li>
+<p>categories 文章分類</p>
+</li>
+<li>
+<p>tags 文章標籤</p>
+</li>
+<li>
+<p>keywords 關鍵字</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>定義文章類型、日期、狀態</strong></p>
+<ul>
+<li>
+<p>type 文章類型，通常為 top level 資料夾名稱</p>
+</li>
+<li>
+<p>date 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00+08:00)</p>
+</li>
+<li>
+<p>draft 草稿狀態</p>
+</li>
+<li>
+<p>publishDate 預定發布日期，若是未來時間，須下 <code>hugo server -F</code> 才看得到文章</p>
+</li>
+<li>
+<p>expiryDate  到期日期 (2025-12-20T15:00:00+08:00)</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Front Matter 自定義參數</strong></p>
+<p>我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：</p>
+<ul>
+<li>
+<p>metaAlignment 設置文章 title 的對齊位置</p>
+</li>
+<li>
+<p>coverImage 設置文章 cover image 的地方</p>
+</li>
+<li>
+<p>coverMeta 設置文章 title 要放在 cover image 中央，還是外面</p>
+</li>
+<li>
+<p>coverSize 設置文章 cover image 要大張還是小張</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="hugo-taxonomies"><strong>Hugo Taxonomies</strong><a hidden class="anchor" aria-hidden="true" href="#hugo-taxonomies">#</a></h3>
+<ul>
+<li>
+<p>categories：使用者可於 Front Matter 中，指定文章類別</p>
+<ul>
+<li>
+<p><a href="http://xxx/">http://xxx/</a>categories</p>
+</li>
+<li>
+<p><a href="http://xxx/">http://xxx/</a>categories/it</p>
+</li>
+</ul>
+</li>
+<li>
+<p>tags：使用者可於 Front Matter 中，指定文章標籤</p>
+<ul>
+<li>
+<p><a href="http://xxx/">http://xxx/</a>tags</p>
+</li>
+<li>
+<p><a href="http://xxx/">http://xxx/</a>tags/travel</p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">+++</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">title</span> = <span style="color:#e6db74">&#34;Sample&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">categories</span> = [<span style="color:#e6db74">&#34;it&#34;</span>, <span style="color:#e6db74">&#34;food&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">tags</span> = [<span style="color:#e6db74">&#34;travel&#34;</span>, <span style="color:#e6db74">&#34;job&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">+++</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">文章內容</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/githubblog/">
+    <span class="title">« 上一頁</span>
+    <br>
+    <span>把 GitHub 當成 Blog 網站</span>
+  </a>
+  <a class="next" href="http://localhost:1313/posts/hugobuild/">
+    <span class="title">下一頁 »</span>
+    <br>
+    <span>Hugo 建置/執行/編譯網站</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+        </main>
+        
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">Jason</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4XQT6DL3FZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4XQT6DL3FZ');
+</script>
+</body>
+
+</html>

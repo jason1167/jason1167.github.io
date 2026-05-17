@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新進人員工作使用說明書 - 測驗</title>
+    <meta name="description" content="透過8題簡單測驗，快速建立你的個人工作使用說明書">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-N6V2FN89');</script>
+    <!-- End Google Tag Manager -->
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6V2FN89" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div id="app">
+        <!-- 歡迎頁面 -->
+        <div v-if="!quizStarted && !showResult" class="welcome-screen">
+            <div class="welcome-content">
+                <h1 class="welcome-title">
+                    <span class="emoji">📝</span>
+                    <br>
+                    你的工作使用說明書
+                </h1>
+                <p class="welcome-subtitle">透過 8 題簡單測驗，讓同事更了解你！</p>
+                <div class="welcome-features">
+                    <div class="feature-item">
+                        <span class="feature-emoji">⏱️</span>
+                        <span class="feature-text">只需 2 分鐘</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-emoji">🎯</span>
+                        <span class="feature-text">了解工作節奏</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-emoji">💡</span>
+                        <span class="feature-text">發現個人偏好</span>
+                    </div>
+                </div>
+                <button @click="startQuiz" class="btn-primary btn-large">
+                    開始測驗 ✨
+                </button>
+            </div>
+        </div>
+
+        <!-- 測驗進行中 -->
+        <div v-if="quizStarted && !showResult" class="quiz-screen">
+            <!-- 進度條 -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" :style="{width: progressPercentage + '%'}"></div>
+                </div>
+                <div class="progress-text">{{ currentQuestion + 1 }} / {{ questions.length }}</div>
+            </div>
+
+            <!-- 問題卡片 -->
+            <div class="question-card" :key="currentQuestion">
+                <div class="question-category">{{ questions[currentQuestion].category }}</div>
+                <h2 class="question-text">{{ questions[currentQuestion].question }}</h2>
+
+                <!-- 選項 -->
+                <div class="options-grid">
+                    <div v-for="(option, index) in questions[currentQuestion].options" :key="index"
+                        @click="selectAnswer(option)" class="option-card">
+                        <div class="option-emoji">{{ option.emoji }}</div>
+                        <div class="option-text">{{ option.text }}</div>
+                    </div>
+                </div>
+
+                <!-- 上一題按鈕 -->
+                <button v-if="currentQuestion > 0" @click="previousQuestion" class="btn-secondary">
+                    ← 上一題
+                </button>
+            </div>
+        </div>
+
+        <!-- 結果頁面 -->
+        <div v-if="showResult" class="result-screen">
+            <div class="result-content">
+                <h1 class="result-title">
+                    <span class="emoji">🎉</span>
+                    <br>
+                    你的工作使用說明書
+                </h1>
+
+                <div class="result-summary">
+                    <p>{{ generateSummary() }}</p>
+                </div>
+
+                <!-- 答案分類顯示 -->
+                <div class="result-sections">
+                    <div v-for="(section, index) in resultSections" :key="index" class="result-section">
+                        <h3 class="section-title">{{ section.title }}</h3>
+                        <p class="section-question">{{ section.question }}</p>
+                        <div class="result-item">
+                            <div class="result-emoji">{{ section.answer.emoji }}</div>
+                            <div class="result-text">{{ section.answer.text }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 操作按鈕 -->
+                <div class="result-actions">
+                    <button @click="downloadReport" class="btn-primary">
+                        下載報告 📄
+                    </button>
+                    <button @click="restartQuiz" class="btn-secondary">
+                        重新測驗 🔄
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vue.js 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- App Script -->
+    <script src="app.js"></script>
+</body>
+
+</html>

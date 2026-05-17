@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情緒管理小幫手</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-N6V2FN89');</script>
+    <!-- End Google Tag Manager -->
+
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6V2FN89" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- 背景裝飾 -->
+    <div class="decoration heart-1"></div>
+    <div class="decoration heart-2"></div>
+    <div class="decoration heart-3"></div>
+    <div class="decoration heart-4"></div>
+    <div class="decoration circle-1"></div>
+    <div class="decoration circle-2"></div>
+
+    <div class="container">
+        <!-- 標題區 -->
+        <header class="header">
+            <div class="rainbow-icon">🌈</div>
+            <h1 class="title">情緒管理小幫手</h1>
+            <p class="subtitle">管理負面情緒，建立正向生活習慣 💕</p>
+        </header>
+
+        <!-- 當下立刻做的事 -->
+        <section class="section-immediate">
+            <div class="section-icon">⚡</div>
+            <h2 class="section-title">當下立刻做的事</h2>
+            <p class="section-subtitle">正在情緒，開始執行改善</p>
+
+            <div class="card card-mint">
+                <div class="card-icon">📱</div>
+                <h3 class="card-title">深呼吸 10 秒</h3>
+                <p class="card-text">提醒自己，生氣其實是在傷害自己。</p>
+            </div>
+
+            <div class="card card-blue">
+                <div class="card-icon">🙏</div>
+                <h3 class="card-title">暫時離開現場</h3>
+                <p class="card-text">去洗手或換個空間，讓情緒冷靜。</p>
+            </div>
+        </section>
+
+        <!-- 稍微冷靜之後 -->
+        <section class="section-calm">
+            <div class="section-icon">🙏</div>
+            <h2 class="section-title">稍微冷靜之後</h2>
+            <p class="section-subtitle">情緒緩和後，重整思緒與認知的階段</p>
+
+            <div class="card card-purple">
+                <div class="card-icon">🎯</div>
+                <h3 class="card-title">分辨可控與不可控</h3>
+                <p class="card-text">若是不可控的事，就選擇放下，不再糾結。</p>
+            </div>
+
+            <div class="card card-peach expandable">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-left">
+                        <div class="card-icon">👤</div>
+                        <h3 class="card-title">切換成「觀察者模式」</h3>
+                    </div>
+                    <div class="expand-icon">›</div>
+                </div>
+                <div class="card-content">
+                    <ul class="card-list">
+                        <li>對自己的思緒保持警覺，與情緒拉開距離，用中立、理性的角度看待它。</li>
+                        <li>將感受與想法想像成車站裡呼嘯而過的列車——是否上車，決定權在你手中。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card card-mint expandable">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-left">
+                        <div class="card-icon">💭</div>
+                        <h3 class="card-title">把「想法」看成只是想法</h3>
+                    </div>
+                    <div class="expand-icon">›</div>
+                </div>
+                <div class="card-content">
+                    <p class="card-text">承認：「這只是我現在的一個念頭。」</p>
+                    <div class="example-box">
+                        <p>例如：→ 「事情做不完」→「我有一個『覺得自己做不完』的想法</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-blue">
+                <div class="card-icon">💎</div>
+                <h3 class="card-title">回到自己的核心價值</h3>
+                <p class="card-text">想一想，什麼才是你真正重視的事。</p>
+            </div>
+
+            <div class="card card-yellow">
+                <div class="card-icon">🧘</div>
+                <h3 class="card-title">自我提問與檢視</h3>
+                <ul class="card-list">
+                    <li>如果發現在和他人爭吵，能保持冷靜嗎？</li>
+                    <li>我為什麼會生氣？</li>
+                    <li>生氣後可能帶來什麼後果？</li>
+                    <li>生氣真的能解決問題嗎？</li>
+                    <li>這份怒氣有沒有存在的價值？</li>
+                    <li>有沒有方法可以減輕或消除這股怒氣？</li>
+                </ul>
+            </div>
+
+            <div class="card card-pink">
+                <div class="card-icon">💗</div>
+                <h3 class="card-title">果斷中止負面循環</h3>
+                <p class="card-text">當負面思緒出現時，對自己溫柔地說：「停止！」</p>
+            </div>
+
+            <div class="card card-purple">
+                <div class="card-icon">📺</div>
+                <h3 class="card-title">果斷中止負面循環</h3>
+                <p class="card-text">當負面思緒出現時，對自己清楚地說：「停止！」</p>
+            </div>
+
+            <div class="card card-peach">
+                <div class="card-icon">🎨</div>
+                <h3 class="card-title">嘗試「橡皮筋提醒法」</h3>
+                <p class="card-text">在手腕上套一條橡皮筋，當發現思緒開始失控時，輕彈一下，干擾並重置思考流程。</p>
+            </div>
+
+            <div class="card card-mint expandable">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-left">
+                        <div class="card-icon">🎯</div>
+                        <h3 class="card-title">設定情緒計時器</h3>
+                    </div>
+                    <div class="expand-icon">›</div>
+                </div>
+                <div class="card-content">
+                    <ul class="card-list">
+                        <li>負面情緒無法永遠存在，但完全壓抑也不健康，過度沉溺同樣不行。</li>
+                        <li>可以替自己設定 5～10 分鐘的鬧鐘。</li>
+                        <li>這段時間允許自己感受負面情緒，但當鬧鐘響起，就轉去做更有價值的事。</li>
+                        <li>同時提醒自己：這只是我的思緒，並不等於我這個人。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card card-mint expandable">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-left">
+                        <div class="card-icon">🌱</div>
+                        <h3 class="card-title">練習接受與反思</h3>
+                    </div>
+                    <div class="expand-icon">›</div>
+                </div>
+                <div class="card-content">
+                    <p class="card-text">有些事情未必能用理想的方式處理，當下也可能無不到更好的回應，那就先承認接受。</p>
+                    <p class="card-text">接著反思：</p>
+                    <ul class="card-list">
+                        <li>我從這次事件中學到了什麼？</li>
+                        <li>遇到了哪些困難？</li>
+                        <li>如果下次再發生，我可以怎麼做？</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部 -->
+        <footer class="footer">
+            <p>願你每天都感恩生活 💪</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
