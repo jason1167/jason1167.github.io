@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文字比對 (Text Diff) | Jason's Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #006699;
+      --primary-hover: #004d73;
+      --primary-light: #e6f0f5;
+      --primary-glow: rgba(0, 102, 153, 0.15);
+
+      --bg-base: #f8f9fa;
+      --bg-surface: #ffffff;
+      --border-color: #e5e7eb;
+
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+
+      --color-beige-light: #faf9f5;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-base);
+      color: var(--gray-800);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 頂部導航 */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
+      background: rgba(255, 255, 255, 0.95);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--gray-900);
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px var(--primary-glow);
+    }
+
+    .brand-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: #ffffff;
+      stroke-width: 2;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 13px;
+      color: var(--gray-600);
+      text-decoration: none;
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .btn-nav-link:hover {
+      background: var(--gray-100);
+      color: var(--gray-900);
+    }
+
+    /* 主應用佈局 */
+    .app-main {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    /* 工具列 (Toolbar) */
+    .diff-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .diff-toolbar-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .diff-mode-toggle {
+      display: inline-flex;
+      background: var(--gray-100);
+      padding: 3px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .diff-mode-btn {
+      padding: 0.3rem 0.85rem;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--gray-600);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .diff-mode-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 1px 3px var(--primary-glow);
+    }
+
+    .diff-option-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 12px;
+      color: var(--gray-700);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .diff-option-check input {
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .btn {
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--gray-700);
+      border-color: var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--gray-100);
+      color: var(--gray-900);
+    }
+
+    /* 輸入區塊 */
+    .diff-inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      transition: var(--transition);
+    }
+
+    @media (max-width: 860px) {
+      .diff-inputs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .diff-input-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .diff-input-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-700);
+    }
+
+    .diff-input-stats {
+      font-size: 11px;
+      color: var(--gray-500);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .diff-textarea {
+      width: 100%;
+      height: 180px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      color: var(--gray-900);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      outline: none;
+      transition: var(--transition);
+      resize: vertical;
+      white-space: pre;
+      overflow-wrap: normal;
+      overflow-x: auto;
+      tab-size: 2;
+    }
+
+    .diff-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    /* 差異統計列 */
+    .diff-summary-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 12px;
+      padding: 0.5rem 1rem;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .diff-stat-badges {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .diff-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .diff-badge-add {
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+    }
+
+    .diff-badge-del {
+      background: rgba(239, 68, 68, 0.12);
+      color: #dc2626;
+    }
+
+    .diff-badge-equal {
+      background: var(--gray-100);
+      color: var(--gray-600);
+    }
+
+    /* 比對檢視區 */
+    .diff-viewer-wrapper {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      flex: 1;
+      min-height: 400px;
+      overflow: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.55;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* 並排模式表格 (Split Mode) */
+    .diff-split-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .diff-split-table td {
+      padding: 2px 6px;
+      vertical-align: top;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .diff-split-table th {
+      background: var(--color-beige-light);
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+      font-size: 11px;
+      color: var(--gray-600);
+      text-align: left;
+      padding: 2px 8px;
+      line-height: 1.25;
+      vertical-align: middle;
+    }
+
+    .diff-split-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      line-height: 1.25;
+    }
+
+    .diff-line-num {
+      width: 44px;
+      min-width: 44px;
+      max-width: 44px;
+      box-sizing: border-box;
+      text-align: left;
+      padding: 2px 4px 2px 8px !important;
+      color: var(--gray-400);
+      user-select: none;
+      border-right: 1px solid var(--border-color);
+      background: #fafafa;
+      font-size: 11px;
+    }
+
+    .diff-line-content {
+      padding: 2px 8px !important;
+    }
+
+    .diff-left-content {
+      border-right: 1px solid var(--border-color);
+    }
+
+    /* 行內模式表格 (Inline Mode) */
+    .diff-inline-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .diff-inline-table td {
+      padding: 2px 6px;
+      vertical-align: top;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .diff-inline-num {
+      width: 42px;
+      min-width: 42px;
+      max-width: 42px;
+      box-sizing: border-box;
+      text-align: left;
+      padding: 2px 4px 2px 8px !important;
+      color: var(--gray-400);
+      user-select: none;
+      background: #fafafa;
+      border-right: 1px solid var(--border-color);
+      font-size: 11px;
+    }
+
+    .diff-inline-sign {
+      width: 24px;
+      min-width: 24px;
+      max-width: 24px;
+      box-sizing: border-box;
+      text-align: center;
+      font-weight: 700;
+      user-select: none;
+    }
+
+    /* 差異顏色標示 */
+    .diff-row-del {
+      background-color: rgba(239, 68, 68, 0.08);
+    }
+
+    .diff-row-del .diff-line-num,
+    .diff-row-del .diff-inline-num {
+      background-color: rgba(239, 68, 68, 0.14);
+      color: #dc2626;
+    }
+
+    .diff-row-del .diff-inline-sign {
+      color: #dc2626;
+    }
+
+    .diff-row-add {
+      background-color: rgba(16, 185, 129, 0.08);
+    }
+
+    .diff-row-add .diff-line-num,
+    .diff-row-add .diff-inline-num {
+      background-color: rgba(16, 185, 129, 0.14);
+      color: #059669;
+    }
+
+    .diff-row-add .diff-inline-sign {
+      color: #059669;
+    }
+
+    .diff-row-empty {
+      background-color: #fbfbfa;
+      background-image: repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(0, 0, 0, 0.015) 6px, rgba(0, 0, 0, 0.015) 12px);
+    }
+
+    .diff-mark-del {
+      background-color: rgba(239, 68, 68, 0.28);
+      color: #991b1b;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
+    .diff-mark-add {
+      background-color: rgba(16, 185, 129, 0.28);
+      color: #065f46;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
+    .diff-empty-match {
+      padding: 3rem 1rem;
+      text-align: center;
+      color: var(--gray-500);
+      font-size: 13px;
+    }
+
+    /* 複製提示 Toast */
+    .copy-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      color: var(--primary);
+      padding: 0.6rem 1.2rem;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .copy-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 頂部導航列 -->
+  <header class="app-header">
+    <div class="brand-group">
+      <div class="brand-icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+      </div>
+      <div class="brand-title">
+        <span>文字比對工具</span>
+        <span class="brand-badge">Text Diff</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="btn-nav-link">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        返回開發者工具庫
+      </a>
+    </div>
+  </header>
+
+  <!-- 主要內容區 -->
+  <main class="app-main">
+    <!-- 工具控制列 -->
+    <div class="diff-toolbar">
+      <div class="diff-toolbar-group">
+        <div class="diff-mode-toggle" id="diffModeToggle">
+          <button type="button" class="diff-mode-btn active" data-mode="split" id="btnModeSplit">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 4H5a2 2 0 00-2 2v12a2 2 0 002 2h4m6-16h4a2 2 0 012 2v12a2 2 0 01-2 2h-4m-3-18v20" />
+            </svg>
+            並排模式 (Split)
+          </button>
+          <button type="button" class="diff-mode-btn" data-mode="inline" id="btnModeInline">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            行內模式 (Inline)
+          </button>
+        </div>
+
+        <label class="diff-option-check">
+          <input type="checkbox" id="diffOptIgnoreCase" />
+          忽略大小寫
+        </label>
+        <label class="diff-option-check">
+          <input type="checkbox" id="diffOptTrimSpace" />
+          忽略行首尾空白
+        </label>
+        <label class="diff-option-check">
+          <input type="checkbox" id="diffOptWordDiff" checked />
+          行內逐詞高亮
+        </label>
+      </div>
+
+      <div class="diff-toolbar-group">
+        <button type="button" class="btn btn-secondary" id="btnDiffSample">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          載入範例
+        </button>
+        <button type="button" class="btn btn-secondary" id="btnDiffSwap">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+          左右交換
+        </button>
+        <button type="button" class="btn btn-secondary" id="btnDiffClear">
+          清空
+        </button>
+        <button type="button" class="btn btn-primary" id="btnDiffCopy">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+          </svg>
+          複製比對結果
+        </button>
+      </div>
+    </div>
+
+    <!-- 文字輸入區 -->
+    <div class="diff-inputs-grid">
+      <div class="diff-input-card">
+        <div class="diff-input-header">
+          <span>原始文字 (Old Text)</span>
+          <span class="diff-input-stats" id="diffOldStats">0 行 · 0 字元</span>
+        </div>
+        <textarea id="diffOldInput" class="diff-textarea" placeholder="貼上或輸入原始文字..."></textarea>
+      </div>
+
+      <div class="diff-input-card">
+        <div class="diff-input-header">
+          <span>修改後文字 (New Text)</span>
+          <span class="diff-input-stats" id="diffNewStats">0 行 · 0 字元</span>
+        </div>
+        <textarea id="diffNewInput" class="diff-textarea" placeholder="貼上或輸入修改後的文字..."></textarea>
+      </div>
+    </div>
+
+    <!-- 差異摘要統計列 -->
+    <div class="diff-summary-bar">
+      <div class="diff-stat-badges" id="diffStatBadges">
+        <span class="diff-badge diff-badge-add">+ 0 新增</span>
+        <span class="diff-badge diff-badge-del">- 0 刪除</span>
+        <span class="diff-badge diff-badge-equal">= 0 相同</span>
+      </div>
+      <div style="font-size: 11px; color: var(--gray-500);" id="diffStatusNote">即時比對中</div>
+    </div>
+
+    <!-- 比對結果檢視區 -->
+    <div class="diff-viewer-wrapper" id="diffViewer">
+      <!-- 比對結果動態渲染於此 -->
+    </div>
+  </main>
+
+  <!-- 提示訊息 Toast -->
+  <div class="copy-toast" id="copyToast">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    </svg>
+    <span id="toastMsg">已成功複製！</span>
+  </div>
+
+  <script>
+    // DOM 元素快取
+    const oldInput = document.getElementById('diffOldInput');
+    const newInput = document.getElementById('diffNewInput');
+    const oldStats = document.getElementById('diffOldStats');
+    const newStats = document.getElementById('diffNewStats');
+    const viewer = document.getElementById('diffViewer');
+    const statBadges = document.getElementById('diffStatBadges');
+    const statusNote = document.getElementById('diffStatusNote');
+    const btnModeSplit = document.getElementById('btnModeSplit');
+    const btnModeInline = document.getElementById('btnModeInline');
+    const optIgnoreCase = document.getElementById('diffOptIgnoreCase');
+    const optTrimSpace = document.getElementById('diffOptTrimSpace');
+    const optWordDiff = document.getElementById('diffOptWordDiff');
+    const btnSample = document.getElementById('btnDiffSample');
+    const btnSwap = document.getElementById('btnDiffSwap');
+    const btnClear = document.getElementById('btnDiffClear');
+    const btnCopy = document.getElementById('btnDiffCopy');
+    const copyToast = document.getElementById('copyToast');
+    const toastMsg = document.getElementById('toastMsg');
+
+    let currentMode = 'split'; // 'split' | 'inline'
+    let debounceTimer = null;
+
+    // 顯示 Toast 訊息
+    function showToast(message) {
+      toastMsg.textContent = message;
+      copyToast.classList.add('show');
+      setTimeout(() => {
+        copyToast.classList.remove('show');
+      }, 2200);
+    }
+
+    // HTML 字元跳脫
+    const escapeHtml = (text) => {
+      if (typeof text !== 'string') return '';
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    };
+
+    // 分詞函數 (依單字、標點、空白分詞)
+    const tokenize = (str) => {
+      return str.match(/[\w\u4e00-\u9fa5]+|[^\s\w\u4e00-\u9fa5]+|\s+/g) || [str];
+    };
+
+    // LCS 動態規劃演算法
+    const computeLcsDiff = (arr1, arr2, eqFn) => {
+      const n = arr1.length;
+      const m = arr2.length;
+      const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+          if (eqFn(arr1[i], arr2[j])) {
+            dp[i + 1][j + 1] = dp[i][j] + 1;
+          } else {
+            dp[i + 1][j + 1] = Math.max(dp[i + 1][j], dp[i][j + 1]);
+          }
+        }
+      }
+
+      let i = n, j = m;
+      const result = [];
+      while (i > 0 || j > 0) {
+        if (i > 0 && j > 0 && eqFn(arr1[i - 1], arr2[j - 1])) {
+          result.push({ type: 'equal', oldVal: arr1[i - 1], newVal: arr2[j - 1], oldIdx: i - 1, newIdx: j - 1 });
+          i--;
+          j--;
+        } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+          result.push({ type: 'add', newVal: arr2[j - 1], newIdx: j - 1 });
+          j--;
+        } else if (i > 0 && (j === 0 || dp[i][j - 1] < dp[i - 1][j])) {
+          result.push({ type: 'del', oldVal: arr1[i - 1], oldIdx: i - 1 });
+          i--;
+        }
+      }
+      return result.reverse();
+    };
+
+    // 行內子字詞逐詞比對
+    const getWordDiffHtml = (delLine, addLine) => {
+      const tokensOld = tokenize(delLine);
+      const tokensNew = tokenize(addLine);
+      const tokenDiff = computeLcsDiff(tokensOld, tokensNew, (a, b) => a === b);
+
+      let oldHtml = '';
+      let newHtml = '';
+
+      for (const item of tokenDiff) {
+        if (item.type === 'equal') {
+          const escaped = escapeHtml(item.oldVal);
+          oldHtml += escaped;
+          newHtml += escaped;
+        } else if (item.type === 'del') {
+          oldHtml += `<mark class="diff-mark-del">${escapeHtml(item.oldVal)}</mark>`;
+        } else if (item.type === 'add') {
+          newHtml += `<mark class="diff-mark-add">${escapeHtml(item.newVal)}</mark>`;
+        }
+      }
+
+      return { oldHtml, newHtml };
+    };
+
+    // 核心比對與渲染函數
+    const updateDiff = () => {
+      const text1 = oldInput.value;
+      const text2 = newInput.value;
+
+      const lines1 = text1.split(/\r?\n/);
+      const lines2 = text2.split(/\r?\n/);
+
+      // 更新統計字數與行數
+      oldStats.textContent = `${text1 ? lines1.length : 0} 行 · ${text1.length} 字元`;
+      newStats.textContent = `${text2 ? lines2.length : 0} 行 · ${text2.length} 字元`;
+
+      if (text1 === '' && text2 === '') {
+        viewer.innerHTML = `<div class="diff-empty-match">請在上方「原始文字」與「修改後文字」輸入或貼上內容以開始比對。</div>`;
+        statBadges.innerHTML = `
+          <span class="diff-badge diff-badge-add">+ 0 新增</span>
+          <span class="diff-badge diff-badge-del">- 0 刪除</span>
+          <span class="diff-badge diff-badge-equal">= 0 相同</span>
+        `;
+        statusNote.textContent = '等待輸入';
+        return;
+      }
+
+      const ignoreCase = optIgnoreCase.checked;
+      const trimSpace = optTrimSpace.checked;
+      const wordDiff = optWordDiff.checked;
+
+      const normalize = (line) => {
+        let s = line;
+        if (trimSpace) s = s.trim();
+        if (ignoreCase) s = s.toLowerCase();
+        return s;
+      };
+
+      const rawDiff = computeLcsDiff(lines1, lines2, (a, b) => normalize(a) === normalize(b));
+
+      let addedCount = 0;
+      let removedCount = 0;
+      let equalCount = 0;
+
+      for (const op of rawDiff) {
+        if (op.type === 'add') addedCount++;
+        else if (op.type === 'del') removedCount++;
+        else equalCount++;
+      }
+
+      statBadges.innerHTML = `
+        <span class="diff-badge diff-badge-add">+ ${addedCount} 新增</span>
+        <span class="diff-badge diff-badge-del">- ${removedCount} 刪除</span>
+        <span class="diff-badge diff-badge-equal">= ${equalCount} 相同</span>
+      `;
+
+      if (addedCount === 0 && removedCount === 0) {
+        statusNote.textContent = '完全一致';
+        viewer.innerHTML = `
+          <div class="diff-empty-match" style="color: #059669; font-weight: 600; font-size: 14px;">
+            🎉 兩段文字內容完全一致，無任何差異！
+          </div>
+        `;
+        return;
+      }
+
+      statusNote.textContent = `共 ${rawDiff.length} 處對照行`;
+
+      if (currentMode === 'split') {
+        // 並排模式渲染
+        const rows = [];
+        let i = 0;
+        while (i < rawDiff.length) {
+          const op = rawDiff[i];
+          if (op.type === 'equal') {
+            rows.push({
+              leftNum: op.oldIdx + 1,
+              leftHtml: escapeHtml(op.oldVal),
+              leftType: 'equal',
+              rightNum: op.newIdx + 1,
+              rightHtml: escapeHtml(op.newVal),
+              rightType: 'equal'
+            });
+            i++;
+          } else {
+            // 收集連續的 del 與 add
+            const dels = [];
+            const adds = [];
+            while (i < rawDiff.length && rawDiff[i].type !== 'equal') {
+              if (rawDiff[i].type === 'del') dels.push(rawDiff[i]);
+              else if (rawDiff[i].type === 'add') adds.push(rawDiff[i]);
+              i++;
+            }
+            const maxLen = Math.max(dels.length, adds.length);
+            for (let k = 0; k < maxLen; k++) {
+              const d = dels[k];
+              const a = adds[k];
+              let leftHtml = '';
+              let rightHtml = '';
+
+              if (d && a && wordDiff) {
+                const pair = getWordDiffHtml(d.oldVal, a.newVal);
+                leftHtml = pair.oldHtml;
+                rightHtml = pair.newHtml;
+              } else {
+                if (d) leftHtml = escapeHtml(d.oldVal);
+                if (a) rightHtml = escapeHtml(a.newVal);
+              }
+
+              rows.push({
+                leftNum: d ? d.oldIdx + 1 : '',
+                leftHtml: leftHtml,
+                leftType: d ? 'del' : 'empty',
+                rightNum: a ? a.newIdx + 1 : '',
+                rightHtml: rightHtml,
+                rightType: a ? 'add' : 'empty'
+              });
+            }
+          }
+        }
+
+        let html = `
+          <table class="diff-split-table">
+            <colgroup>
+              <col style="width: 44px;">
+              <col style="width: calc(50% - 44px);">
+              <col style="width: 44px;">
+              <col style="width: calc(50% - 44px);">
+            </colgroup>
+            <thead>
+              <tr>
+                <th colspan="2" class="diff-left-content">
+                  <div class="diff-split-pane-header">
+                    <span>原始文字 (Old)</span>
+                    <span style="font-weight: normal; font-size: 11px;">行數: ${lines1.length}</span>
+                  </div>
+                </th>
+                <th colspan="2">
+                  <div class="diff-split-pane-header">
+                    <span>修改後文字 (New)</span>
+                    <span style="font-weight: normal; font-size: 11px;">行數: ${lines2.length}</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        for (const r of rows) {
+          const leftClass = r.leftType === 'del' ? 'diff-row-del' : (r.leftType === 'empty' ? 'diff-row-empty' : '');
+          const rightClass = r.rightType === 'add' ? 'diff-row-add' : (r.rightType === 'empty' ? 'diff-row-empty' : '');
+
+          html += `
+            <tr>
+              <td class="diff-line-num ${leftClass}">${r.leftNum}</td>
+              <td class="diff-line-content diff-left-content ${leftClass}">${r.leftHtml || (r.leftType === 'empty' ? '&nbsp;' : '')}</td>
+              <td class="diff-line-num ${rightClass}">${r.rightNum}</td>
+              <td class="diff-line-content ${rightClass}">${r.rightHtml || (r.rightType === 'empty' ? '&nbsp;' : '')}</td>
+            </tr>
+          `;
+        }
+
+        html += `</tbody></table>`;
+        viewer.innerHTML = html;
+
+      } else {
+        // 行內模式渲染 (Inline Mode)
+        let html = `
+          <table class="diff-inline-table">
+            <colgroup>
+              <col style="width: 42px;">
+              <col style="width: 42px;">
+              <col style="width: 24px;">
+              <col>
+            </colgroup>
+            <tbody>
+        `;
+
+        let i = 0;
+        while (i < rawDiff.length) {
+          const op = rawDiff[i];
+          if (op.type === 'equal') {
+            html += `
+              <tr>
+                <td class="diff-inline-num">${op.oldIdx + 1}</td>
+                <td class="diff-inline-num">${op.newIdx + 1}</td>
+                <td class="diff-inline-sign">&nbsp;</td>
+                <td>${escapeHtml(op.oldVal)}</td>
+              </tr>
+            `;
+            i++;
+          } else {
+            const dels = [];
+            const adds = [];
+            while (i < rawDiff.length && rawDiff[i].type !== 'equal') {
+              if (rawDiff[i].type === 'del') dels.push(rawDiff[i]);
+              else if (rawDiff[i].type === 'add') adds.push(rawDiff[i]);
+              i++;
+            }
+
+            if (dels.length === adds.length && wordDiff) {
+              for (let k = 0; k < dels.length; k++) {
+                const pair = getWordDiffHtml(dels[k].oldVal, adds[k].newVal);
+                html += `
+                  <tr class="diff-row-del">
+                    <td class="diff-inline-num">${dels[k].oldIdx + 1}</td>
+                    <td class="diff-inline-num"></td>
+                    <td class="diff-inline-sign">-</td>
+                    <td>${pair.oldHtml}</td>
+                  </tr>
+                `;
+              }
+              for (let k = 0; k < adds.length; k++) {
+                const pair = getWordDiffHtml(dels[k].oldVal, adds[k].newVal);
+                html += `
+                  <tr class="diff-row-add">
+                    <td class="diff-inline-num"></td>
+                    <td class="diff-inline-num">${adds[k].newIdx + 1}</td>
+                    <td class="diff-inline-sign">+</td>
+                    <td>${pair.newHtml}</td>
+                  </tr>
+                `;
+              }
+            } else {
+              for (const d of dels) {
+                html += `
+                  <tr class="diff-row-del">
+                    <td class="diff-inline-num">${d.oldIdx + 1}</td>
+                    <td class="diff-inline-num"></td>
+                    <td class="diff-inline-sign">-</td>
+                    <td>${escapeHtml(d.oldVal)}</td>
+                  </tr>
+                `;
+              }
+              for (const a of adds) {
+                html += `
+                  <tr class="diff-row-add">
+                    <td class="diff-inline-num"></td>
+                    <td class="diff-inline-num">${a.newIdx + 1}</td>
+                    <td class="diff-inline-sign">+</td>
+                    <td>${escapeHtml(a.newVal)}</td>
+                  </tr>
+                `;
+              }
+            }
+          }
+        }
+
+        html += `</tbody></table>`;
+        viewer.innerHTML = html;
+      }
+    };
+
+    // 防抖觸發
+    const triggerDiff = () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(updateDiff, 80);
+    };
+
+    // 範例資料載入
+    const loadSample = () => {
+      oldInput.value = `// 伺服器配置 v1.0
+{
+  "service": "Jason Tools",
+  "version": "1.0.4",
+  "environment": "staging",
+  "port": 8080,
+  "enableSsl": true,
+  "allowedOrigins": [
+    "https://local.dev",
+    "https://staging.dev"
+  ],
+  "cacheDuration": 3600,
+  "database": {
+    "host": "127.0.0.1",
+    "timeout": 30
+  }
+}`;
+
+      newInput.value = `// 伺服器配置 v2.0 (正式版上線)
+{
+  "service": "Jason Tools",
+  "version": "2.0.0",
+  "environment": "production",
+  "port": 8443,
+  "enableSsl": true,
+  "allowedOrigins": [
+    "https://jason.tools",
+    "https://local.dev",
+    "https://staging.dev"
+  ],
+  "cacheDuration": 7200,
+  "database": {
+    "host": "db-cluster.internal",
+    "timeout": 45,
+    "poolSize": 20
+  }
+}`;
+      updateDiff();
+    };
+
+    // 綁定事件
+    oldInput.addEventListener('input', triggerDiff);
+    newInput.addEventListener('input', triggerDiff);
+
+    optIgnoreCase.addEventListener('change', updateDiff);
+    optTrimSpace.addEventListener('change', updateDiff);
+    optWordDiff.addEventListener('change', updateDiff);
+
+    btnModeSplit.addEventListener('click', () => {
+      currentMode = 'split';
+      btnModeSplit.classList.add('active');
+      btnModeInline.classList.remove('active');
+      updateDiff();
+    });
+
+    btnModeInline.addEventListener('click', () => {
+      currentMode = 'inline';
+      btnModeInline.classList.add('active');
+      btnModeSplit.classList.remove('active');
+      updateDiff();
+    });
+
+    btnSample.addEventListener('click', loadSample);
+
+    btnSwap.addEventListener('click', () => {
+      const temp = oldInput.value;
+      oldInput.value = newInput.value;
+      newInput.value = temp;
+      updateDiff();
+      showToast("左右文字已對調！");
+    });
+
+    btnClear.addEventListener('click', () => {
+      oldInput.value = '';
+      newInput.value = '';
+      updateDiff();
+      showToast("已清空比對輸入！");
+    });
+
+    btnCopy.addEventListener('click', () => {
+      const text1 = oldInput.value;
+      const text2 = newInput.value;
+      if (!text1 && !text2) {
+        showToast("沒有可複製的比對內容！");
+        return;
+      }
+
+      const lines1 = text1.split(/\r?\n/);
+      const lines2 = text2.split(/\r?\n/);
+      const rawDiff = computeLcsDiff(lines1, lines2, (a, b) => a === b);
+
+      let diffText = `--- a/original.txt\n+++ b/modified.txt\n`;
+      for (const op of rawDiff) {
+        if (op.type === 'equal') diffText += `  ${op.oldVal}\n`;
+        else if (op.type === 'del') diffText += `- ${op.oldVal}\n`;
+        else if (op.type === 'add') diffText += `+ ${op.newVal}\n`;
+      }
+
+      navigator.clipboard.writeText(diffText);
+      showToast("已複製比對結果 (Unified Diff)！");
+    });
+
+    // 預設載入範例
+    loadSample();
+  </script>
+</body>
+
+</html>

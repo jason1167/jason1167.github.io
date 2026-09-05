@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>String Magic 資料格式範例 | Sample Data</title>
+  <meta name="description" content="String Magic 字串魔法師的測試資料範例，包含 URL Query String、CSV、JSON、XML Node 與 XML Attribute 格式。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ==========================================================================
+       UIUX Style 規範：米色(#F5F5DC)、藍色(#006699)、灰色，7 種文字尺寸
+       ========================================================================== */
+    :root {
+      --color-beige-base: #F5F5DC;
+      --color-beige-subtle: #fcfbfa;
+      --color-beige-light: #f7f6f0;
+      --color-beige-border: #e8e6dc;
+
+      --primary: #006699;
+      --primary-hover: #00527c;
+      --primary-light: #e6f0f5;
+      --primary-glow: rgba(0, 102, 153, 0.12);
+
+      --gray-900: #1f2937;
+      --gray-700: #374151;
+      --gray-500: #6b7280;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+      --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+      background-color: var(--color-beige-subtle);
+      color: var(--gray-900);
+      min-height: 100vh;
+      line-height: 1.6;
+      font-size: 16px;
+      padding: 2.5rem 1.25rem;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* 頂部導引與返回 */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--color-beige-border);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      border: 1px solid var(--color-beige-border);
+      transition: all 0.2s;
+    }
+
+    .back-link:hover {
+      background: var(--color-beige-light);
+      border-color: var(--primary);
+    }
+
+    .back-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .header-title {
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--gray-500);
+    }
+
+    /* 範例卡片群組 */
+    .sample-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .sample-card {
+      background: #ffffff;
+      border: 1px solid var(--color-beige-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .sample-card:hover {
+      border-color: rgba(0, 102, 153, 0.4);
+    }
+
+    .sample-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 1.25rem;
+      background: var(--color-beige-light);
+      border-bottom: 1px solid var(--color-beige-border);
+    }
+
+    .sample-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sample-badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: #ffffff;
+      border: 1px solid var(--color-beige-border);
+      color: var(--gray-700);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .copy-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .code-container {
+      position: relative;
+      background: #fafafa;
+      padding: 1.1rem 1.25rem;
+      overflow-x: auto;
+    }
+
+    pre {
+      margin: 0;
+      font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--gray-900);
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* 複製成功提示 Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #ffffff;
+      border: 1px solid var(--color-beige-border);
+      color: var(--primary);
+      padding: 0.6rem 1.25rem;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- 頂部返回連結 -->
+    <div class="top-bar">
+      <a href="index.html" class="back-link">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        返回 String Magic 工具
+      </a>
+      <span style="font-size: 14px; color: var(--gray-500);">測試資料範例庫</span>
+    </div>
+
+    <!-- 標題區域 -->
+    <header class="header-title">
+      <h1>資料格式測試範例</h1>
+      <p class="subtitle">供 String Magic (字串魔法師) 進行拆解 (Split)、排序 (Sort) 及重組 (Join) 驗證使用，可直接一鍵複製。</p>
+    </header>
+
+    <!-- 範例清單 -->
+    <div class="sample-list">
+
+      <!-- 1. URL Query String -->
+      <section class="sample-card">
+        <div class="sample-card-header">
+          <div class="sample-title-group">
+            <span class="sample-badge">URL</span>
+            <h2>URL Query String 範例</h2>
+          </div>
+          <button class="copy-btn" onclick="copySample('code-url', this)">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            複製
+          </button>
+        </div>
+        <div class="code-container">
+          <pre id="code-url">A=111&C=222&E=333&B=444&D=555</pre>
+        </div>
+      </section>
+
+      <!-- 2. CSV String -->
+      <section class="sample-card">
+        <div class="sample-card-header">
+          <div class="sample-title-group">
+            <span class="sample-badge">CSV</span>
+            <h2>CSV 範例文字</h2>
+          </div>
+          <button class="copy-btn" onclick="copySample('code-csv', this)">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            複製
+          </button>
+        </div>
+        <div class="code-container">
+          <pre id="code-csv">aaa,bbb,ccc,ddd,eee,fff,ggg,hhh,iii,jjj</pre>
+        </div>
+      </section>
+
+      <!-- 3. JSON String -->
+      <section class="sample-card">
+        <div class="sample-card-header">
+          <div class="sample-title-group">
+            <span class="sample-badge">JSON</span>
+            <h2>JSON String 範例文字</h2>
+          </div>
+          <button class="copy-btn" onclick="copySample('code-json', this)">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            複製
+          </button>
+        </div>
+        <div class="code-container">
+          <pre id="code-json">{
+  "AAA": 111,
+  "CCC": "222",
+  "BBB": "333",
+  "EEE": 444,
+  "DDD": 555
+}</pre>
+        </div>
+      </section>
+
+      <!-- 4. XML Node String -->
+      <section class="sample-card">
+        <div class="sample-card-header">
+          <div class="sample-title-group">
+            <span class="sample-badge">XML Node</span>
+            <h2>XML Node String 範例文字</h2>
+          </div>
+          <button class="copy-btn" onclick="copySample('code-xml-node', this)">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            複製
+          </button>
+        </div>
+        <div class="code-container">
+          <pre id="code-xml-node">&lt;Root&gt;
+  &lt;AAA&gt;111&lt;/AAA&gt;
+  &lt;CCC&gt;222&lt;/CCC&gt;
+  &lt;BBB&gt;333&lt;/BBB&gt;
+  &lt;EEE&gt;444&lt;/EEE&gt;
+  &lt;DDD&gt;555&lt;/DDD&gt;
+&lt;/Root&gt;</pre>
+        </div>
+      </section>
+
+      <!-- 5. XML Attribute String -->
+      <section class="sample-card">
+        <div class="sample-card-header">
+          <div class="sample-title-group">
+            <span class="sample-badge">XML Attr</span>
+            <h2>XML Attribute String 範例文字</h2>
+          </div>
+          <button class="copy-btn" onclick="copySample('code-xml-attr', this)">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            複製
+          </button>
+        </div>
+        <div class="code-container">
+          <pre id="code-xml-attr">&lt;ack lineno='1557' statuscode='0' errmsg='' make='Y' unino='82.8327117' pvc_no='201' orddate='20200407' ordtime='170015138' bhno='0050' fcm_no='F005000' ordno='q0215' exectype='0' excode='T1' sym='MXFD0' bs='S' price='10048.000000' qty='5' price9b='0.000000' price9s='0.000000' qty9b='0' qty9s='0' acno='9810490' acnof='7' ordtype='L' ordflag='R' opencode='O' source='ZZ' ftrid1='MXF' ftrmth1='202004' ftrprc1='0.000000' callput1='F' bs1='S' ftrid2='' ftrmth2='' ftrprc2='0.000000' callput2='' bs2='' cur='NTT' msgseqnum='394' msgtime='170015139' msgtype='R02' sessionid='11' lastpx='0.000000' lastqty='0' px_subtotal='0.000000' cumqty='0' leavesqty='5' before_qty='5' leg_px1='0.000000' leg_px2='0.000000' leg_qty1='0' leg_qty2='0' orgtranstime='170015138' transacttime='170015138' target_id='4' uniq_id='1513' rpt_seq='394' protocol_type='1' system_type='21' net_seqno='{B82B9EA5-2595-4C11-B556-2201AD2330A4}' sym1='MXFD0' sym2='' spread='0' apcode='P' billdate='20200408' trader='' subacct='' groups='' openorg='A' subtype='I' cust_data='172.16.5.42' force='' canforce='' canreverse='0' ibbkno='7790' ibcseq='9810490' ibtsale='028' tsale='790' userid='' pmt1='37000' rmt1='0' prprice1='0.000000' fee1='0' tax1='0' pmt2='0' rmt2='0' prprice2='0.000000' fee2='0' tax2='0' pmt3='0' rmt3='0' rmti1='0' rmto1='0' mfee1='0' mtax1='0' rmti2='0' rmto2='0' mfee2='0' mtax2='0' dec='2' fcm_id='82' cm_id='82' costqty='0' posiqty='0'/&gt;</pre>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- 提示 Toast -->
+  <div class="toast" id="copyToast">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    </svg>
+    <span>已複製到剪貼簿！</span>
+  </div>
+
+  <script>
+    function copySample(id, btn) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      
+      const text = el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('copyToast');
+        toast.classList.add('show');
+        const originalText = btn.innerHTML;
+        btn.style.background = 'var(--primary)';
+        btn.style.color = '#ffffff';
+        
+        setTimeout(() => {
+          toast.classList.remove('show');
+          btn.style.background = '';
+          btn.style.color = '';
+        }, 1800);
+      });
+    }
+  </script>
+</body>
+</html>

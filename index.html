@@ -1,428 +1,334 @@
 <!DOCTYPE html>
-<html lang="en" dir=" auto" data-theme="light">
+<html lang="zh-TW">
 
 <head>
-	<meta name="generator" content="Hugo 0.160.1"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>Jason</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jason's Hub | 首頁入口</title>
+  <meta name="description" content="Jason 的專屬工作入口網站與高效率線上實用工具庫。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    /* ==========================================================================
+       UIUX Style 規範定義：
+       1. 色彩系統：米色(#F5F5DC)、藍色(#006699)、灰色
+       2. 風格：MUJI 簡約 + Microsoft Fluent + Claude + Linear 融合
+       3. Typography：微軟正黑體, Inter, Noto Sans TC
+          限定 7 種尺寸：32px, 24px, 20px, 18px, 16px, 14px, 12px
+       4. Icon 尺寸：16px, 20px, 24px (Lucide 風格)
+       ========================================================================== */
 
-<meta name="description" content="">
-<meta name="author" content="Jason">
-<link rel="canonical" href="http://localhost:1313/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="rss">
-<link rel="alternate" type="application/json" href="http://localhost:1313/index.json" title="json">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
+    :root {
+      --color-beige-base: #F5F5DC;
+      --color-beige-subtle: #fcfbfa;
+      --color-beige-light: #f7f6f0;
+      --color-beige-border: #e8e6dc;
 
-    </style>
-</noscript>
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
+      --primary: #006699;
+      --primary-hover: #00527c;
+      --primary-light: #e6f0f5;
+      --primary-glow: rgba(0, 102, 153, 0.12);
+
+      --gray-900: #1f2937;
+      --gray-700: #374151;
+      --gray-500: #6b7280;
+      --gray-300: #d1d5db;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+      --shadow-card-hover: 0 10px 20px -3px rgba(0, 102, 153, 0.08), 0 3px 6px -1px rgba(0, 0, 0, 0.03);
+
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-</script>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-N6V2FN89"></script>
-      <script>
-        var doNotTrack = false;
-        if ( true ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'GTM-N6V2FN89');
-        }
-      </script><meta property="og:url" content="http://localhost:1313/">
-  <meta property="og:site_name" content="Jason">
-  <meta property="og:title" content="Jason">
-  <meta property="og:locale" content="zh-tw">
-  <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jason">
-<meta name="twitter:description" content="">
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Jason",
-  "url": "http://localhost:1313/",
-  "description": "",
-  "logo": "http://localhost:1313/favicon.ico",
-  "sameAs": [
-      "https://github.com/jason1167", "/index.xml"
-  ]
-}
-</script>
-    
-<script>(function (w, d, s, l, i) {
-        w[l] = w[l] || []; w[l].push({
-            'gtm.start':
-                new Date().getTime(), event: 'gtm.js'
-        }); var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-N6V2FN89');</script>
+    body {
+      font-family: 'Inter', 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+      background-color: var(--color-beige-subtle);
+      color: var(--gray-900);
+      min-height: 100vh;
+      line-height: 1.6;
+      font-size: 16px;
+      /* 規範尺寸: 16 */
+      display: flex;
+      flex-direction: column;
+      background-image:
+        radial-gradient(circle at 12% 12%, rgba(245, 245, 220, 0.6) 0%, transparent 40%),
+        radial-gradient(circle at 88% 88%, rgba(0, 102, 153, 0.04) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
 
+    /* 頂部導航列 */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 2rem;
+      border-bottom: 1px solid var(--color-beige-border);
+      background-color: rgba(255, 255, 255, 0.92);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--gray-900);
+      font-weight: 700;
+      font-size: 20px;
+      /* 規範尺寸: 20 */
+      letter-spacing: -0.01em;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px var(--primary-glow);
+    }
+
+    .brand-icon svg {
+      width: 20px;
+      /* 規範 Icon 尺寸: 20 */
+      height: 20px;
+      stroke: #ffffff;
+      stroke-width: 2;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      /* 規範尺寸: 14 */
+      font-weight: 500;
+      color: var(--primary);
+      background: var(--color-beige-light);
+      border: 1px solid var(--color-beige-border);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .nav-btn-outline:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .nav-btn-outline svg {
+      width: 16px;
+      /* 規範 Icon 尺寸: 16 */
+      height: 16px;
+    }
+
+    /* 主要內容區 */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 3rem 1.5rem;
+      text-align: center;
+    }
+
+    /* 英雄標題區 */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.95rem;
+      border-radius: var(--radius-full);
+      background: var(--color-beige-light);
+      border: 1px solid var(--color-beige-border);
+      color: var(--gray-700);
+      font-size: 14px;
+      /* 規範尺寸: 14 */
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    h1 {
+      font-size: 32px;
+      /* 規範尺寸: 32 */
+      font-weight: 700;
+      color: var(--gray-900);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 1rem;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      /* 規範尺寸: 16 */
+      color: var(--gray-500);
+      max-width: 620px;
+      margin: 0 auto 2.25rem auto;
+      line-height: 1.6;
+    }
+
+    /* 核心 CTA 按鈕群組 */
+    .cta-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .btn-cta-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 2rem;
+      background: var(--primary);
+      color: #ffffff;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      /* 規範尺寸: 16 */
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 12px var(--primary-glow);
+      transition: var(--transition);
+      border: 1px solid transparent;
+    }
+
+    .btn-cta-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0, 102, 153, 0.2);
+    }
+
+    .btn-cta-primary svg {
+      width: 20px;
+      /* 規範 Icon 尺寸: 20 */
+      height: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-cta-primary:hover svg {
+      transform: translateX(3px);
+    }
+
+
+    /* 頁尾 */
+    .footer {
+      text-align: center;
+      padding: 1.5rem;
+      border-top: 1px solid var(--color-beige-border);
+      background: #ffffff;
+      font-size: 12px;
+      /* 規範尺寸: 12 */
+      color: var(--gray-500);
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 0.8rem 1.25rem;
+      }
+
+      .main-content {
+        padding: 2.5rem 1.25rem;
+      }
+
+      h1 {
+        font-size: 24px;
+        /* 規範尺寸: 24 */
+      }
+    }
+  </style>
 </head>
 
-<body class="list" id="top">
-    
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N6V2FN89" height="0" width="0"
-                style="display:none;visibility:hidden"></iframe></noscript>
+<body>
 
-        <header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Jason (Alt + H)">Jason</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="http://localhost:1313/" title="🏠 首頁">
-                    <span class="active">🏠 首頁</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/ailab/" title="AI Lab">
-                    <span>AI Lab</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main"> 
-<article class="first-entry home-info">
-    <header class="entry-header">
-        <h1>歡迎來到我的部落格 👋</h1>
-    </header>
-    <div class="entry-content">
-        <ul>
-<li>這裡分享技術文章</li>
-<li>程式開發心得</li>
-<li>生活隨筆</li>
-</ul>
-
-    </div>
-    <footer class="entry-footer">
-        <div class="social-icons" >
-    <a href="https://github.com/jason1167" target="_blank" rel="noopener noreferrer me"
-        title="Github">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <path
-        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-    </path>
-</svg>
-    </a>
-    <a href="/index.xml" target="_blank" rel="noopener noreferrer me"
-        title="Rss">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 11a9 9 0 0 1 9 9" />
-    <path d="M4 4a16 16 0 0 1 16 16" />
-    <circle cx="5" cy="19" r="1" />
-</svg>
-    </a>
-</div>
-
-    </footer>
-</article>
-
-
-<nav class="home-categories">
-  <span class="category-label">分類：</span>
-    
-      <a href="/categories/ai/">
-        ai <span class="count">(1) </span>
-      </a>/
-    
-      <a href="/categories/%E4%B8%80%E8%88%AC/">
-        一般 <span class="count">(1) </span>
-      </a>/
-    
-      <a href="/categories/%E7%B3%BB%E7%B5%B1/">
-        系統 <span class="count">(5) </span>
-      </a>/
-    
-</nav>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">AILab
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>AI First
-「有想法 &#43; 很會設計 &#43; 很會寫程式」，是做產品的完美組合。
-當 AI 日趨成熟，就會讓「有一點想法 &#43; 會一點設計 &#43; 會一點點程式」的人，也能做出很不錯的產品。
-尤其是網頁類型，即便是剛接觸 AI 的人，也能很快做出滿意的產品。
-玩了一陣子的 AI，不管是好玩或是工作上的專案， 只要不是太極端專業領域的產品或功能，AI 幾乎都能做到，且不輸資深工程師。
-AI 實在太好玩了，所以就忘了寫文章這件事了&gt;&lt;
-為了記錄自己做的 AI 產品，所以就建了子網站：AI Lab
-</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-22 09:50:41 +0800 CST'>March 22, 2026</span>&nbsp;·&nbsp;<span>Jason</span></footer>
-  <a class="entry-link" aria-label="post link to AILab" href="http://localhost:1313/posts/ailab/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">把 GitHub 當成 Blog 網站
-      <span class="entry-hint" title="Draft">
-        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
-          <path
-            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+  <!-- 頂部導航 -->
+  <header class="navbar">
+    <a href="index.html" class="brand">
+      <div class="brand-icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
-      </span>
-    </h2>
+      </div>
+      <span>Jason's Tools</span>
+    </a>
+    <div class="nav-actions">
+      <a href="Tools/index.html" class="nav-btn-outline">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+        進入工具箱
+      </a>
+    </div>
   </header>
-  <div class="entry-content">
-    <p>還沒完成
-</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-12-22 22:45:51 +0800 CST'>December 22, 2025</span>&nbsp;·&nbsp;<span>Jason</span></footer>
-  <a class="entry-link" aria-label="post link to 把 GitHub 當成 Blog 網站" href="http://localhost:1313/posts/githubblog/"></a>
-</article>
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Hugo 新增網頁
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>新增網頁 1 hugo new posts/hello.md 網頁的設定 (Front Matter Variables) 在 Front Matter 中有許多可設置變數，可參考 https://gohugo.io/content-management/front-matter/
-介紹幾個常用的參數：
-定義文章標題、描述、作者
-title 文章標題
-description 文章概要
-author 文章作者
-定義文章分類、標籤、關鍵字
-categories 文章分類
-tags 文章標籤
-keywords 關鍵字
-定義文章類型、日期、狀態
-type 文章類型，通常為 top level 資料夾名稱
-date 文章建立日期，若未設置 publishDate 的情況下，文章會依此作為發布日期時間 (2025-12-20T11:00:00&#43;08:00)
-draft 草稿狀態
-publishDate 預定發布日期，若是未來時間，須下 hugo server -F 才看得到文章
-expiryDate 到期日期 (2025-12-20T15:00:00&#43;08:00)
-Front Matter 自定義參數
-我們使用佈景之所以可以透過 Front Matter 微調一些文章佈局設定，就是新增了各種「自訂參數」，讓 hugo 語法可以從你設置的參數去套用 layout 的變化，舉例來說 (以下為佈景提供的設置)：
-metaAlignment 設置文章 title 的對齊位置
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-12-21 08:47:00 +0800 CST'>December 21, 2025</span>&nbsp;·&nbsp;<span>Jason</span></footer>
-  <a class="entry-link" aria-label="post link to Hugo 新增網頁" href="http://localhost:1313/posts/hugonewwebpage/"></a>
-</article>
+  <!-- 主要內容區 -->
+  <main class="main-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      即開即用 · 本地運算 · 高效純粹
+    </div>
+    <h1>現代化個人開發工具庫</h1>
+    <p class="hero-desc">
+      整合字串多格式拆解 (String Magic)、雜湊與編碼轉換、JSON 格式化等必備線上工具，所有資料皆在本地端運算，安全有保障。
+    </p>
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Hugo 建置/執行/編譯網站
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>建新網站 1 2 3 4 5 # 設定檔使用 toml 格式 (預設) hugo new site &lt;新目錄名字&gt; # 設定檔使用 yaml 格式 hugo new site &lt;新目錄名字&gt; --format yaml https://gohugo.io/getting-started/quick-start/ 參考：專案結構說明
-https://gohugo.io/getting-started/directory-structure/ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 專案結構 myblog/ ├─ archetypes/ 新內容的模板 ├─ assets/ 靜態檔案 (如：圖片、js、css) ├─ content/ 內容 │ └─ posts/ 文章存放處 ├─ data/ 資料檔 (如：JSON, YAML, TOML) ├─ i18n/ 多語言網站的翻譯表 ├─ layouts/ 將內容、資料和資源轉換為完整網站的範本 ├─ public/ 已發佈的網站 ├─ resources/ Hugo資源resources管道的快取輸出 (包含 CSS 和圖片) ├─ static/ 包含網站建置時將被複製到public目標目錄的檔案 (如 favicon.ico、圖片) ├─ themes/ 網站樣式主題 │ └─ LoveIt/ └─ hugo.toml site configuration 加入 Hugo theme（使用 git submodule 方式） Hugo 主題網站：https://themes.gohugo.io/
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-12-21 08:39:00 +0800 CST'>December 21, 2025</span>&nbsp;·&nbsp;<span>Jason</span></footer>
-  <a class="entry-link" aria-label="post link to Hugo 建置/執行/編譯網站" href="http://localhost:1313/posts/hugobuild/"></a>
-</article>
+    <!-- 核心入口連結按鈕 -->
+    <div class="cta-container">
+      <a href="Tools/index.html" class="btn-cta-primary" id="btnEnterTools">
+        <span>開發工具庫</span>
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+  </main>
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Hugo 軟體安裝
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>什麼是 Hugo 一套網站製作的系統，只需使用 Markdown 語法，即可製作網站/網頁，且有豐富的工具與Theme，讓網頁製作更完整。
-最大特點是所有的網頁內容都由你來掌握，不會被平台所綁架。
-Windows 環境安裝 安裝 GoLang (Hugo 是跑在 GoLang) 1 2 # 使用 winget 工具安裝 winget install GoLang.Go 安裝 Hugo.Hugo.Extended 1 2 3 4 5 # 利用 winget 安裝 winget install Hugo.Hugo.Extended # 測試是否安裝完成 hugo version 參考
-安裝：https://gohugo.io/installation/windows/
-基本用法：https://gohugo.io/getting-started/usage/
-CLI：https://gohugo.io/commands/hugo/#options
-若要將您的網站發佈到其他目錄，請使用相應的**&#43;&#43;[\--destination](https://gohugo.io/commands/hugo/#options)&#43;&#43;標誌或&#43;&#43;[publishDir](https://gohugo.io/configuration/all/#publishdir)&#43;&#43;**在您的網站配置中進行設定 </p>
-  </div>
-  <footer class="entry-footer"><span title='2025-12-20 22:45:01 +0800 CST'>December 20, 2025</span>&nbsp;·&nbsp;<span>Jason</span></footer>
-  <a class="entry-link" aria-label="post link to Hugo 軟體安裝" href="http://localhost:1313/posts/hugoinstall/"></a>
-</article>
+  <!-- 頁尾 -->
+  <footer class="footer">
+    <span>© Jason</span>
+  </footer>
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Hugo &#43; GitHub = Blog 網站
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>雖然自己也會寫程式，不過這次的重點是要寫Blog，所以不想花太多時間寫程式，而是專注在文章撰寫上，所以想找個不錯的工具來用。
-對 Blog 的工具要求 對文章所有權能完全掌握 —&gt; 不被平台綁架
-可以直接使用 Markdown 寫文章 —&gt; 省時
-免費
-我用這些工具組合，來做 Blog 網站 Hugo 建置網站
-GitHub 發佈網站
-OneDrive 存放 Hugo 網站原始檔，方便多裝置同步
-Heptabase 用來寫文章，組織思緒
-Powershell 用來做簡單的自動化 (copy files &amp; Git CLI)
-Hugo &#43; GitHub = Blog 網站 在這次研究裡，踩了不少坑，Internet上的文章有些資訊過時，有些是沒有講到踩坑的事。所以就趁這次的架站經驗，當成 Blog 的起點。
-建置的步驟 安裝 Hugo 及 GoLang 軟體
-新增 Hugo 網站及Theme
-Hugo 建置/執行/編譯網站
-部署到 GitHub 當成 Blog 網站
-後面就是如何撰寫網頁
-後面會逐一介紹，一次專注一件事。
-</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-12-20 22:40:52 +0800 CST'>December 20, 2025</span>&nbsp;·&nbsp;<span>Jason</span></footer>
-  <a class="entry-link" aria-label="post link to Hugo &#43; GitHub = Blog 網站" href="http://localhost:1313/posts/hugogithubblog/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">為什麼要再繼續寫文章
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>中斷文章撰寫許久，現在要重新啟動 (不知這次會撐多久)。
-寫不寫文章，其實很糾結，因為寫文章很耗時間，而人生要做的事很多，就這樣寫寫停停 (已停很久)。
-這幾年來，看了很多 Youtube/Podcast/書/文章… (我為什麼鼓勵工程師寫 blog：剛好手邊有這篇，就推薦一下)，也包含投資領域常說的要寫投資日誌，其實都是將自己習得的知識或經驗 (Input)，將其記錄 (Output)，作為未來精進的基礎。更能在寫作過程中 (Process)，訓練自己的思考能力 (寫文章還是要用腦筋的)。
-其實這就是我很喜歡講的 IPO (Input —&gt; Process —&gt; Output)，這是我向他人說明程式架構時，常用的三個簡單單字。
-AI 與文章 雖然現在 AI 很方便，每個人都可以隨時取得很好的答案。
-但是大家使用 AI 時，不一定會寫成文章。
-而文章，路人有可能會經過而看到，更有可能因它而得到啟發。因為這是我常遇到的事 (感謝大家的無私奉獻)，我在看大家的作品時，有時剛好得到些啟發，而這可能是我連想都沒想到。
-「連想都沒想到」的部份，就是AI 較難解決的事，因為AI仍需由人類先有個引子，才能讓AI去完善它 (解答)。文章卻是隨機的，有時剛好就出現在你面前。
-無壓力的寫文章 這次想法改變一下，不要有過多限制，就把這裡當成自己的日誌。
-若同時能幫助到大家，那就更好了。
-</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-12-20 22:39:35 +0800 CST'>December 20, 2025</span>&nbsp;·&nbsp;<span>Jason</span></footer>
-  <a class="entry-link" aria-label="post link to 為什麼要再繼續寫文章" href="http://localhost:1313/posts/continuewriting/"></a>
-</article>
-        </main>
-        
-<footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1313/">Jason</a></span> · 
-
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu');
-    if (menu) {
-        
-        const scrollPosition = localStorage.getItem("menu-scroll-position");
-        if (scrollPosition) {
-            menu.scrollLeft = parseInt(scrollPosition, 10);
-        }
-        
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-4XQT6DL3FZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-4XQT6DL3FZ');
-</script>
 </body>
 
 </html>

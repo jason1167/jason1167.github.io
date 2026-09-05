@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JSON <> YAML 轉換器 | Jason 開發者工具庫</title>
+  <meta name="description" content="專業線上雙向 JSON 與 YAML 相互轉換工具，支援自訂縮排、即時雙向轉換、檔案載入與語法防錯校驗。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <!-- js-yaml 官方函式庫 (v4.1.0) -->
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <style>
+    :root {
+      --color-beige-base: #F5F5DC;
+      --color-beige-subtle: #fcfbfa;
+      --color-beige-light: #f7f6f0;
+      --color-beige-border: #e8e6dc;
+
+      --primary: #006699;
+      --primary-hover: #00527c;
+      --primary-light: #e6f0f5;
+      --primary-glow: rgba(0, 102, 153, 0.12);
+
+      --gray-900: #1f2937;
+      --gray-800: #2d3748;
+      --gray-700: #374151;
+      --gray-600: #4b5563;
+      --gray-500: #6b7280;
+      --gray-400: #9ca3af;
+      --gray-300: #d1d5db;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --gray-50: #f9fafb;
+
+      --bg-body: var(--color-beige-subtle);
+      --bg-surface: #ffffff;
+      --border-color: var(--color-beige-border);
+
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --danger-border: #fecaca;
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+      --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif;
+      background-color: var(--bg-body);
+      color: var(--gray-900);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+      line-height: 1.5;
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(245, 245, 220, 0.6) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(0, 102, 153, 0.03) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    /* 頂部導航列 */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 1.75rem;
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid var(--border-color);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .back-btn:hover {
+      background: var(--color-beige-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .tool-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .tool-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px var(--primary-glow);
+    }
+
+    .tool-icon-box svg {
+      width: 18px;
+      height: 18px;
+      stroke: #ffffff;
+      stroke-width: 2;
+    }
+
+    .tool-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gray-900);
+      letter-spacing: -0.01em;
+    }
+
+    .tool-subtitle {
+      font-size: 12px;
+      color: var(--gray-500);
+      font-weight: 400;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* 主要版面結構 */
+    .main-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.25rem 1.75rem;
+      gap: 1rem;
+    }
+
+    /* 設定區塊 (Configuration) */
+    .config-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .config-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .config-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 13px;
+      color: var(--gray-700);
+    }
+
+    .config-item label {
+      font-weight: 500;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+    }
+
+    .config-select {
+      background: var(--color-beige-light);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.35rem 0.75rem;
+      font-size: 13px;
+      color: var(--gray-800);
+      outline: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition);
+    }
+
+    .config-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-glow);
+    }
+
+    .config-checkbox {
+      accent-color: var(--primary);
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+    }
+
+    /* 雙欄主工作區 */
+    .converter-workspace {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.85rem;
+      min-height: 560px;
+    }
+
+    @media (max-width: 980px) {
+      .converter-workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+      }
+    }
+
+    /* 單側編輯器卡片 */
+    .editor-pane {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: var(--transition);
+    }
+
+    .editor-pane:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .pane-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 1rem;
+      background: var(--color-beige-light);
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .pane-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .pane-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--gray-800);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .pane-badge {
+      font-size: 11px;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .badge-json {
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-yaml {
+      background: #fdf2f8;
+      color: #db2777;
+      border: 1px solid #fbcfe8;
+    }
+
+    .pane-stats {
+      font-size: 11px;
+      color: var(--gray-500);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pane-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .btn-pane {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.6rem;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--gray-700);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .btn-pane:hover {
+      background: var(--color-beige-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-pane svg {
+      width: 13px;
+      height: 13px;
+      stroke-width: 2;
+    }
+
+    /* 隱藏原生 file input */
+    .file-input-hidden {
+      display: none;
+    }
+
+    /* 編輯器容器與 textarea */
+    .editor-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: #ffffff;
+    }
+
+    .code-textarea {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      min-height: 480px;
+      border: none;
+      outline: none;
+      resize: none;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--gray-900);
+      background: #ffffff;
+      white-space: pre;
+      overflow-wrap: normal;
+      overflow-x: auto;
+      tab-size: 2;
+      /* 關鍵：關閉連字避免符號與斜線被視覺融合 */
+      font-variant-ligatures: none;
+      font-feature-settings: "calt" 0, "liga" 0;
+    }
+
+    .code-textarea::placeholder {
+      color: var(--gray-400);
+      font-style: italic;
+    }
+
+    /* 錯誤警示條 */
+    .syntax-error-bar {
+      display: none;
+      padding: 0.55rem 1rem;
+      background: var(--danger-bg);
+      border-top: 1px solid var(--danger-border);
+      color: var(--danger);
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.4;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .syntax-error-bar.show {
+      display: flex;
+    }
+
+    .syntax-error-icon {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+    }
+
+    /* 中央操作區 (Middle Action Column) */
+    .converter-middle-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0 0.25rem;
+    }
+
+    @media (max-width: 980px) {
+      .converter-middle-actions {
+        flex-direction: row;
+        padding: 0.5rem 0;
+      }
+    }
+
+    .btn-convert-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.6rem 0.85rem;
+      background: var(--primary);
+      color: #ffffff;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 4px var(--primary-glow);
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-convert-arrow:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-convert-arrow.btn-secondary-action {
+      background: var(--bg-surface);
+      color: var(--gray-700);
+      border-color: var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-convert-arrow.btn-secondary-action:hover {
+      background: var(--color-beige-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-convert-arrow svg {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2.2;
+    }
+
+    /* Toast 提示訊息 */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: var(--gray-900);
+      color: #ffffff;
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      animation: slideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1), fadeOut 0.25s cubic-bezier(0.16, 1, 0.3, 1) 2.2s forwards;
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 頂部導航列 -->
+  <header class="header">
+    <div class="header-left">
+      <a href="./index.html" class="back-btn" title="返回開發者工具庫">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        工具庫
+      </a>
+      <div class="tool-brand">
+        <div class="tool-icon-box">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="tool-title">JSON <> YAML 轉換器</h1>
+          <div class="tool-subtitle">雙向即時互相轉換，支援自訂縮排、檔案匯入與語法校驗</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-pane" id="btnFullscreen" title="切換瀏覽器全螢幕模式">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+        </svg>
+        全螢幕
+      </button>
+    </div>
+  </header>
+
+  <!-- 主要內容區 -->
+  <main class="main-container">
+
+    <!-- 設定選項 (Configuration) -->
+    <div class="config-card">
+      <div class="config-group">
+        <div class="config-item">
+          <label for="selectIndent">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h16" />
+            </svg>
+            縮排間距 (Indentation)：
+          </label>
+          <select id="selectIndent" class="config-select">
+            <option value="2" selected>2 空格 (2 spaces)</option>
+            <option value="4">4 空格 (4 spaces)</option>
+          </select>
+        </div>
+
+        <div class="config-item">
+          <label>
+            <input type="checkbox" id="chkLiveSync" class="config-checkbox" checked />
+            即時雙向轉換 (Live Auto-Sync)
+          </label>
+        </div>
+
+        <div class="config-item">
+          <label>
+            <input type="checkbox" id="chkSortKeys" class="config-checkbox" />
+            字典鍵名排序 (Sort Keys)
+          </label>
+        </div>
+      </div>
+
+      <div class="config-group">
+        <button class="btn-pane" id="btnGlobalSample" title="載入實用示範資料">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          載入完整範例
+        </button>
+        <button class="btn-pane" id="btnGlobalClear" title="清空兩側內容">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          全部清空
+        </button>
+      </div>
+    </div>
+
+    <!-- 雙欄編輯區 -->
+    <div class="converter-workspace">
+
+      <!-- 左欄：JSON -->
+      <section class="editor-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <span class="pane-title">
+              <span class="pane-badge badge-json">JSON</span>
+              JSON 資料
+            </span>
+            <span class="pane-stats" id="jsonStats">0 行 | 0 字元</span>
+          </div>
+          <div class="pane-actions">
+            <button class="btn-pane" id="btnJsonPaste" title="自剪貼簿貼上">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              貼上
+            </button>
+            <label class="btn-pane" title="載入 .json 檔案">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              檔案
+              <input type="file" id="fileInputJson" class="file-input-hidden"
+                accept=".json,application/json,text/plain" />
+            </label>
+            <button class="btn-pane" id="btnJsonFormat" title="美化與格式化 JSON">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+              </svg>
+              格式化
+            </button>
+            <button class="btn-pane" id="btnJsonCopy" title="複製 JSON 內容">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              複製
+            </button>
+            <button class="btn-pane" id="btnJsonClear" title="清空 JSON">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-body">
+          <textarea id="jsonEditor" class="code-textarea" placeholder="在此輸入或貼上 JSON 格式字串...
+例如:
+{
+  &quot;name&quot;: &quot;Jason Toolbox&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;features&quot;: [&quot;JSON&quot;, &quot;YAML&quot;, &quot;Text Diff&quot;],
+  &quot;active&quot;: true
+}" spellcheck="false"></textarea>
+          <div class="syntax-error-bar" id="jsonErrorBar">
+            <svg class="syntax-error-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span id="jsonErrorMsg">無效的 JSON 語法</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 中間操作轉換控制列 -->
+      <div class="converter-middle-actions">
+        <button class="btn-convert-arrow" id="btnJsonToYaml" title="手動觸發：將 JSON 轉換為 YAML">
+          JSON ➜ YAML
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
+
+        <button class="btn-convert-arrow btn-secondary-action" id="btnYamlToJson" title="手動觸發：將 YAML 轉換為 JSON">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          YAML ➜ JSON
+        </button>
+
+        <button class="btn-pane" id="btnSwapContent" title="左右內容互相交換" style="margin-top: 0.4rem;">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+          交換兩側
+        </button>
+      </div>
+
+      <!-- 右欄：YAML -->
+      <section class="editor-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <span class="pane-title">
+              <span class="pane-badge badge-yaml">YAML</span>
+              YAML 資料
+            </span>
+            <span class="pane-stats" id="yamlStats">0 行 | 0 字元</span>
+          </div>
+          <div class="pane-actions">
+            <button class="btn-pane" id="btnYamlPaste" title="自剪貼簿貼上">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              貼上
+            </button>
+            <label class="btn-pane" title="載入 .yaml / .yml 檔案">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              檔案
+              <input type="file" id="fileInputYaml" class="file-input-hidden"
+                accept=".yaml,.yml,text/yaml,text/plain" />
+            </label>
+            <button class="btn-pane" id="btnYamlCopy" title="複製 YAML 內容">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              複製
+            </button>
+            <button class="btn-pane" id="btnYamlClear" title="清空 YAML">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-body">
+          <textarea id="yamlEditor" class="code-textarea" placeholder="在此輸入或貼上 YAML 格式字串...
+例如:
+name: Jason Toolbox
+version: 1.0.0
+features:
+  - JSON
+  - YAML
+  - Text Diff
+active: true" spellcheck="false"></textarea>
+          <div class="syntax-error-bar" id="yamlErrorBar">
+            <svg class="syntax-error-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span id="yamlErrorMsg">無效的 YAML 語法</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Toast 訊息容器 -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // DOM 元件
+    const jsonEditor = document.getElementById('jsonEditor');
+    const yamlEditor = document.getElementById('yamlEditor');
+    const jsonStats = document.getElementById('jsonStats');
+    const yamlStats = document.getElementById('yamlStats');
+    const jsonErrorBar = document.getElementById('jsonErrorBar');
+    const jsonErrorMsg = document.getElementById('jsonErrorMsg');
+    const yamlErrorBar = document.getElementById('yamlErrorBar');
+    const yamlErrorMsg = document.getElementById('yamlErrorMsg');
+    const selectIndent = document.getElementById('selectIndent');
+    const chkLiveSync = document.getElementById('chkLiveSync');
+    const chkSortKeys = document.getElementById('chkSortKeys');
+    const toastContainer = document.getElementById('toastContainer');
+
+    // 狀態保護標誌：防止雙向 live sync 造成的循環觸發
+    let isConverting = false;
+
+    // 顯示 Toast 提示
+    function showToast(msg) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span>${msg}</span>
+      `;
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.remove();
+        }
+      }, 2500);
+    }
+
+    // 更新統計資訊 (行數與字元數)
+    function updateStats() {
+      const jsonVal = jsonEditor.value;
+      const yamlVal = yamlEditor.value;
+
+      const jsonLines = jsonVal ? jsonVal.split('\n').length : 0;
+      const jsonChars = jsonVal.length;
+      jsonStats.textContent = `${jsonLines} 行 | ${jsonChars} 字元`;
+
+      const yamlLines = yamlVal ? yamlVal.split('\n').length : 0;
+      const yamlChars = yamlVal.length;
+      yamlStats.textContent = `${yamlLines} 行 | ${yamlChars} 字元`;
+    }
+
+    // 取得當前縮排空格數
+    function getIndentSpaces() {
+      return parseInt(selectIndent.value, 10) || 2;
+    }
+
+    // 檢查 js-yaml 函式庫是否已載入
+    function checkYamlLib() {
+      if (typeof jsyaml === 'undefined') {
+        showToast("⚠️ YAML 核心庫載入中，請稍候...");
+        return false;
+      }
+      return true;
+    }
+
+    // JSON 轉換為 YAML
+    function convertJsonToYaml(isAuto = false) {
+      if (isConverting) return;
+      if (!checkYamlLib()) return;
+
+      const raw = jsonEditor.value.trim();
+      if (!raw) {
+        if (!isAuto) {
+          yamlEditor.value = "";
+          updateStats();
+        }
+        jsonErrorBar.classList.remove('show');
+        return;
+      }
+
+      try {
+        isConverting = true;
+        const parsed = JSON.parse(raw);
+        jsonErrorBar.classList.remove('show');
+
+        const indent = getIndentSpaces();
+        const sortKeys = chkSortKeys.checked;
+
+        const yamlOutput = jsyaml.dump(parsed, {
+          indent: indent,
+          sortKeys: sortKeys,
+          lineWidth: -1, // 防止長字串被強制折行
+          noRefs: true
+        });
+
+        yamlEditor.value = yamlOutput;
+        yamlErrorBar.classList.remove('show');
+        updateStats();
+
+        if (!isAuto) {
+          showToast("已成功轉換為 YAML！");
+        }
+      } catch (err) {
+        jsonErrorBar.classList.add('show');
+        jsonErrorMsg.textContent = "JSON 解析錯誤: " + err.message;
+      } finally {
+        isConverting = false;
+      }
+    }
+
+    // YAML 轉換為 JSON
+    function convertYamlToJson(isAuto = false) {
+      if (isConverting) return;
+      if (!checkYamlLib()) return;
+
+      const raw = yamlEditor.value.trim();
+      if (!raw) {
+        if (!isAuto) {
+          jsonEditor.value = "";
+          updateStats();
+        }
+        yamlErrorBar.classList.remove('show');
+        return;
+      }
+
+      try {
+        isConverting = true;
+        const parsed = jsyaml.load(raw);
+        yamlErrorBar.classList.remove('show');
+
+        const indent = getIndentSpaces();
+        let jsonOutput = "";
+
+        if (parsed === undefined) {
+          jsonOutput = "";
+        } else {
+          jsonOutput = JSON.stringify(parsed, null, indent);
+        }
+
+        jsonEditor.value = jsonOutput;
+        jsonErrorBar.classList.remove('show');
+        updateStats();
+
+        if (!isAuto) {
+          showToast("已成功轉換為 JSON！");
+        }
+      } catch (err) {
+        yamlErrorBar.classList.add('show');
+        yamlErrorMsg.textContent = "YAML 解析錯誤: " + err.message;
+      } finally {
+        isConverting = false;
+      }
+    }
+
+    // 防抖計時器 (Debounce)
+    let jsonDebounceTimer = null;
+    let yamlDebounceTimer = null;
+
+    jsonEditor.addEventListener('input', () => {
+      updateStats();
+      if (!chkLiveSync.checked) return;
+      clearTimeout(jsonDebounceTimer);
+      jsonDebounceTimer = setTimeout(() => {
+        convertJsonToYaml(true);
+      }, 350);
+    });
+
+    yamlEditor.addEventListener('input', () => {
+      updateStats();
+      if (!chkLiveSync.checked) return;
+      clearTimeout(yamlDebounceTimer);
+      yamlDebounceTimer = setTimeout(() => {
+        convertYamlToJson(true);
+      }, 350);
+    });
+
+    // 縮排或排序設定變更時重新觸發轉換
+    selectIndent.addEventListener('change', () => {
+      if (jsonEditor.value.trim()) {
+        convertJsonToYaml(true);
+      } else if (yamlEditor.value.trim()) {
+        convertYamlToJson(true);
+      }
+    });
+
+    chkSortKeys.addEventListener('change', () => {
+      if (jsonEditor.value.trim()) {
+        convertJsonToYaml(true);
+      }
+    });
+
+    // 格式化 JSON 按鈕
+    document.getElementById('btnJsonFormat').onclick = () => {
+      const raw = jsonEditor.value.trim();
+      if (!raw) return;
+      try {
+        const obj = JSON.parse(raw);
+        jsonEditor.value = JSON.stringify(obj, null, getIndentSpaces());
+        jsonErrorBar.classList.remove('show');
+        updateStats();
+        showToast("JSON 格式化完成！");
+      } catch (e) {
+        jsonErrorBar.classList.add('show');
+        jsonErrorMsg.textContent = "無法格式化: " + e.message;
+      }
+    };
+
+    // 轉換按鈕事件
+    document.getElementById('btnJsonToYaml').onclick = () => convertJsonToYaml(false);
+    document.getElementById('btnYamlToJson').onclick = () => convertYamlToJson(false);
+
+    // 複製按鈕
+    document.getElementById('btnJsonCopy').onclick = () => {
+      if (!jsonEditor.value) {
+        showToast("JSON 內容為空");
+        return;
+      }
+      navigator.clipboard.writeText(jsonEditor.value);
+      showToast("已複製 JSON 內容至剪貼簿！");
+    };
+
+    document.getElementById('btnYamlCopy').onclick = () => {
+      if (!yamlEditor.value) {
+        showToast("YAML 內容為空");
+        return;
+      }
+      navigator.clipboard.writeText(yamlEditor.value);
+      showToast("已複製 YAML 內容至剪貼簿！");
+    };
+
+    // 貼上按鈕 (支援 navigator.clipboard.readText)
+    document.getElementById('btnJsonPaste').onclick = async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          jsonEditor.value = text;
+          updateStats();
+          if (chkLiveSync.checked) {
+            convertJsonToYaml(true);
+          }
+          showToast("已貼上內容至 JSON！");
+        }
+      } catch (err) {
+        showToast("無法直接存取剪貼簿，請使用 Ctrl+V 貼上");
+      }
+    };
+
+    document.getElementById('btnYamlPaste').onclick = async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          yamlEditor.value = text;
+          updateStats();
+          if (chkLiveSync.checked) {
+            convertYamlToJson(true);
+          }
+          showToast("已貼上內容至 YAML！");
+        }
+      } catch (err) {
+        showToast("無法直接存取剪貼簿，請使用 Ctrl+V 貼上");
+      }
+    };
+
+    // 檔案載入功能
+    const fileInputJson = document.getElementById('fileInputJson');
+    fileInputJson.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        jsonEditor.value = event.target.result;
+        updateStats();
+        if (chkLiveSync.checked) {
+          convertJsonToYaml(true);
+        }
+        showToast(`已載入檔案: ${file.name}`);
+      };
+      reader.readAsText(file);
+      fileInputJson.value = "";
+    });
+
+    const fileInputYaml = document.getElementById('fileInputYaml');
+    fileInputYaml.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        yamlEditor.value = event.target.result;
+        updateStats();
+        if (chkLiveSync.checked) {
+          convertYamlToJson(true);
+        }
+        showToast(`已載入檔案: ${file.name}`);
+      };
+      reader.readAsText(file);
+      fileInputYaml.value = "";
+    });
+
+    // 清空按鈕
+    document.getElementById('btnJsonClear').onclick = () => {
+      jsonEditor.value = "";
+      jsonErrorBar.classList.remove('show');
+      updateStats();
+      jsonEditor.focus();
+    };
+
+    document.getElementById('btnYamlClear').onclick = () => {
+      yamlEditor.value = "";
+      yamlErrorBar.classList.remove('show');
+      updateStats();
+      yamlEditor.focus();
+    };
+
+    document.getElementById('btnGlobalClear').onclick = () => {
+      jsonEditor.value = "";
+      yamlEditor.value = "";
+      jsonErrorBar.classList.remove('show');
+      yamlErrorBar.classList.remove('show');
+      updateStats();
+      showToast("已清空所有內容");
+    };
+
+    // 交換兩側內容
+    document.getElementById('btnSwapContent').onclick = () => {
+      const tempJson = jsonEditor.value;
+      jsonEditor.value = yamlEditor.value;
+      yamlEditor.value = tempJson;
+      jsonErrorBar.classList.remove('show');
+      yamlErrorBar.classList.remove('show');
+      updateStats();
+      showToast("已交換兩側內容！");
+    };
+
+    // 範例資料載入
+    const sampleData = {
+      title: "Jason 開發者實用工具庫",
+      version: "2.4.0",
+      author: {
+        name: "Jason",
+        role: "系統架構師 / 軟體工程師",
+        github: "https://github.com/jason"
+      },
+      settings: {
+        theme: "beige-fluent",
+        autoSave: true,
+        maxHistory: 50
+      },
+      tools: [
+        { id: "text-diff", name: "文字比對 (Text Diff)", status: "ready" },
+        { id: "json-yaml", name: "JSON <> YAML Converter", status: "ready" },
+        { id: "url-encoder", name: "URL 編碼解碼器", status: "ready" },
+        { id: "html-encoder", name: "HTML 實體編碼器", status: "ready" }
+      ],
+      tags: ["Productivity", "WebTools"]
+    };
+
+    document.getElementById('btnGlobalSample').onclick = () => {
+      const indent = getIndentSpaces();
+      jsonEditor.value = JSON.stringify(sampleData, null, indent);
+      jsonErrorBar.classList.remove('show');
+      convertJsonToYaml(true);
+      showToast("已載入完整示範資料！");
+    };
+
+    // 全螢幕切換
+    document.getElementById('btnFullscreen').onclick = () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          showToast("無法切換全螢幕: " + err.message);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    };
+
+    // 初始狀態檢查
+    updateStats();
+
+    // 頁面初次載入時自動塞入初始範例便於直覺使用
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('btnGlobalSample').click();
+    });
+  </script>
+</body>
+
+</html>

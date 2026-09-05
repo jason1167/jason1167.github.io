@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>String Magic</title>
+<style>
+    body { font-family: "Microsoft JhengHei", "微軟正黑體", Arial, sans-serif; margin: 20px; background: #f2f2f2; }
+    h1 { font-size: 20px; }
+    .tabs { display: flex; border-bottom: 2px solid #888; margin-bottom: 10px; }
+    .tab-btn { padding: 8px 16px; cursor: pointer; background: #ddd; border: 1px solid #aaa; border-bottom: none; margin-right: 4px; }
+    .tab-btn.active { background: #fff; font-weight: bold; }
+    .tab-page { display: none; background: #fff; padding: 16px; border: 1px solid #aaa; border-top: none; }
+    .tab-page.active { display: block; }
+    textarea { width: 100%; box-sizing: border-box; font-family: Consolas, monospace; font-size: 14px; }
+    .row { display: flex; gap: 16px; margin-bottom: 10px; }
+    .col { flex: 1; display: flex; flex-direction: column; }
+    fieldset { margin-bottom: 10px; }
+    label { margin-right: 12px; }
+    table { border-collapse: collapse; width: 100%; }
+    table, th, td { border: 1px solid #ccc; }
+    th, td { padding: 4px 8px; text-align: left; }
+    button { padding: 6px 14px; margin-right: 8px; cursor: pointer; }
+    .btn-row { margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<h1>String Magic</h1>
+
+<div class="tabs">
+    <div class="tab-btn active" data-tab="split">String Split</div>
+    <div class="tab-btn" data-tab="join">String Join</div>
+</div>
+
+<!-- String Split -->
+<div class="tab-page active" id="tab-split">
+    <div class="row">
+        <div class="col">
+            <label>1. 原始資料</label>
+            <textarea id="splitSource" rows="10" oninput="detectFormat()"></textarea>
+        </div>
+    </div>
+
+    <fieldset>
+        <legend>2. 資料格式</legend>
+        <label><input type="radio" name="format" value="url" checked> URL Query String</label>
+        <label><input type="radio" name="format" value="csv"> CSV String</label>
+        <label><input type="radio" name="format" value="json"> JSON String</label>
+        <label><input type="radio" name="format" value="xml"> XML Node String</label>
+        <label><input type="radio" name="format" value="xmlAttr"> XML Attribute String</label>
+    </fieldset>
+
+    <fieldset>
+        <legend>3. 排序</legend>
+        <label><input type="radio" name="sort" value="none" checked> 不排序</label>
+        <label><input type="radio" name="sort" value="asc"> 依 Key 遞增排序</label>
+    </fieldset>
+
+    <fieldset>
+        <legend>4. 其他選項</legend>
+        <label><input type="checkbox" id="urlDecode"> URL Decode</label>
+    </fieldset>
+
+    <div class="btn-row">
+        <button onclick="stringFormat()">開始轉換 (&F)</button>
+        <button onclick="copyText('splitTarget')">複製結果</button>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label>轉換結果</label>
+            <textarea id="splitTarget" rows="10" readonly></textarea>
+        </div>
+        <div class="col">
+            <label>Key / Value</label>
+            <table id="splitTable">
+                <thead><tr><th>Key</th><th>Value</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- String Join -->
+<div class="tab-page" id="tab-join">
+    <div class="row">
+        <div class="col">
+            <label>1. 原始資料 (每行一筆)</label>
+            <textarea id="joinSource" rows="10"></textarea>
+        </div>
+    </div>
+
+    <fieldset>
+        <legend>2. 原始資料格式</legend>
+        <label><input type="radio" name="joinMode" value="right" checked> 每行最後加固定文字</label>
+        <input type="text" id="joinRightText" size="60">
+    </fieldset>
+
+    <div class="btn-row">
+        <button onclick="stringFormatJoin()">開始轉換 (&S)</button>
+        <button onclick="copyText('joinTarget')">複製結果</button>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label>轉換結果</label>
+            <textarea id="joinTarget" rows="10" readonly></textarea>
+        </div>
+    </div>
+</div>
+
+<!-- 範例資料頁面連結區 -->
+<div class="footer-download" style="margin-top: 20px; padding: 12px 16px; background: #fff; border: 1px solid #ccc; display: flex; align-items: center; justify-content: space-between; border-radius: 4px;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-weight: bold; color: #333;">範例資料：</span>
+        <span style="color: #666; font-size: 14px;">提供 URL Query、CSV、JSON、XML Node 及 XML Attribute 測試範例</span>
+    </div>
+    <a href="Sample.html" target="_blank" class="download-btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: #006699; color: #ffffff; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: 500;">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+        查看 Sample.html 範例
+    </a>
+</div>
+
+<script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+        });
+    });
+
+    function getRadioValue(name) {
+        const el = document.querySelector('input[name="' + name + '"]:checked');
+        return el ? el.value : null;
+    }
+
+    function copyText(id) {
+        const el = document.getElementById(id);
+        el.select();
+        document.execCommand('copy');
+    }
+
+    function clearTable() {
+        document.querySelector('#splitTable tbody').innerHTML = '';
+    }
+
+    function addRow(key, value) {
+        const tbody = document.querySelector('#splitTable tbody');
+        const tr = document.createElement('tr');
+        const tdKey = document.createElement('td');
+        tdKey.textContent = key;
+        const tdValue = document.createElement('td');
+        tdValue.textContent = value;
+        tr.appendChild(tdKey);
+        tr.appendChild(tdValue);
+        tbody.appendChild(tr);
+    }
+
+    function detectFormat() {
+        const source = document.getElementById('splitSource').value;
+
+        function setFormat(value) {
+            const el = document.querySelector('input[name="format"][value="' + value + '"]');
+            if (el) el.checked = true;
+        }
+
+        if (source.indexOf('{') > -1 && source.indexOf('}') > -1 && source.indexOf(':') > -1) {
+            setFormat('json');
+        } else if (source.indexOf('<') > -1 && source.indexOf('>') > -1 && source.indexOf('/') > -1) {
+            try {
+                const doc = new DOMParser().parseFromString(source, 'text/xml');
+                const errorNode = doc.querySelector('parsererror');
+                if (errorNode) throw new Error('parse error');
+
+                const root = doc.documentElement;
+                if (root.attributes.length > 1) {
+                    setFormat('xmlAttr');
+                } else if (root.children.length > 0 && root.children[0].attributes.length > 1) {
+                    setFormat('xmlAttr');
+                } else {
+                    setFormat('xml');
+                }
+            } catch (ex) {
+                // 若有錯誤，則不偵測是哪種型態，因為可能還在修改資料
+            }
+        } else if (source.toLowerCase().indexOf('http://') === 0 || source.toLowerCase().indexOf('https://') === 0 ||
+                   (source.indexOf('&') > -1 && source.indexOf('=') > -1)) {
+            setFormat('url');
+        } else {
+            setFormat('csv');
+        }
+    }
+
+    function stringFormat() {
+        const targetEl = document.getElementById('splitTarget');
+        targetEl.value = '';
+        clearTable();
+
+        const source = document.getElementById('splitSource').value;
+        const format = getRadioValue('format');
+        const sortAsc = getRadioValue('sort') === 'asc';
+        const urlDecode = document.getElementById('urlDecode').checked;
+
+        let resultLines = [];
+        let data = {};
+
+        if (format === 'url') {
+            let url = '';
+            let queryStrings = '';
+
+            if (source.toLowerCase().substring(0, 4) === 'http') {
+                const urlParameters = source.split('?');
+                url = urlParameters[0];
+                if (urlParameters.length === 2) {
+                    queryStrings = urlParameters[1];
+                }
+                resultLines.push(url);
+            } else if (source.indexOf('&') > -1) {
+                queryStrings = source;
+            } else {
+                alert('錯誤的 URL 格式');
+                return;
+            }
+
+            if (queryStrings !== '') {
+                let urlQueryStrings = queryStrings.split('&');
+
+                if (sortAsc) {
+                    urlQueryStrings.sort();
+                }
+
+                for (let i = 0; i < urlQueryStrings.length; i++) {
+                    let pair = urlQueryStrings[i];
+                    if (urlDecode) {
+                        pair = decodeURIComponent(pair.replace(/\+/g, ' '));
+                    }
+                    resultLines.push(pair);
+                    const parts = pair.split('=');
+                    addRow(parts[0], parts.slice(1).join('='));
+                }
+            }
+        } else if (format === 'csv') {
+            const sourceArray = source.split(',');
+            for (let i = 0; i < sourceArray.length; i++) {
+                resultLines.push('[' + String(i).padStart(3, '0') + '] ' + sourceArray[i]);
+            }
+        } else if (format === 'json') {
+            try {
+                data = JSON.parse(source);
+            } catch (ex) {
+                alert('錯誤的 JSON 格式');
+                return;
+            }
+        } else if (format === 'xml') {
+            const doc = new DOMParser().parseFromString(source, 'text/xml');
+            if (doc.querySelector('parsererror')) {
+                alert('錯誤的XML格式');
+                return;
+            }
+
+            const nodes = doc.querySelectorAll('*');
+            nodes.forEach(n => {
+                if (n.children.length === 0) {
+                    data[n.nodeName] = urlDecode ? decodeURIComponent(n.textContent.replace(/\+/g, ' ')) : n.textContent;
+                }
+            });
+        } else if (format === 'xmlAttr') {
+            const doc = new DOMParser().parseFromString(source, 'text/xml');
+            let xmlNode = null;
+
+            if (doc.querySelector('parsererror')) {
+                alert('錯誤的 XML Attribute 格式');
+                return;
+            }
+
+            try {
+                const root = doc.documentElement;
+                if (root.attributes.length > 1) {
+                    xmlNode = root;
+                } else if (root.children[0].attributes.length > 1) {
+                    xmlNode = root.children[0];
+                }
+            } catch (ex) {
+                alert('錯誤的 XML Attribute 格式');
+                return;
+            }
+
+            if (!xmlNode) {
+                alert('錯誤的 XML Attribute 格式');
+                return;
+            }
+
+            for (const attr of xmlNode.attributes) {
+                data[attr.name] = urlDecode ? decodeURIComponent(attr.value.replace(/\+/g, ' ')) : attr.value;
+            }
+        }
+
+        // JSON 及 XML 內容格式化
+        if (format === 'json' || format === 'xml' || format === 'xmlAttr') {
+            let keys = Object.keys(data);
+            if (sortAsc) {
+                keys = keys.sort();
+            }
+            keys.forEach(key => {
+                resultLines.push(key + '=' + data[key]);
+                addRow(key, data[key]);
+            });
+        }
+
+        targetEl.value = resultLines.join('\r\n') + (resultLines.length ? '\r\n' : '');
+    }
+
+    function stringFormatJoin() {
+        const joinString = document.getElementById('joinRightText').value;
+        const source = document.getElementById('joinSource').value;
+        const sourceList = source.replace(/\r/g, '').split('\n');
+
+        let result = '';
+        for (let i = 0; i < sourceList.length; i++) {
+            result += sourceList[i] + joinString + '\r\n';
+        }
+
+        document.getElementById('joinTarget').value = result;
+    }
+</script>
+
+</body>
+</html>
