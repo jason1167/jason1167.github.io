@@ -61,6 +61,13 @@ function toast(msg) {
   toast._t = setTimeout(() => el.classList.add("hidden"), 2200);
 }
 
+function escapeHtml(s) {
+  if (s == null) return "";
+  const div = document.createElement("div");
+  div.textContent = String(s);
+  return div.innerHTML;
+}
+
 // ---------- 分類 chips ----------
 
 function renderCategoryChips(container, selectedId, onSelect) {
@@ -78,7 +85,9 @@ function renderCategoryChips(container, selectedId, onSelect) {
 }
 
 function refreshQuickAddChips() {
-  if (!state.selectedCategoryId && state.categories.length) {
+  if (!state.categories.length) return;
+  // 若目前選取的分類已被刪除，則預設選第一個
+  if (!state.categories.some((c) => c.id === state.selectedCategoryId)) {
     state.selectedCategoryId = state.categories[0].id;
   }
   renderCategoryChips($("#categoryChips"), state.selectedCategoryId, (id) => {
@@ -157,19 +166,31 @@ function renderRecordsList() {
             <div class="record-time">${timePart}</div>
           </div>
           <div class="record-amount">${formatMoney(r.amount)}</div>
+          <button type="button" class="btn-record-delete" aria-label="刪除這筆紀錄" title="刪除此筆">✕</button>
         `;
+
+        // 點擊整列開啟編輯
         row.addEventListener("click", () => openEditModal(r));
+
+        // 點擊刪除按鈕直接從明細中刪除該筆項目
+        const delBtn = row.querySelector(".btn-record-delete");
+        delBtn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          const memoSnippet = r.memo ? `（${r.memo}）` : "";
+          const confirmMsg = `確定要刪除「${cat.name} ${formatMoney(r.amount)}${memoSnippet}」這筆紀錄嗎？`;
+          if (!confirm(confirmMsg)) return;
+
+          await DB.deleteRecord(r.id);
+          state.records = state.records.filter((item) => item.id !== r.id);
+          renderAll();
+          toast("已刪除紀錄");
+        });
+
         group.appendChild(row);
       });
 
       listEl.appendChild(group);
     });
-}
-
-function escapeHtml(s) {
-  const div = document.createElement("div");
-  div.textContent = s;
-  return div.innerHTML;
 }
 
 function renderAll() {
@@ -222,7 +243,7 @@ async function handleQuickAddSubmit(e) {
   toast("已記一筆");
 }
 
-// ---------- 編輯 / 刪除 ----------
+// ---------- 編輯 / 刪除 視窗 ----------
 
 function openEditModal(record) {
   $("#editId").value = record.id;
@@ -279,22 +300,65 @@ async function handleDeleteRecord() {
   toast("已刪除");
 }
 
-// ---------- 分類管理 ----------
+// ---------- 分類管理與排序 ----------
 
 function renderCategoryManageList() {
   const listEl = $("#categoryManageList");
   listEl.innerHTML = "";
-  state.categories.forEach((cat) => {
+  const total = state.categories.length;
+
+  state.categories.forEach((cat, index) => {
+    const isFirst = index === 0;
+    const isLast = index === total - 1;
     const li = document.createElement("li");
     li.className = "category-manage-item";
     li.innerHTML = `
       <span class="cm-icon">${escapeHtml(cat.icon)}</span>
       <span class="cm-name">${escapeHtml(cat.name)}</span>
-      <button type="button" class="cm-delete">刪除</button>
+      <div class="cm-actions">
+        <button type="button" class="cm-btn cm-move-up" title="上移" aria-label="上移" ${isFirst ? "disabled" : ""}>↑</button>
+        <button type="button" class="cm-btn cm-move-down" title="下移" aria-label="下移" ${isLast ? "disabled" : ""}>↓</button>
+        <button type="button" class="cm-btn cm-delete" title="刪除分類">刪除</button>
+      </div>
     `;
-    li.querySelector(".cm-delete").addEventListener("click", () => handleDeleteCategory(cat.id));
+
+    const upBtn = li.querySelector(".cm-move-up");
+    const downBtn = li.querySelector(".cm-move-down");
+    const delBtn = li.querySelector(".cm-delete");
+
+    if (!isFirst) {
+      upBtn.addEventListener("click", () => handleMoveCategory(index, -1));
+    }
+    if (!isLast) {
+      downBtn.addEventListener("click", () => handleMoveCategory(index, 1));
+    }
+    delBtn.addEventListener("click", () => handleDeleteCategory(cat.id));
+
     listEl.appendChild(li);
   });
+}
+
+async function handleMoveCategory(index, delta) {
+  const targetIndex = index + delta;
+  if (targetIndex < 0 || targetIndex >= state.categories.length) return;
+
+  // 交換陣列項目位置
+  const temp = state.categories[index];
+  state.categories[index] = state.categories[targetIndex];
+  state.categories[targetIndex] = temp;
+
+  // 重新整理所有類別的 order
+  state.categories.forEach((cat, idx) => {
+    cat.order = idx;
+  });
+
+  // 儲存至 IndexedDB
+  await DB.replaceAllCategories(state.categories);
+
+  // 即時更新管理列表與主畫面分類 Chips
+  renderCategoryManageList();
+  refreshQuickAddChips();
+  toast("已調整分類順序");
 }
 
 async function handleDeleteCategory(id) {
@@ -304,6 +368,12 @@ async function handleDeleteCategory(id) {
   }
   await DB.deleteCategory(id);
   state.categories = state.categories.filter((c) => c.id !== id);
+  // 重新規範 order
+  state.categories.forEach((cat, idx) => {
+    cat.order = idx;
+  });
+  await DB.replaceAllCategories(state.categories);
+
   renderCategoryManageList();
   refreshQuickAddChips();
   toast("已刪除分類");
