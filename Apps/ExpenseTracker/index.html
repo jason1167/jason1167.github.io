@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#F6F4EE">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="記帳">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+<title>記帳</title>
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar">
+    <h1>記帳</h1>
+    <div class="topbar-actions">
+      <button id="btnCategories" class="btn-icon" aria-label="管理分類" title="管理分類">☰</button>
+      <button id="btnExport" class="btn-icon" aria-label="匯出備份" title="匯出備份">⤓</button>
+    </div>
+  </header>
+
+  <section class="summary">
+    <div class="summary-row">
+      <button id="btnPrevMonth" class="btn-nav" aria-label="上個月">‹</button>
+      <div class="summary-main">
+        <div class="summary-month" id="summaryMonth">—</div>
+        <div class="summary-total" id="summaryTotal">$0</div>
+        <div class="summary-label">本月支出</div>
+      </div>
+      <button id="btnNextMonth" class="btn-nav" aria-label="下個月">›</button>
+    </div>
+  </section>
+
+  <form id="quickAddForm" class="quick-add" autocomplete="off">
+    <div class="field-amount">
+      <span class="currency">$</span>
+      <input type="number" id="inputAmount" inputmode="decimal" step="0.01" min="0" placeholder="0" required>
+    </div>
+
+    <div class="category-chips" id="categoryChips" role="listbox" aria-label="分類"></div>
+
+    <div class="field-row">
+      <label class="field-inline">
+        <span class="field-inline-label">日期</span>
+        <input type="date" id="inputDate" required>
+      </label>
+      <label class="field-inline">
+        <span class="field-inline-label">時間</span>
+        <input type="time" id="inputTime" required>
+      </label>
+    </div>
+
+    <input type="text" id="inputMemo" class="input-memo" placeholder="備註（選填）" maxlength="100">
+
+    <button type="submit" class="btn-primary">記一筆</button>
+  </form>
+
+  <section class="records-section">
+    <div class="records-header">
+      <h2>本月明細</h2>
+      <span id="recordsCount" class="records-count"></span>
+    </div>
+    <div class="records" id="recordsList">
+      <p class="empty-state" id="emptyState">還沒有任何紀錄，上面填好金額就能記一筆。</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- 編輯 / 刪除 單筆紀錄 -->
+<div id="editModal" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3>編輯紀錄</h3>
+      <button class="btn-close" id="btnCloseEdit" aria-label="關閉">✕</button>
+    </div>
+    <form id="editForm" autocomplete="off">
+      <input type="hidden" id="editId">
+      <div class="field-amount">
+        <span class="currency">$</span>
+        <input type="number" id="editAmount" inputmode="decimal" step="0.01" min="0" required>
+      </div>
+      <div class="category-chips" id="editCategoryChips" role="listbox" aria-label="分類"></div>
+      <div class="field-row">
+        <label class="field-inline">
+          <span class="field-inline-label">日期</span>
+          <input type="date" id="editDate" required>
+        </label>
+        <label class="field-inline">
+          <span class="field-inline-label">時間</span>
+          <input type="time" id="editTime" required>
+        </label>
+      </div>
+      <input type="text" id="editMemo" class="input-memo" placeholder="備註（選填）" maxlength="100">
+      <div class="modal-actions">
+        <button type="button" id="btnDeleteRecord" class="btn-danger">刪除</button>
+        <button type="submit" class="btn-primary">儲存變更</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 分類管理 -->
+<div id="categoryModal" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3>管理分類</h3>
+      <button class="btn-close" id="btnCloseCategories" aria-label="關閉">✕</button>
+    </div>
+    <p class="modal-note modal-note-small" style="margin: -6px 0 12px 0;">可點擊 ↑ / ↓ 調整分類排序，常用分類排在前面更方便記帳。</p>
+    <ul class="category-manage-list" id="categoryManageList"></ul>
+    <form id="addCategoryForm" class="add-category-form" autocomplete="off">
+      <input type="text" id="newCategoryIcon" class="input-emoji" placeholder="🏷️" maxlength="2">
+      <input type="text" id="newCategoryName" placeholder="新增分類名稱" maxlength="12" required>
+      <button type="submit" class="btn-primary btn-small">新增</button>
+    </form>
+  </div>
+</div>
+
+<!-- 匯出 / 匯入 -->
+<div id="exportModal" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3>匯出備份</h3>
+      <button class="btn-close" id="btnCloseExport" aria-label="關閉">✕</button>
+    </div>
+    <p class="modal-note">資料只存在這台手機的瀏覽器裡。定期匯出備份，或存到「檔案」App 的 iCloud 雲端硬碟資料夾，可避免清除瀏覽器資料時遺失紀錄。</p>
+    <div class="export-actions">
+      <button id="btnExportJson" class="btn-secondary btn-block">匯出 JSON 備份檔</button>
+      <button id="btnExportCsv" class="btn-secondary btn-block">匯出 CSV（Excel / Numbers）</button>
+      <label class="btn-secondary btn-block btn-file-label" for="importFileInput">從 JSON 備份檔還原</label>
+      <input type="file" id="importFileInput" accept="application/json" hidden>
+    </div>
+    <p class="modal-note modal-note-small" id="exportStatus"></p>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/db.js"></script>
+<script src="js/export.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
